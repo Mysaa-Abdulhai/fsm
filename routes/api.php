@@ -25,11 +25,22 @@ Route::middleware('auth:sanctum','verified')->get('/user', function (Request $re
 
 
 
-Route::post('login', [AuthController::class, 'login']);
-Route::post('register', [AuthController::class, 'register']);
-Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-Route::post('email/verification-notification', [EmailVerificationController::class, 'sendVerificationEmail'])->middleware('auth:sanctum');
-Route::get('verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify')->middleware('auth:sanctum');
+Route::post('/email/verification-notification', [EmailVerificationController::class, 'sendVerificationEmail'])->middleware('auth:sanctum');
+Route::get('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify')->middleware('auth:sanctum');
+
+//Route::get('admin_area', function () {
+//    dd('fuck you');
+//})->middleware('isAdmin');
+Route::get('/admin',function (Request $request) {
+    return('you are admin');
+})->middleware('admin','auth:sanctum');
 //
-//Route::post('forgot-password', [NewPasswordController::class, 'forgotPassword']);
+
+Route::get('/go',function () {
+    return('you are not an admin');
+});
+

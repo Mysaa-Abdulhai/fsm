@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\EmailVerificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,9 +33,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::post('/email/verification-notification', [EmailVerificationController::class, 'sendVerificationEmail'])->middleware('auth:sanctum');
 Route::get('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify')->middleware('auth:sanctum');
 
-//Route::get('admin_area', function () {
-//    dd('fuck you');
-//})->middleware('isAdmin');
+
 Route::get('/admin',function (Request $request) {
     return('you are admin');
 })->middleware('admin','auth:sanctum');
@@ -44,3 +43,5 @@ Route::get('/go',function () {
     return('you are not an admin');
 });
 
+Route::get('/messages', [ChatsController::class,'fetchMessages'])->middleware('auth:sanctum');
+Route::post('/messages', [ChatsController::class,'sendMessage'])->middleware('auth:sanctum');

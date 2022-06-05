@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('volunteer_campaigns', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->foreignId('volunteer_campaign_request_id');
             $table->foreignId('user_id');
             $table->timestamps();

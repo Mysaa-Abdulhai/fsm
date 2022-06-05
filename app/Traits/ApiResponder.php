@@ -14,11 +14,11 @@ trait ApiResponder
         }
 
         return response()->json
-            ([
-                'status_code' => $statusCode,
-                'message' => $message,
-                'data' => $data
-            ]);
+        ([
+           'status_code' => $statusCode,
+           'message' => $message,
+           'data' => $data
+        ]);
     }
 
     public function errorResponse($message = '', int $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR): JsonResponse

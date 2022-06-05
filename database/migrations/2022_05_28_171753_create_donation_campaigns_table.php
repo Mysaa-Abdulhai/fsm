@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('donation_campaigns', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->foreignId('donation_campaign_request_id');
             $table->timestamps();
         });

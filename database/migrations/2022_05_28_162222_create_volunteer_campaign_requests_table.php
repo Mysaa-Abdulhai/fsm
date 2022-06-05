@@ -17,7 +17,7 @@ return new class extends Migration
     {
         Schema::create('volunteer_campaign_requests',
             function (Blueprint $table) {
-                $table->id();
+                $table->increments('id');
                 $table->foreignId('user_id');
                 $table->foreignId('location_id');
                 $table->foreignId('photo_id');

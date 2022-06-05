@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('photos', function (Blueprint $table) {
-            $table->id('photo_id');
+            $table->increments('photo_id');
             $table->string('src');
             $table->string('mime_type')->nullable();
             $table->string('title')->nullable();

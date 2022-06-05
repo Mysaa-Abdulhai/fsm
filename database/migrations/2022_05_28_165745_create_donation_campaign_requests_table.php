@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('donation_campaign_requests', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id');
+            $table->increments('id');
             $table->string('name');
             $table->string('description');
+            $table->foreignId('user_id');
             $table->foreignId('photo_id');
             $table->foreignId('total value');
             $table->time('maxDate');

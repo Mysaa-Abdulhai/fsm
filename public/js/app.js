@@ -2160,18 +2160,9 @@ module.exports = {
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
-
-var _this = this;
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
-
-Echo["private"]('chat').listen('MessageSent', function (e) {
-  _this.messages.push({
-    message: e.message.message,
-    user: e.user
-  });
-});
 
 /***/ }),
 
@@ -2190,12 +2181,6 @@ window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-window.Echo = new Echo({
-  broadcaster: 'pusher',
-  key: '6c6d43a5537ab2a7081b',
-  cluster: 'eu',
-  encrypted: true
-});
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

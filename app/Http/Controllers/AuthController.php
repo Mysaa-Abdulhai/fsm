@@ -31,21 +31,21 @@ class AuthController extends Controller
 
         $user1 = new User();
         $user1->name = $request->name;
-        $user1->description = $request->description ?? '';
+        
         $user1->email = $request->email;
         $user1->password = bcrypt($request->password);
         $user1->save();
 
-        $user1 = User::create([
+        $user = User::create([
             'name'     => $fields['name'],
             'email'    => $fields['email'],
             'password' => bcrypt($fields['password'])
         ]);
 
-        $token = $user1->createToken('myapptoken')->plainTextToken;
+        $token = $user->createToken('myapptoken')->plainTextToken;
 
         $response = [
-            'user'  => $user1,
+            'user'  => $user,
             'token' => $token
         ];
 

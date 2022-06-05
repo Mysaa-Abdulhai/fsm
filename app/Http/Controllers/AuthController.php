@@ -29,18 +29,11 @@ class AuthController extends Controller
             'password' => 'required|string'
         ]);
 
-        $user1 = new User();
-        $user1->name = $request->name;
-        
-        $user1->email = $request->email;
-        $user1->password = bcrypt($request->password);
-        $user1->save();
-
-        $user = User::create([
-            'name'     => $fields['name'],
-            'email'    => $fields['email'],
-            'password' => bcrypt($fields['password'])
-        ]);
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->save();
 
         $token = $user->createToken('myapptoken')->plainTextToken;
 
@@ -50,8 +43,8 @@ class AuthController extends Controller
         ];
 
         return $this->createdResponse($response,'User Register Successfully');
-        // return response($response, 201);
     }
+
 
     public function login(Request $request) {
 
@@ -65,14 +58,9 @@ class AuthController extends Controller
             return $this->errorResponse($login_data->errors()->getMessages());
         }
 
-        // $fields = $request->validate([
-        //     'email' => 'required|string',
-        //     'password' => 'required|string'
-        // ]);
 
         // Check email
         $user = User::where('email', $request->email)->first();
-
 
         // validate User data
         try {
@@ -82,13 +70,6 @@ class AuthController extends Controller
         } catch (ValidationException $e) {
             return $this->notFoundResponse('Bad creds');
         }
-
-        // // Check password
-        // if(!$user || !Hash::check($fields['password'], $user->password)) {
-        //     return response([
-        //         'message' => 'Bad creds'
-        //     ], 401);
-        // }
 
         $token = $user->createToken('myapptoken')->plainTextToken;
 
@@ -104,8 +85,5 @@ class AuthController extends Controller
         auth()->user()->tokens()->delete();
 
         return $this->noContentResponse('Logged out');
-        // return [
-        //     'message' => 'Logged out'
-        // ];
     }
 }

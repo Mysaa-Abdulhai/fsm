@@ -11,6 +11,11 @@ class leader extends Model
     use HasFactory;
 
     public function volunteer_campaign() {
-        return $this->hasMany(related: volunteer_campaign::class);
+        return $this->hasMany(volunteer_campaign::class );
     }
+
+    public function Compaign_Post() {
+        return $this->hasMany( Compaign_Post::class );
+    }
+    
 }

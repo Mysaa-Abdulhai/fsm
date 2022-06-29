@@ -56,7 +56,7 @@ class AuthController extends Controller
 
         // Validation
         $login_data = Validator::make($request->all(), [
-            'email'    => 'required|string',
+            'name'    => 'required|string',
             'password' => 'required|string'
         ]);
 
@@ -66,7 +66,7 @@ class AuthController extends Controller
 
 
         // Check email
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('name', $request->name)->first();
 
         // validate User data
         try {
@@ -85,6 +85,7 @@ class AuthController extends Controller
         ];
 
         return $this-> okResponse($response,'User logged in Successfully');
+
     }
 
     public function logout(Request $request) {

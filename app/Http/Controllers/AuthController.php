@@ -1,9 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Controllers\EmailVerificationController;
 use App\Models\User;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Traits\ApiResponder;
 use Illuminate\Support\Facades\Validator;
@@ -21,10 +25,9 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails())
-        return $this->errorResponse($validator->getMessageBag());
+            return $this->errorResponse($validator->getMessageBag());
 
         $fields = $request->validate([
-            'name'     => 'required|string',
             'email'    => 'required|string|unique:users,email',
             'password' => 'required|string'
         ]);
@@ -34,18 +37,21 @@ class AuthController extends Controller
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->save();
-
         $token = $user->createToken('myapptoken')->plainTextToken;
-
         $response = [
             'user'  => $user,
-            'token' => $token
+            'token' => $token,
         ];
-
-        return $this->createdResponse($response,'User Register Successfully');
+        $user->sendEmailVerificationNotification();
+        return $this->okResponse($response,'User Register Successfully');
     }
-
-
+    public function deleteAccount(Request $request){
+        if(DB::table('users')->delete($request->user()))
+        {
+            return $this->noContentResponse('deleted');
+        }
+        return $this->noContentResponse('nothing to delete');
+    }
     public function login(Request $request) {
 
         // Validation
@@ -87,3 +93,4 @@ class AuthController extends Controller
         return $this->noContentResponse('Logged out');
     }
 }
+

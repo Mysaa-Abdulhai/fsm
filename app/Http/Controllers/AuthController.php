@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Traits\ApiResponder;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class AuthController extends Controller
 {
@@ -46,11 +47,8 @@ class AuthController extends Controller
         return $this->okResponse($response,'User Register Successfully');
     }
     public function deleteAccount(Request $request){
-        if(DB::table('users')->delete($request->user()))
-        {
-            return $this->noContentResponse('deleted');
-        }
-        return $this->noContentResponse('nothing to delete');
+        DB::table('users')->delete($request->user());
+        return $this->noContentResponse('deleted');
     }
     public function login(Request $request) {
 

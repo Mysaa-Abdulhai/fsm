@@ -1,6 +1,6 @@
 
 <?php
-
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\EmailVerificationController;
@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum','verified')->get('/user', function (Request $re
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::delete('/delete-account', [AuthController::class, 'deleteAccount'])->middleware('auth:sanctum');
+Route::delete('/delete_account', [AuthController::class, 'deleteAccount']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 //Route::post('/email/verification-notification', [EmailVerificationController::class, 'sendVerificationEmail'])->middleware('auth:sanctum');
@@ -47,3 +47,12 @@ Route::get('/go',function () {
 
 Route::get('/messages', [ChatsController::class,'fetchMessages'])->middleware('auth:sanctum');
 Route::post('/messages', [ChatsController::class,'sendMessage'])->middleware('auth:sanctum');
+
+
+
+//user
+//Route::middleware('auth:sanctum','verified')
+
+Route::get('/show_volunteeer_campaign',[UserController::class,'show_volunteeer_campaign']);
+Route::get('/show_details_of_volunteeer_campaign/{id}',[UserController::class,'show_details_of_volunteeer_campaign']);
+Route::get('/volunteeer_campaign_request',[UserController::class,'volunteeer_campaign_request']);

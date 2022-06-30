@@ -47,8 +47,11 @@ class AuthController extends Controller
         return $this->okResponse($response,'User Register Successfully');
     }
     public function deleteAccount(Request $request){
-        DB::table('users')->delete($request->user());
+
+        if(DB::table('users')->delete($request->user()))
         return $this->noContentResponse('deleted');
+        else
+            return $this->noContentResponse('nothing to delete');
     }
     public function login(Request $request) {
 

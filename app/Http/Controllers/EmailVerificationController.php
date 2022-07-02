@@ -12,7 +12,6 @@ use phpDocumentor\Reflection\Types\Null_;
 
 class EmailVerificationController extends Controller
 {
-    use ApiResponder;
 //    public function sendVerificationEmail(Request $request)
 //    {
 //

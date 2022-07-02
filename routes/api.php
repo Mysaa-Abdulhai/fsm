@@ -30,7 +30,7 @@ Route::middleware('auth:sanctum','verified')->get('/user', function (Request $re
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::delete('/delete_account', [AuthController::class, 'deleteAccount']);
+Route::delete('/delete_account', [AuthController::class, 'deleteAccount'])->middleware('auth:sanctum');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 //Route::post('/email/verification-notification', [EmailVerificationController::class, 'sendVerificationEmail'])->middleware('auth:sanctum');

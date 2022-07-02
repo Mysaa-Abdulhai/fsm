@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AcceptPermission;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -65,6 +66,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'admin' => \App\Http\Middleware\Admin::class,
-        'doesNotHaveForm' => \App\Http\Middleware\DoesNotHaveForm::class
+        'doesNotHaveForm' => \App\Http\Middleware\DoesNotHaveForm::class,
+        'acceptPermission' => \App\Http\Middleware\AcceptPermission::class,
     ];
 }

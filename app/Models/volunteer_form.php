@@ -13,14 +13,11 @@ class volunteer_form extends Model
         'description',
         'total_value',
         'maxDate',
+        'image'
     ];
     public function user()
     {
         return $this->belongsTo(user::class);
-    }
-    public function photo()
-    {
-        return $this->belongsTo(photo::class,'photo_id');
     }
     public function location()
     {

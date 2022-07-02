@@ -9,15 +9,12 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Traits\ApiResponder;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use phpDocumentor\Reflection\Types\Boolean;
 
 class AuthController extends Controller
 {
-    use ApiResponder;
-
     public function register(Request $request){
         $validator = Validator::make($request->all(), [
             'name'     => 'required|string|unique:users,name',
@@ -41,7 +38,7 @@ class AuthController extends Controller
         $user->save();
         $token = $user->createToken('myapptoken')->plainTextToken;
         $user->sendEmailVerificationNotification();
-//        return $this->okResponse($response,'User Register Successfully');
+
         return response()->json([
             'message' => 'User successfully registered',
             'user' => $user,
@@ -49,11 +46,14 @@ class AuthController extends Controller
         ], 201);
     }
     public function deleteAccount(Request $request){
-
-        if(DB::table('users')->delete($request->user()))
-            return $this->noContentResponse('deleted');
+        if(User::where('id',auth()->user()->id)->delete())
+            return response()->json([
+                'message' => 'deleted'
+            ]);
         else
-            return $this->noContentResponse('nothing to delete');
+            return response()->json([
+            'message' => 'nothing to delete'
+            ]);
     }
     public function login(Request $request) {
 

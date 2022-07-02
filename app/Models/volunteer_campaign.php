@@ -16,7 +16,7 @@ class volunteer_campaign extends Model
         'volunteer_number',
         'target',
         'maxDate',
-
+        'image'
     ];
     public function volunteer_campaign_request()
     {

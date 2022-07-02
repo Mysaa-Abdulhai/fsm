@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('photos', function (Blueprint $table) {
-            $table->increments('photo_id');
-            $table->string('src');
-            $table->string('mime_type')->nullable();
-            $table->string('title')->nullable();
-            $table->string('alt')->nullable();
-            $table->text('description')->nullable();
+        Schema::create('public_posts', function (Blueprint $table) {
+            $table->id();
             $table->timestamps();
         });
     }
@@ -31,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('photos');
+        Schema::dropIfExists('public_posts');
     }
 };

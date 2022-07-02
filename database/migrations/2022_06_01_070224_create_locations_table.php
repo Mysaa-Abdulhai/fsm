@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('location_id');
             $table->string('country');
             $table->string('city');
-            $table->string('Street');
+            $table->string('street');
             $table->timestamps();
         });
     }

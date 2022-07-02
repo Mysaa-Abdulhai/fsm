@@ -16,6 +16,12 @@ return new class extends Migration
         Schema::create('donation_campaigns', function (Blueprint $table) {
             $table->increments('id');
             $table->foreignId('donation_campaign_request_id');
+            $table->string('name');
+            $table->string('description');
+            $table->foreignId('user_id');
+            $table->foreignId('photo_id');
+            $table->foreignId('total value');
+            $table->time('maxDate');
             $table->timestamps();
         });
     }

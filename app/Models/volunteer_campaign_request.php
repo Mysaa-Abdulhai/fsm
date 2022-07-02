@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class volunteer_campaign_request extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'details',
+        'type',
+        'volunteer_number',
+        'target',
+        'maxDate',
+    ];
     public function user()
     {
         return $this->belongsTo(user::class,'user_id');

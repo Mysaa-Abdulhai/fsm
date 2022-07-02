@@ -9,6 +9,15 @@ use App\Models\leader;
 class volunteer_campaign extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'name',
+        'details',
+        'type',
+        'volunteer_number',
+        'target',
+        'maxDate',
+
+    ];
     public function volunteer_campaign_request()
     {
         return $this->belongsTo(related: volunteer_campaign_request::class);

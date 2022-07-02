@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class volunteer_form extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'name',
+        'description',
+        'total_value',
+        'maxDate',
+    ];
     public function user()
     {
         return $this->belongsTo(user::class);

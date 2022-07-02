@@ -30,12 +30,17 @@ class EmailVerificationController extends Controller
     public function verify(EmailVerificationRequest $request)
     {
         if ($request->user()->hasVerifiedEmail()) {
-            return $this->noContentResponse('Email has been verified');
+
+            return response()->json([
+                'message' => 'Email has been verified',
+            ],400);
         }
         if ($request->user()->markEmailAsVerified()) {
             event(new Verified($request->user()));
         }
-        return $this->noContentResponse('Email already verified');
+        return response()->json([
+            'message' => 'Email verified',
+        ], 201);
 
         $request->user()->email_verified_at=Carbon::now()->toDateTimeString();
 

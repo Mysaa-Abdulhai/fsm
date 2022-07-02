@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('description');
             $table->foreignId('user_id');
             $table->foreignId('photo_id');
-            $table->foreignId('total value');
+            $table->foreignId('total_value');
             $table->time('maxDate');
             $table->timestamps();
         });

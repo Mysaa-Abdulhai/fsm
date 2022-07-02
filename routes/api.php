@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Middleware\DoesNotHaveForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,8 +42,12 @@ Route::get('/admin',function (Request $request) {
 })->middleware('admin','auth:sanctum');
 //
 
-Route::get('/go',function () {
+Route::get('/notAdmin',function () {
     return('you are not an admin');
+});
+
+Route::get('/haveForm',function () {
+    return('you have a form');
 });
 
 Route::get('/messages', [ChatsController::class,'fetchMessages'])->middleware('auth:sanctum');
@@ -51,8 +56,20 @@ Route::post('/messages', [ChatsController::class,'sendMessage'])->middleware('au
 
 
 //user
-//Route::middleware('auth:sanctum','verified')
+Route::group(['middleware'=>['auth:sanctum','verified']],function(){
+    Route::get('/show_volunteer_campaign',[UserController::class,'show_volunteer_campaign']);
 
-Route::get('/show_volunteeer_campaign',[UserController::class,'show_volunteeer_campaign']);
-Route::get('/show_details_of_volunteeer_campaign/{id}',[UserController::class,'show_details_of_volunteeer_campaign']);
-Route::get('/volunteeer_campaign_request',[UserController::class,'volunteeer_campaign_request']);
+    Route::get('/show_details_of_volunteer_campaign',[UserController::class,'show_details_of_volunteer_campaign']);
+
+    Route::post('/volunteer_campaign_request',[UserController::class,'volunteer_campaign_request']);
+
+    Route::post('/donation_campaign_request',[UserController::class,'donation_campaign_request']);
+
+    Route::post('/volunteer_form',[UserController::class,'volunteer_form'])->middleware('doesNotHaveForm');
+
+    Route::get('/show_public_posts',[UserController::class,'show_public_posts']);
+
+    Route::get('/show_posts_of_campaign',[UserController::class,'show_posts_of_campaign']);
+});
+
+

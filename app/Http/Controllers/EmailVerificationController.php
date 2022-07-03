@@ -36,12 +36,12 @@ class EmailVerificationController extends Controller
         }
         if ($request->user()->markEmailAsVerified()) {
             event(new Verified($request->user()));
+
         }
+        User::where('id','=',auth()->user()->id)->update(['is_verified'=>true]);
         return response()->json([
             'message' => 'Email verified',
         ], 201);
-
-        $request->user()->email_verified_at=Carbon::now()->toDateTimeString();
 
     }
 }

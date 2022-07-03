@@ -18,7 +18,7 @@ class AuthController extends Controller
     public function register(Request $request){
         $validator = Validator::make($request->all(), [
             'name'     => 'required|string|unique:users,name',
-            'email'    => 'required|string|unique:users,email',
+            'email'    => 'required|string|email|unique:users,email',
             'password' => 'required|string'
         ]);
 
@@ -27,7 +27,7 @@ class AuthController extends Controller
 //            return $this->errorResponse($validator->getMessageBag());
 
         $fields = $request->validate([
-            'email'    => 'required|string|unique:users,email',
+            'email'    => 'required|string|email|unique:users,email',
             'password' => 'required|string'
         ]);
 
@@ -53,7 +53,7 @@ class AuthController extends Controller
         else
             return response()->json([
             'message' => 'nothing to delete'
-            ]);
+            ],402);
     }
     public function login(Request $request) {
 
@@ -76,7 +76,13 @@ class AuthController extends Controller
 
         // Check email
         $user = User::where('name', $request->name)->first();
+        if($user->is_verified==false)
+        {
+            return response()->json([
+                'message' => 'your email isn\'t verified',
+            ],403);
 
+        }
         // validate User data
         try {
             if (!auth()->attempt($login_data->validated())) {

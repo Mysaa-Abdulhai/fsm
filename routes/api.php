@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 //Route::group(['middleware'=>['auth:sanctum']], function () {
 //
 //});
-Route::middleware('auth:sanctum','verified')->get('/user', function (Request $request) {
+Route::middleware(['auth:sanctum','verified'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
@@ -34,7 +34,7 @@ Route::delete('/delete_account', [AuthController::class, 'deleteAccount'])->midd
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 //Route::post('/email/verification-notification', [EmailVerificationController::class, 'sendVerificationEmail'])->middleware('auth:sanctum');
-Route::get('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify')->middleware('auth:sanctum');
+Route::get('/verify_email/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify')->middleware('auth:sanctum');
 
 
 Route::get('/admin',function (Request $request) {

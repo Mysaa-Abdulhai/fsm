@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('leaders', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }

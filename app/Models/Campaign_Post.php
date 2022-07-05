@@ -13,17 +13,11 @@ class Compaign_Post extends Model
         'title',
         'body',
         'photo',
-        //'slug'
   ];
 
-    public function campaign_volunteer()
+    public function volunteer_campaign()
     {
-        return $this->belongsTo(campaign_volunteer::class );
-    }
-    
-    public function learder()
-    {
-        return $this->belongsTo(leader::class );
+        return $this->belongsTo(campaign_volunteer::class,'volunteer_campaign_id');
     }
 
 }

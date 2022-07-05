@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 use App\Http\Controllers\EmailVerificationController;
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
+use App\Models\user_role;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -64,13 +67,11 @@ class AuthController extends Controller
         ]);
 
         if ($login_data->fails()) {
+//            return $this->errorResponse($login_data->errors()->getMessages());
+            return response()->json([
+                'message' => '$login_data->errors()->getMessages()',
 
-            return $this->errorResponse($login_data->errors()->getMessages());
-//            return response()->json([
-////                'message' => 'UInvalid Credentials',
-//                'user'  => $user,
-//                'token' => $token,
-//            ],400);
+            ],400);
         }
 
 
@@ -98,11 +99,19 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken('myapptoken')->plainTextToken;
-
+        $user_role=user_role::select('role_id')->where('user_id','=',auth()->user()->id)->get();
+        $user_role=$user_role->toArray();
+        $arr=[];
+        foreach ($user_role as $x)
+        {
+            $per=Role::where('id','=',$x)->first();
+            array_push($arr,$per->Permissions()->get());
+        }
         return response()->json([
             'message' => 'User logged in Successfully',
             'user'  => $user,
             'token' => $token,
+            'per'=> $arr
         ],200);
 
     }

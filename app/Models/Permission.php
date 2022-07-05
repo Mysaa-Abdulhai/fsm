@@ -8,7 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Permission extends Model
 {
     use HasFactory;
-
+    protected $fillable = [
+        'name',
+        'role_id'
+    ];
+    protected $hidden = [
+        'pivot'
+    ];
     public function roles(){
         return $this->belongsto(Role::class,'role_id');
     }

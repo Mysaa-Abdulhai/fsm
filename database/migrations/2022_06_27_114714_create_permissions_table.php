@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->foreignId('role_id');
-            $table->string('slug')->unique();
+//            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

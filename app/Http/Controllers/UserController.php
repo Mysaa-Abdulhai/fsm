@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\public_post;
 use App\Models\volunteer_form;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -133,7 +134,10 @@ class UserController extends Controller
     }
 
     public function show_public_posts(Request $request){
-
+        $posts=public_post::all();
+        return response()->json([
+            'post'  => $posts,
+        ],200);
     }
 
     public function show_posts_of_campaign(Request $request, $id){

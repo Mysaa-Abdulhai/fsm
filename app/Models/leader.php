@@ -10,12 +10,11 @@ class leader extends Model
 {
     use HasFactory;
 
-    public function volunteer_campaign() {
-        return $this->hasMany(volunteer_campaign::class );
+    public function user() {
+        return $this->belongsTo(volunteer_campaign::class,'user_id');
     }
 
-    public function Compaign_Post() {
-        return $this->hasMany( Compaign_Post::class );
+    public function volunteer_campaigns() {
+        return $this->hasMany(volunteer_campaign::class);
     }
-    
 }

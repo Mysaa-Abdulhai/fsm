@@ -55,21 +55,30 @@ Route::post('/messages', [ChatsController::class,'sendMessage'])->middleware('au
 
 
 
-//user
-Route::group(['middleware'=>['auth:sanctum','verified']],function(){
-    Route::get('/show_volunteer_campaign',[UserController::class,'show_volunteer_campaign']);
+Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission']],function(){
+    //user
+    Route::get('show_volunteer_campaign',[UserController::class,'show_volunteer_campaign'])->name('show_volunteer_campaign');
 
-    Route::get('/show_details_of_volunteer_campaign',[UserController::class,'show_details_of_volunteer_campaign']);
+    Route::get('show_details_of_volunteer_campaign',[UserController::class,'show_details_of_volunteer_campaign'])->name('show_details_of_volunteer_campaign');
 
-    Route::post('/volunteer_campaign_request',[UserController::class,'volunteer_campaign_request']);
+    Route::post('volunteer_campaign_request',[UserController::class,'volunteer_campaign_request'])->name('volunteer_campaign_request');
 
-    Route::post('/donation_campaign_request',[UserController::class,'donation_campaign_request']);
+    Route::post('donation_campaign_request',[UserController::class,'donation_campaign_request'])->name('donation_campaign_request');
 
-    Route::post('/volunteer_form',[UserController::class,'volunteer_form'])->middleware('doesNotHaveForm');
+    Route::post('volunteer_form',[UserController::class,'volunteer_form'])->name('volunteer_form')->middleware('doesNotHaveForm');
 
-    Route::get('/show_public_posts',[UserController::class,'show_public_posts']);
+    Route::get('show_public_posts',[UserController::class,'show_public_posts'])->name('show_public_posts');
 
-    Route::get('/show_posts_of_campaign',[UserController::class,'show_posts_of_campaign']);
+    Route::get('show_posts_of_campaign',[UserController::class,'show_posts_of_campaign'])->name('show_posts_of_campaign');
+
+
+    //admin
+
+
+
+
+    //leader
+
 });
 
 

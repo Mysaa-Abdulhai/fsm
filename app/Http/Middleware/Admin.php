@@ -19,6 +19,6 @@ class Admin
         if (Auth::user()->isAdmin == true){
             return $next($request);
         }
-        return redirect('/api/go');
+        return redirect('/api/notAdmin');
     }
 }

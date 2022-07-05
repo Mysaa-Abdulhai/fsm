@@ -18,9 +18,5 @@ class campaign_volunteer extends Model
         return $this->belongsTo(Photo::class,'volunteer_campaign_id');
     }
 
-    public function campaign_posts()
-    {
-        return $this->hasMany(Compaign_Post::class );
-    }
 
 }

@@ -33,22 +33,8 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::delete('/delete_account', [AuthController::class, 'deleteAccount'])->middleware('auth:sanctum');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-//Route::post('/email/verification-notification', [EmailVerificationController::class, 'sendVerificationEmail'])->middleware('auth:sanctum');
+
 Route::get('/verify_email/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify')->middleware('auth:sanctum');
-
-
-Route::get('/admin',function (Request $request) {
-    return('you are admin');
-})->middleware('admin','auth:sanctum');
-//
-
-Route::get('/notAdmin',function () {
-    return('you are not an admin');
-});
-
-Route::get('/haveForm',function () {
-    return('you have a form');
-});
 
 Route::get('/messages', [ChatsController::class,'fetchMessages'])->middleware('auth:sanctum');
 Route::post('/messages', [ChatsController::class,'sendMessage'])->middleware('auth:sanctum');

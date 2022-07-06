@@ -20,7 +20,7 @@ return new class extends Migration
                 $table->id();
                 $table->foreignId('user_id');
                 $table->foreignId('location_id');
-                $table->binary('image');
+                $table->text('image');
                 $table->string('details');
                 $table->string('type');
                 $table->integer('volunteer_number');

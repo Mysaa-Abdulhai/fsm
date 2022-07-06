@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 use App\Models\public_post;
 use App\Models\volunteer_form;
+use App\Models\Campaign_Post;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Models\volunteer_campaign_request;
 use App\Models\donation_campaign_request;
 use Illuminate\Http\Request;
-use App\Models\Campaign_Post;
 use App\Models\volunteer_campaign;
 use App\Models\location;
 class UserController extends Controller
@@ -48,6 +48,15 @@ class UserController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
 
 
+        //pro
+        $image = $request->file('image');
+        $image_name = time() . '.' . $image->getClientOriginalExtension();
+        $image->storeAs('public/images', $image_name);
+        $image_url = '/storage/images/' . $image_name;
+
+
+        $image=file_get_contents($request->image);
+
         $location=new location();
         $location->country=$request->country;
         $location->city=$request->city;
@@ -60,7 +69,7 @@ class UserController extends Controller
         $campaign_request->volunteer_number=$request->volunteer_number;
         $campaign_request->target=$request->target;
         $campaign_request->maxDate=$request->maxDate;
-        $campaign_request->image=$request->image;
+        $campaign_request->image=$request->$image_url;
         $campaign_request->user_id=auth()->user()->id;
         $campaign_request->location_id=$location->id;
         return response()->json([
@@ -140,14 +149,15 @@ class UserController extends Controller
         ],200);
     }
 
-    public function show_posts_of_campaign(Request $request, $id){
+    public function show_posts_of_campaign(Request $request){
         $validator=Validator::make($request->all(),[
             'id' => 'required|int',
         ]);
 
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
-        $posts=Campaign_Post()->where('id',$request->id)->get();
+        $posts=Campaign_Post::all()->where('volunteer_campaign_id',$request->id);
+
         return response()->json([
             'post' =>$posts,
             'message' => 'all posts for campaign number'

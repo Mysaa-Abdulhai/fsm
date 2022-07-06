@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('study');
             $table->string('skills');
             $table->integer('phoneNumber');
-            $table->binary('image');
+            $table->text('image');
             $table->timestamps();
         });
     }

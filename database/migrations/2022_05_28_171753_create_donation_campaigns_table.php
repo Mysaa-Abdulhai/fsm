@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->foreignId('user_id');
-            $table->binary('image');
-            $table->foreignId('total value');
-            $table->time('maxDate');
+            $table->text('image');
+            $table->integer('total value');
+            $table->date('maxDate');
             $table->timestamps();
         });
     }

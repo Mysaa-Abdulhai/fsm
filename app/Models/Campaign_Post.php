@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Compaign_Post extends Model
+class Campaign_Post extends Model
 {
     use HasFactory;
 
@@ -13,11 +13,10 @@ class Compaign_Post extends Model
         'title',
         'body',
         'photo',
-  ];
+    ];
 
     public function volunteer_campaign()
     {
-        return $this->belongsTo(campaign_volunteer::class,'volunteer_campaign_id');
+        return $this->belongsTo(campaign_volunteer::class, 'volunteer_campaign_id');
     }
-
 }

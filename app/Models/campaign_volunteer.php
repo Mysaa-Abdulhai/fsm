@@ -5,9 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class campaign_volunteer extends Model
+class Campaign_volunteer extends Model
 {
     use HasFactory;
+
+    protected $fillable =[
+        'name' ,
+        'type',
+        'details',
+        'target',
+        'maxDate',
+        'location_id',
+        'volunteer_number'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class,'user_id');

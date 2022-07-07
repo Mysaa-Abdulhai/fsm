@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('donation_campaign_requests', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('description');
+            $table->longText('description');
             $table->foreignId('user_id');
             $table->foreignId('photo_id');
             $table->foreignId('total value');
-            $table->time('maxDate');
+            $table->time('maxDate')->formate('y-m-d');
             $table->timestamps();
         });
     }

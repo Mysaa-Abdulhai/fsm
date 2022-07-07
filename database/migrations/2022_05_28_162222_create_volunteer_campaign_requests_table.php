@@ -17,15 +17,16 @@ return new class extends Migration
     {
         Schema::create('volunteer_campaign_requests',
             function (Blueprint $table) {
-                $table->increments('id');
-                $table->foreignId('user_id');
-                $table->foreignId('location_id');
-                $table->foreignId('photo_id');
-                $table->string('details');
+                $table->id();
+                $table->foreignId('user_id');   
+                $table->string('name');
                 $table->string('type');
-                $table->integer('volunteer number');
+                $table->string('details');
                 $table->string('target');
                 $table->time('maxDate');
+                $table->foreignId('location_id');
+                $table->foreignId('photo_id');
+                $table->integer('volunteer_number');
                 $table->timestamps();
             });
     }

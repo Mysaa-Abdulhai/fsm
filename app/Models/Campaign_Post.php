@@ -13,7 +13,6 @@ class Compaign_Post extends Model
         'title',
         'body',
         'photo',
-        //'slug'
   ];
 
     public function campaign_volunteer()

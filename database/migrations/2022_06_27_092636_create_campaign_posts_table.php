@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('compaign_posts', function (Blueprint $table) {
+        Schema::create('campaign_posts', function (Blueprint $table) {
             $table->increments('id');
             $table->foreignId('user_id');  //leader
             $table->string('title');

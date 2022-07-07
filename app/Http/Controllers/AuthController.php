@@ -19,6 +19,7 @@ class AuthController extends Controller
     use ApiResponder;
 
     public function register(Request $request){
+
         $validator = Validator::make($request->all(), [
             'name'     => 'required|string',
             'email'    => 'required|string|unique:users,email',
@@ -26,7 +27,8 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails())
-            return $this->errorResponse($validator->getMessageBag());
+        return response()->json(
+            $validator->errors()->toJson(), 400);
 
         $fields = $request->validate([
             'email'    => 'required|string|unique:users,email',
@@ -34,61 +36,79 @@ class AuthController extends Controller
         ]);
 
         $user = new User();
-        $user->name = $request->name;
+        $user->name  = $request->name;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->save();
         $token = $user->createToken('myapptoken')->plainTextToken;
-        $response = [
-            'user'  => $user,
-            'token' => $token,
-        ];
-        $user->sendEmailVerificationNotification();
-        return $this->okResponse($response,'User Register Successfully');
+        //$user->sendEmailVerificationNotification();
+
+
+        return response()->json([
+            'message' => 'User successfully registered',
+            'user' => $user,
+            'token' => $token
+        ], 201);
+
     }
+    
+
     public function deleteAccount(Request $request){
 
         if(DB::table('users')->delete($request->user()))
-        return $this->noContentResponse('deleted');
+            return $this->noContentResponse('deleted');
         else
             return $this->noContentResponse('nothing to delete');
     }
-    public function login(Request $request) {
+    
 
+
+    public function login(Request $request) {
+        
         // Validation
         $login_data = Validator::make($request->all(), [
-            'name'    => 'required|string',
+            'name'     => 'required|string',
             'password' => 'required|string'
         ]);
 
         if ($login_data->fails()) {
-            return $this->errorResponse($login_data->errors()->getMessages());
+            return response()->json([
+                'message' => '$login_data->errors()->getMessages()',
+            ],400);
         }
-
-
+            
         // Check email
         $user = User::where('name', $request->name)->first();
+        // if($user->is_verified==false){
+        //     return response()->json([
+        //         'message' => 'your email isn\'t verified',
+        //     ],403);
+        // }
 
-        // validate User data
-        try {
-            if (!auth()->attempt($login_data->validated())) {
-                return $this->forbiddenResponse('Invalid Credentials');
-            }
-        } catch (ValidationException $e) {
-            return $this->notFoundResponse('Bad creds');
-        }
+        // try {
+        //     if (!auth()->attempt($login_data->validated())) {
+        //         return response()->json([
+        //             'message' => 'Invalid Credentials',
+        //         ],403);
+
+        //     }
+        // } catch (ValidationException $e) {
+        //     return response()->json([
+        //         'message' => 'Bad creds',
+        //     ],403);
+        // }
+
 
         $token = $user->createToken('myapptoken')->plainTextToken;
 
-        $response = [
+        return response()->json([
+            'message' => 'User logged in Successfully',
             'user'  => $user,
             'token' => $token
-        ];
-
-        return $this-> okResponse($response,'User logged in Successfully');
-
+        ]);
     }
 
+    
     public function logout(Request $request) {
         auth()->user()->tokens()->delete();
 

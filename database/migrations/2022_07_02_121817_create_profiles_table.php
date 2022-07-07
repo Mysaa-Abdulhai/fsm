@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('permission_user', function (Blueprint $table) {
-            $table->primary('permission_id','user_id');
-            $table->foreignId(column:'user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreignId(column:'permission_id')->references('id')->on('permission')->onDelete('cascade');
+        Schema::create('profiles', function (Blueprint $table) {
+            $table->id();
+            $table->string("name");
+            $table->string("gender");
+            $table->foreignId('photo_id')->nullable();
+            $table->integer('birth_date')->date_format('Y-m-d');
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permission_user');
+        Schema::dropIfExists('profiles');
     }
 };

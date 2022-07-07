@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('archived_compaigns', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name_campaign');
             $table->foreignId('volunteer_campaign_request_id');
             $table->foreignId('user_id');
             $table->timestamps();

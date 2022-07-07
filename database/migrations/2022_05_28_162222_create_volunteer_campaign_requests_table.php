@@ -18,6 +18,7 @@ return new class extends Migration
         Schema::create('volunteer_campaign_requests',
             function (Blueprint $table) {
                 $table->id();
+<<<<<<< HEAD
                 $table->foreignId('user_id');   
                 $table->string('name');
                 $table->string('type');
@@ -27,6 +28,16 @@ return new class extends Migration
                 $table->foreignId('location_id');
                 $table->foreignId('photo_id');
                 $table->integer('volunteer_number');
+=======
+                $table->foreignId('user_id');
+                $table->foreignId('location_id');
+                $table->text('image');
+                $table->string('details');
+                $table->string('type');
+                $table->integer('volunteer_number');
+                $table->string('target');
+                $table->date('maxDate');
+>>>>>>> 57f92eaa12f7d8ceabd86701bf628f057b4c0de8
                 $table->timestamps();
             });
     }

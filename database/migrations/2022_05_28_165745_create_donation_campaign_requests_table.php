@@ -18,9 +18,15 @@ return new class extends Migration
             $table->string('name');
             $table->longText('description');
             $table->foreignId('user_id');
+<<<<<<< HEAD
             $table->foreignId('photo_id');
             $table->foreignId('total value');
             $table->time('maxDate')->formate('y-m-d');
+=======
+            $table->text('image');
+            $table->integer('total_value');
+            $table->date('maxDate');
+>>>>>>> 57f92eaa12f7d8ceabd86701bf628f057b4c0de8
             $table->timestamps();
         });
     }

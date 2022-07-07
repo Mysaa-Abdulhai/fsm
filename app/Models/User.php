@@ -21,6 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'isAdmin',
+        'is_verified'
     ];
 
     /**
@@ -60,6 +61,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function messages()
     {
         return $this->hasMany(Message::class);
+    }
+    public function user_role()
+    {
+        return $this->hasMany(user_role::class);
+    }
+    public function leader()
+    {
+        return $this->hasOne(leader::class);
     }
 }
 

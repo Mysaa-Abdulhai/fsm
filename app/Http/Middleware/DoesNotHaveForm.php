@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Http\Middleware;
+
+use App\Models\volunteer_form;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-class Admin
+
+class DoesNotHaveForm
 {
     /**
      * Handle an incoming request.
@@ -16,11 +18,14 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->isAdmin !== true){
+        $index=auth::user()->id;
+        if(volunteer_form::where('user_id',$index)==false)
+        {
             return $next($request);
         }
-        return response()->json([
-            'message' => 'you are not an admin',
-        ],403);
+        else
+            return response()->json([
+                'message' => 'you have a form',
+            ],403);
     }
 }

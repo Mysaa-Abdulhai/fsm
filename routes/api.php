@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Middleware\DoesNotHaveForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+<<<<<<< HEAD
 Route::group(['middleware'=>['auth:sanctum']], function () {
 
     Route::post('test', function() {
@@ -27,6 +29,12 @@ Route::group(['middleware'=>['auth:sanctum']], function () {
 });
 
 Route::middleware('auth:sanctum','verified')->get('/user', function (Request $request) {
+=======
+//Route::group(['middleware'=>['auth:sanctum']], function () {
+//
+//});
+Route::middleware(['auth:sanctum','verified'])->get('/user', function (Request $request) {
+>>>>>>> 57f92eaa12f7d8ceabd86701bf628f057b4c0de8
     return $request->user();
 });
 
@@ -35,30 +43,45 @@ Route::middleware('auth:sanctum','verified')->get('/user', function (Request $re
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::delete('/delete_account', [AuthController::class, 'deleteAccount']);
+Route::delete('/delete_account', [AuthController::class, 'deleteAccount'])->middleware('auth:sanctum');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-//Route::post('/email/verification-notification', [EmailVerificationController::class, 'sendVerificationEmail'])->middleware('auth:sanctum');
-Route::get('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify')->middleware('auth:sanctum');
 
-
-Route::get('/admin',function (Request $request) {
-    return('you are admin');
-})->middleware('admin','auth:sanctum');
-//
-
-Route::get('/go',function () {
-    return('you are not an admin');
-});
+Route::get('/verify_email/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify')->middleware('auth:sanctum');
 
 Route::get('/messages', [ChatsController::class,'fetchMessages'])->middleware('auth:sanctum');
 Route::post('/messages', [ChatsController::class,'sendMessage'])->middleware('auth:sanctum');
 
 
 
-//user
-//Route::middleware('auth:sanctum','verified')
+Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission']],function(){
+    //user
+    Route::get('show_volunteer_campaign',[UserController::class,'show_volunteer_campaign'])->name('show_volunteer_campaign');
 
+    Route::get('show_details_of_volunteer_campaign',[UserController::class,'show_details_of_volunteer_campaign'])->name('show_details_of_volunteer_campaign');
+
+    Route::post('volunteer_campaign_request',[UserController::class,'volunteer_campaign_request'])->name('volunteer_campaign_request');
+
+    Route::post('donation_campaign_request',[UserController::class,'donation_campaign_request'])->name('donation_campaign_request');
+
+    Route::post('volunteer_form',[UserController::class,'volunteer_form'])->name('volunteer_form')->middleware('doesNotHaveForm');
+
+    Route::get('show_public_posts',[UserController::class,'show_public_posts'])->name('show_public_posts');
+
+    Route::get('show_posts_of_campaign',[UserController::class,'show_posts_of_campaign'])->name('show_posts_of_campaign');
+
+
+    //admin
+
+
+
+
+    //leader
+
+});
+
+
+<<<<<<< HEAD
 Route::get('/show_volunteeer_campaign',[UserController::class,'show_volunteeer_campaign']);
 Route::get('/show_details_of_volunteeer_campaign/{id}',[UserController::class,'show_details_of_volunteeer_campaign']);
 Route::get('/volunteeer_campaign_request',[UserController::class,'volunteeer_campaign_request']);
@@ -76,3 +99,5 @@ Route::group(['middleware'=>['auth:sanctum','verified']],function(){
     //Route::post('/update_volunteer_vampaign', [AdminController::class,'update_volunteer_vampaign'])->middleware('auth:sanctum');
 
 });
+=======
+>>>>>>> 57f92eaa12f7d8ceabd86701bf628f057b4c0de8

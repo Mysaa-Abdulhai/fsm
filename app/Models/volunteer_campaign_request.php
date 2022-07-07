@@ -8,6 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class volunteer_campaign_request extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'details',
+        'type',
+        'volunteer_number',
+        'target',
+        'maxDate',
+        'image',
+    ];
     public function user()
     {
         return $this->belongsTo(user::class,'user_id');
@@ -15,10 +23,6 @@ class volunteer_campaign_request extends Model
     public function volunteer_campaign()
     {
         return $this->hasOne(volunteer_campaign::class);
-    }
-    public function photo()
-    {
-        return $this->belongsTo(Photo::class,'photo_id');
     }
     public function location()
     {

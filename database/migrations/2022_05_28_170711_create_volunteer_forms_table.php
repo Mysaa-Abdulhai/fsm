@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('volunteer_forms', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->foreignId('user_id');
             $table->string('name');
             $table->integer('age');
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('study');
             $table->string('skills');
             $table->integer('phoneNumber');
-            $table->foreignId('photo_id');
+            $table->text('image');
             $table->timestamps();
         });
     }

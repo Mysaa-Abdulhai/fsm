@@ -13,24 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('campaign_posts', function (Blueprint $table) {
-            $table->increments('id');
-            $table->foreignId('user_id');  //leader
+        Schema::create('campaign__posts', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('volunteer_campaign_id');
             $table->string('title');
             $table->longText('body');
-            $table->string('photo')->nullable();
+            $table->text('photo');
             $table->string('slug');
             $table->timestamps();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('compaign_posts');
+        Schema::dropIfExists('campaign_posts');
     }
 };

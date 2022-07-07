@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use App\Models\user_role;
 use App\Traits\ApiResponder;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -12,7 +13,6 @@ use phpDocumentor\Reflection\Types\Null_;
 
 class EmailVerificationController extends Controller
 {
-    use ApiResponder;
 //    public function sendVerificationEmail(Request $request)
 //    {
 //
@@ -30,14 +30,25 @@ class EmailVerificationController extends Controller
     public function verify(EmailVerificationRequest $request)
     {
         if ($request->user()->hasVerifiedEmail()) {
-            return $this->noContentResponse('Email has been verified');
+
+            return response()->json([
+                'message' => 'Email has been verified',
+            ],400);
         }
         if ($request->user()->markEmailAsVerified()) {
             event(new Verified($request->user()));
-        }
-        return $this->noContentResponse('Email already verified');
 
-        $request->user()->email_verified_at=Carbon::now()->toDateTimeString();
+        }
+        User::where('id','=',auth()->user()->id)->update(['is_verified'=>true]);
+        $user_role=
+            [
+                'user_id'=> auth()->user()->id,
+                'role_id'=> 2
+            ];
+        user_role::insert($user_role);
+        return response()->json([
+            'message' => 'Email verified',
+        ], 201);
 
     }
 }

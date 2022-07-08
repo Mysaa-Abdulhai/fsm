@@ -53,7 +53,7 @@ Route::get('/haveForm',function () {
 Route::get('/messages', [ChatsController::class,'fetchMessages'])->middleware('auth:sanctum');
 Route::post('/messages', [ChatsController::class,'sendMessage'])->middleware('auth:sanctum');
 
-
+ 
 
 Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission']],function(){
     //user

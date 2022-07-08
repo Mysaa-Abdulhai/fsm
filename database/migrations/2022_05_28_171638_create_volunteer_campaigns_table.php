@@ -14,17 +14,17 @@ return new class extends Migration
     public function up()
     {
         Schema::create('volunteer_campaigns', function (Blueprint $table) {
+
             $table->id();
             $table->foreignId('volunteer_campaign_request_id');
             $table->foreignId('leader_id');
-//            $table->foreignId('user_id');
             $table->foreignId('location_id');
-            $table->binary('image');
+            $table->text('image');
             $table->string('details');
             $table->string('type');
             $table->integer('volunteer number');
             $table->string('target');
-            $table->time('maxDate');
+            $table->date('maxDate');
             $table->timestamps();
         });
     }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\donation_campaign_request;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,14 +15,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('donation_campaigns', function (Blueprint $table) {
-            $table->increments('id');
-            $table->foreignId('donation_campaign_request_id');
+
+            $table->id();
+            $table->foreignId('donation_campaign_request_id')->nullable();
             $table->string('name');
             $table->string('description');
             $table->foreignId('user_id');
-            $table->binary('image');
-            $table->foreignId('total value');
-            $table->time('maxDate');
+            $table->text('image');
+            $table->integer('total value');
+            $table->date('maxDate');
             $table->timestamps();
         });
     }

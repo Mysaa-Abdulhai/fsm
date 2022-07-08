@@ -14,6 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('archived_compaigns', function (Blueprint $table) {
+
+
+            $table->string('name_campaign');
             $table->id();
             $table->foreignId('volunteer_campaign_request_id');
             $table->foreignId('user_id');

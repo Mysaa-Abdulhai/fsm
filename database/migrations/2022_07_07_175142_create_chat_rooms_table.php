@@ -13,17 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('volunteer_forms', function (Blueprint $table) {
+        Schema::create('chat_rooms', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
+            $table->foreignId('volunteer_campaign_id');
             $table->string('name');
-            $table->integer('age');
-            $table->string('nationality');
-            $table->foreignId('location_id');
-            $table->string('study');
-            $table->string('skills');
-            $table->integer('phoneNumber');
-            $table->text('image');
             $table->timestamps();
         });
     }
@@ -35,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('volunteer_forms');
+        Schema::dropIfExists('chat_rooms');
     }
 };

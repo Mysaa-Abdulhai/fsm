@@ -19,6 +19,7 @@ use phpDocumentor\Reflection\Types\Boolean;
 class AuthController extends Controller
 {
     public function register(Request $request){
+
         $validator = Validator::make($request->all(), [
             'name'     => 'required|string|unique:users,name',
             'email'    => 'required|string|email|unique:users,email',
@@ -26,8 +27,13 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails())
+<<<<<<< HEAD
+        return response()->json(
+            $validator->errors()->toJson(), 400);
+=======
             return response()->json($validator->errors()->toJson(), 400);
 //            return $this->errorResponse($validator->getMessageBag());
+>>>>>>> 57f92eaa12f7d8ceabd86701bf628f057b4c0de8
 
         $fields = $request->validate([
             'email'    => 'required|string|email|unique:users,email',
@@ -35,48 +41,101 @@ class AuthController extends Controller
         ]);
 
         $user = new User();
-        $user->name = $request->name;
+        $user->name  = $request->name;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->save();
         $token = $user->createToken('myapptoken')->plainTextToken;
+<<<<<<< HEAD
+        //$user->sendEmailVerificationNotification();
+
+=======
         $user->sendEmailVerificationNotification();
+>>>>>>> 57f92eaa12f7d8ceabd86701bf628f057b4c0de8
 
         return response()->json([
             'message' => 'User successfully registered',
             'user' => $user,
             'token' => $token
         ], 201);
+<<<<<<< HEAD
+
+=======
+>>>>>>> 57f92eaa12f7d8ceabd86701bf628f057b4c0de8
     }
+    
+
     public function deleteAccount(Request $request){
+<<<<<<< HEAD
+
+        if(DB::table('users')->delete($request->user()))
+            return $this->noContentResponse('deleted');
+=======
         if(User::where('id',auth()->user()->id)->delete())
             return response()->json([
                 'message' => 'deleted'
             ]);
+>>>>>>> 57f92eaa12f7d8ceabd86701bf628f057b4c0de8
         else
             return response()->json([
             'message' => 'nothing to delete'
             ],402);
     }
-    public function login(Request $request) {
+    
 
+
+    public function login(Request $request) {
+        
         // Validation
         $login_data = Validator::make($request->all(), [
-            'name'    => 'required|string',
+            'name'     => 'required|string',
             'password' => 'required|string'
         ]);
 
         if ($login_data->fails()) {
+<<<<<<< HEAD
+            return response()->json([
+                'message' => '$login_data->errors()->getMessages()',
+=======
 //            return $this->errorResponse($login_data->errors()->getMessages());
             return response()->json([
                 'message' => '$login_data->errors()->getMessages()',
 
+>>>>>>> 57f92eaa12f7d8ceabd86701bf628f057b4c0de8
             ],400);
         }
-
-
+            
         // Check email
         $user = User::where('name', $request->name)->first();
+<<<<<<< HEAD
+        // if($user->is_verified==false){
+        //     return response()->json([
+        //         'message' => 'your email isn\'t verified',
+        //     ],403);
+        // }
+
+        // try {
+        //     if (!auth()->attempt($login_data->validated())) {
+        //         return response()->json([
+        //             'message' => 'Invalid Credentials',
+        //         ],403);
+
+        //     }
+        // } catch (ValidationException $e) {
+        //     return response()->json([
+        //         'message' => 'Bad creds',
+        //     ],403);
+        // }
+
+
+        $token = $user->createToken('myapptoken')->plainTextToken;
+
+        return response()->json([
+            'message' => 'User logged in Successfully',
+            'user'  => $user,
+            'token' => $token
+        ]);
+=======
         if($user->is_verified==false)
         {
             return response()->json([
@@ -114,11 +173,15 @@ class AuthController extends Controller
             'per'=> $arr
         ],200);
 
+>>>>>>> 57f92eaa12f7d8ceabd86701bf628f057b4c0de8
     }
 
+    
     public function logout(Request $request) {
         auth()->user()->tokens()->delete();
-        return $this->noContentResponse('Logged out');
+        return response()->json([
+            'message' => 'Logged out'
+        ],200);
     }
 }
 

@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('campaign_volunteers', function (Blueprint $table) {
-            $table->increments('id');
-            $table->foreignId('user_id');
-            $table->foreignId('volunteer_campaign_id');
+        Schema::create('profiles', function (Blueprint $table) {
+            $table->id();
+            $table->string("name");
+            $table->string("gender");
+            $table->foreignId('photo_id')->nullable();
+            $table->integer('birth_date')->date_format('Y-m-d');
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('campaign_volunteers');
+        Schema::dropIfExists('profiles');
     }
 };

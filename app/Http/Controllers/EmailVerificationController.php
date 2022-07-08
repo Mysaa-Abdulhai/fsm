@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use App\Models\user_role;
 use App\Traits\ApiResponder;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -39,6 +40,12 @@ class EmailVerificationController extends Controller
 
         }
         User::where('id','=',auth()->user()->id)->update(['is_verified'=>true]);
+        $user_role=
+            [
+                'user_id'=> auth()->user()->id,
+                'role_id'=> 2
+            ];
+        user_role::insert($user_role);
         return response()->json([
             'message' => 'Email verified',
         ], 201);

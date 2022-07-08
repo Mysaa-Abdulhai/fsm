@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('public_posts', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->longText('body');
+            $table->text('photo');
             $table->timestamps();
         });
     }

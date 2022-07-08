@@ -14,7 +14,7 @@ class DoesNotHaveForm
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function handle(Request $request, Closure $next)
     {
@@ -24,6 +24,8 @@ class DoesNotHaveForm
             return $next($request);
         }
         else
-            return redirect('/api/haveForm');
+            return response()->json([
+                'message' => 'you have a form',
+            ],403);
     }
 }

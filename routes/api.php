@@ -39,7 +39,7 @@ Route::get('/verify_email/{id}/{hash}', [EmailVerificationController::class, 've
 Route::get('/messages', [ChatsController::class,'fetchMessages'])->middleware('auth:sanctum');
 Route::post('/messages', [ChatsController::class,'sendMessage'])->middleware('auth:sanctum');
 
- 
+      
 
 Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission']],function(){
     //user

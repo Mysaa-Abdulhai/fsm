@@ -13,7 +13,11 @@ class Campaign_Post extends Model
         'title',
         'body',
         'photo',
+<<<<<<< HEAD
+  ];
+=======
     ];
+>>>>>>> 57f92eaa12f7d8ceabd86701bf628f057b4c0de8
 
     public function volunteer_campaign()
     {

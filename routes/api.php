@@ -2,7 +2,7 @@
 <?php
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Middleware\DoesNotHaveForm;
 use Illuminate\Http\Request;
@@ -36,8 +36,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 Route::get('/verify_email/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify')->middleware('auth:sanctum');
 
-Route::get('chat/room', [ChatController::class,'messages'])->name('chat/room')->middleware('auth:sanctum');
-Route::post('chat/room/message', [ChatController::class,'newMessage'])->name('chat/room/message')->middleware('auth:sanctum');
+Route::get('/messages', [ChatsController::class,'fetchMessages'])->middleware('auth:sanctum');
+Route::post('/messages', [ChatsController::class,'sendMessage'])->middleware('auth:sanctum');
+
 
 
 Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission']],function(){
@@ -65,3 +66,5 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission']],func
     //leader
 
 });
+
+

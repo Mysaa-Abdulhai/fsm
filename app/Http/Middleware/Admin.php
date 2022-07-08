@@ -16,7 +16,7 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->isAdmin == true){
+        if (Auth::user()->isAdmin !== true){
             return $next($request);
         }
         return response()->json([

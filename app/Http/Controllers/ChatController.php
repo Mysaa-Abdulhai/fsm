@@ -29,6 +29,7 @@ class ChatController extends Controller
             ->where('chat_messages.chat_room_id', '=', $request->room_id)
             ->orderBy('chat_messages.created_at', 'DESC')
             ->get();
+
     }
 
     public function newMessage(Request $request)

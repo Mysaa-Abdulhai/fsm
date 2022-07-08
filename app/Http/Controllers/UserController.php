@@ -49,13 +49,15 @@ class UserController extends Controller
 
 
         //pro
-        $image = $request->file('image');
-        $image_name = time() . '.' . $image->getClientOriginalExtension();
-        $image->storeAs('public/images', $image_name);
-        $image_url = '/storage/images/' . $image_name;
+//        $image = $request->file('image');
+//        $image_name = time() . '.' . $image->getClientOriginalExtension();
+//        $image->storeAs('public/images', $image_name);
+//        $image_url = '/storage/images/' . $image_name;
 
 
-        $image=file_get_contents($request->image);
+        //dary
+        $newImageName = time().'-'.$request->name . '.'.$request->image->extension();
+        $request->image->move(public_path('/storage/images'), $newImageName);
 
         $location=new location();
         $location->country=$request->country;
@@ -69,7 +71,7 @@ class UserController extends Controller
         $campaign_request->volunteer_number=$request->volunteer_number;
         $campaign_request->target=$request->target;
         $campaign_request->maxDate=$request->maxDate;
-        $campaign_request->image=$request->$image_url;
+        $campaign_request->image=$request->$newImageName;
         $campaign_request->user_id=auth()->user()->id;
         $campaign_request->location_id=$location->id;
         return response()->json([

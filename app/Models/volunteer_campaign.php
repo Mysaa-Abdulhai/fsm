@@ -21,6 +21,10 @@ class volunteer_campaign extends Model
 //    {
 //        return $this->belongsTo(related: User::class);
 //    }
+    public function ChatRoom()
+    {
+        return $this->hasOne(ChatRoom::class);
+    }
     public function volunteer_campaign_request()
     {
         return $this->belongsTo(related: volunteer_campaign_request::class,foreignKey: 'volunteer_campaign_request_id');

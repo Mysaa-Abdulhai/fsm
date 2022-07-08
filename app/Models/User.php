@@ -58,9 +58,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(campaign_volunteer::class);
     }
-    public function messages()
+    public function ChatMessages()
     {
-        return $this->hasMany(Message::class);
+        return $this->hasMany(ChatMessage::class);
     }
     public function user_role()
     {

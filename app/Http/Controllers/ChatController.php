@@ -24,8 +24,8 @@ class ChatController extends Controller
 //        return ChatMessage::select('message')->with('User')->where('chat_room_id', '=', $request->room_id)
 //            ->orderBy('created_at', 'DESC')->get();
         return DB::table('chat_messages')
-            ->select('name','message')
-            ->join('users','user_id','=','chat_messages.user_id')
+            ->select('users.id','name','message')
+            ->join('users','users.id','=','chat_messages.user_id')
             ->where('chat_messages.chat_room_id', '=', $request->room_id)
             ->orderBy('chat_messages.created_at', 'DESC')
             ->get();

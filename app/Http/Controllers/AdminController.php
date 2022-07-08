@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Posts;
+use App\Models\public_post;
 use App\Models\Profile;
 use App\Models\Donation_campaign;
 use App\Models\Campaign_volunteer;
 use App\Models\Archived_Compaign;
 use App\Http\Controllers\add_donation_campaign ;
-use App\Models\public_post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;

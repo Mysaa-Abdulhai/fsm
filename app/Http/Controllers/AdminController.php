@@ -8,6 +8,7 @@ use App\Models\Donation_campaign;
 use App\Models\Campaign_volunteer;
 use App\Models\Archived_Compaign;
 use App\Http\Controllers\add_donation_campaign ;
+use App\Models\public_post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -20,7 +21,7 @@ use Illuminate\QueryException ;
 use App\Models\location;
 class AdminController extends Controller{
 
-    public function add_volunteer_campaign(Request $request){      
+    public function add_volunteer_campaign(Request $request){
         // try{
         $validator = Validator::make($request->all(), [
             'name'       => 'required|string',
@@ -33,11 +34,11 @@ class AdminController extends Controller{
             'location_id' => 'required|numeric' ,
             'photo'      => 'nullable|image:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-    
-    
+
+
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
-    
+
         $location=new location();
         $location->country = $request->country;
         $location->city    = $request->city;
@@ -50,18 +51,18 @@ class AdminController extends Controller{
         $new_campaign->details  = $request->details ;
         $new_campaign->target   = $request->target ;
         $new_campaign->volunteer_number = $request->volunteer_number  ;
-        $new_campaign->maxDate  = $request->maxDate ;   
+        $new_campaign->maxDate  = $request->maxDate ;
         $new_campaign->location_id      =$location->id;
         $new_campaign->photo_id = $request->photo_id ;
         $new_campaign->user_id  = auth()->user()->id;
         $new_campaign->save() ;
-        
+
 
         return response()->json([
             'message'  => 'campaign added Successfully',
             'campaign'  => $new_campaign,
         ],200);
-           
+
         //} catch(\Exception){
         //     return response()->json([
         //         'error'
@@ -71,7 +72,7 @@ class AdminController extends Controller{
 
 
     public function add_donation_campaign(Request $request){
-        //try{   
+        //try{
             $validator = Validator::make($request->all(), [
                 'name'        => 'required|string' ,
                 'description' => 'required|string' ,
@@ -79,12 +80,12 @@ class AdminController extends Controller{
                 'maxDate'     => 'required'        ,
                 'photo'       => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'          ,
             ]);
-  
+
             if ($validator->fails()){
                 return response()->json([$validator->getMessageBag()], 400);
             }
-  
-          
+
+
             $new_campaign = new donation_campaign();
             $new_campaign->name         = $request->name;
             $new_campaign->description  = $request->description;
@@ -94,27 +95,27 @@ class AdminController extends Controller{
             $new_campaign->image      = $request->photo;
             $new_campaign->donation_campaign_request_id =  $request->donation_campaign_request_id;
             $new_campaign->save();
-  
-            return response()->json([ 
+
+            return response()->json([
                 'message'  => 'campaign added Successfully',
                 'campaign'  => $new_campaign,
             ],200);
-      
+
         // }catch(Exception) {
         //     return response()->json([
          //     $request->errors()]);
         // }
-    } //end 
+    } //end
 
 
 
-    ///Add Posts 
+    ///Add Posts
     public function add_posts(Request $request){
 
         $validator = Validator::make($request->all(), [
             'title' => 'required|string',
             'body'  => 'required|string' ,
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'             
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
 
             if ($validator->fails()){
@@ -124,7 +125,7 @@ class AdminController extends Controller{
                 ],400);
             }
 
-            $new_post = new Posts();
+            $new_post = new public_post();
             $new_post->title = $request->title ;
             $new_post->body  = $request->body ;
             $new_post->photo = $request->photo ;
@@ -138,20 +139,20 @@ class AdminController extends Controller{
 
 
     // update Posts
-    public function updatePosts(Request $request,$id){   
+    public function updatePosts(Request $request,$id){
 
         $update_poste = $request->id ;
-        if($update_poste == Posts::find($id)){
+        if($update_poste == public_post::find($id)){
 
             $photoUrl=$request->photo==null?null:$this->uploadImage($request);
-        
+
             $validator = Validator::make($request->all(),[
                 'title' => 'required|string' ,
                 'body'  => 'required|string' ,
-                'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048' 
+                'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
-                        
-        
+
+
             if ($validator->fails()){
                 return response()->json([
                     'message' => 'pleas Enter an info to update !'
@@ -159,16 +160,16 @@ class AdminController extends Controller{
             }
 
             $title = $request->title ;
-            $body  = $request->body ;          
+            $body  = $request->body ;
             $photo = $photoUrl ;
 
-        
+
             //if(! is_null($title))
             $update_poste->title = $title;
-        
+
            // if(! is_null($body))
             $update_poste->body = $body;
-        
+
 
            // if(! is_null($photo))
             $update_poste->photo = $photo;
@@ -177,14 +178,14 @@ class AdminController extends Controller{
 
             return response()->json([
                 'update campaign' => $update_poste,
-                'message' => 'campaign updated successfully' 
+                'message' => 'campaign updated successfully'
             ],400);
         }
 
         return response()->json([
             'message' => 'Post you have requested not found'
         ]);
-     
+
 
     }///end
 
@@ -197,13 +198,13 @@ class AdminController extends Controller{
 
         $getImage->move($imagePath, $imageName);
 
-        return '/campaign/image'.$imageName ; 
+        return '/campaign/image'.$imageName ;
     }  //end
 
 
     // Delete Capaign
     public function deleteDonationCapaign(Request $request,$id){
-        try{ 
+        try{
         $campaign = Donation_campaign::finid($id);
         dd($campaign);
         if(is_null($campaign)){
@@ -215,7 +216,7 @@ class AdminController extends Controller{
 
         $campaign->delete() ;
         return response()->json('Campaign has been deleted Successfully!');
-        
+
         }catch(Exception) {
             return response()->json([
              $request->errors()]);
@@ -226,7 +227,7 @@ class AdminController extends Controller{
     // response On Campaign Request
 
         public function response_on_campaign_request(Request $request){
-           
+
             $campaign_requests = volunteer_campaign_request::all();
             $accept = false ;
             foreach($campaign_requests as $campaign_request){
@@ -248,8 +249,8 @@ class AdminController extends Controller{
             $new_archived_compaigns->user_id = $request->auth()->user()->id;
 
             $new_archived_compaigns->save();
-    
-            return response()->json([ 
+
+            return response()->json([
                 'message'  => 'Request saved as Archived campaign'
             ],200);
         }
@@ -260,12 +261,12 @@ class AdminController extends Controller{
         // }
 
         public function show_profile(Request $request){
-           
-            $profiles = Profile::getall();  
+
+            $profiles = Profile::getall();
             return response()->json([
                'profile' => $profiles ,
                'message' => 'all posts for campaign number'
            ],200);
         }
-    
+
 }

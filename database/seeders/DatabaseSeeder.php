@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ChatRoom;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Role;
@@ -76,5 +77,7 @@ class DatabaseSeeder extends Seeder
 //              ],
             ];
         permission::insert($permission);
+
+        ChatRoom::insert(['name'=>['new room']]);
     }
 }

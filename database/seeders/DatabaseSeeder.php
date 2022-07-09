@@ -17,12 +17,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
         $roles=
             [
               [
@@ -40,6 +34,30 @@ class DatabaseSeeder extends Seeder
         $permission=
             [
                 [
+                    'name'=>'all_volunteer_campaign_request',
+                    'role_id'=>'1'
+                ],
+                [
+                    'name'=>'all_donation_campaign_request',
+                    'role_id'=>'1'
+                ],
+                [
+                    'name'=>'all_volunteer_form',
+                    'role_id'=>'1'
+                ],
+                [
+                    'name'=>'response_on_volunteer_campaign_request',
+                    'role_id'=>'1'
+                ],
+                [
+                    'name'=>'response_on_donation_campaign_request',
+                    'role_id'=>'1'
+                ],
+                [
+                    'name'=>'determine_leader',
+                    'role_id'=>'1'
+                ],
+                [
                     'name'=>'add_volunteer_campaign',
                     'role_id'=>'1'
                 ],
@@ -55,6 +73,10 @@ class DatabaseSeeder extends Seeder
                     'name'=>'updatePosts',
                     'role_id'=>'1'
                 ],
+
+
+
+                //user
                 [
                     'name'=>'show_volunteer_campaign',
                     'role_id'=>'2'
@@ -83,6 +105,11 @@ class DatabaseSeeder extends Seeder
                     'name'=>'show_posts_of_campaign',
                     'role_id'=>'2'
                 ],
+
+
+
+
+                //leader
               [
                   'name'=>'add_campaign_post',
                   'role_id'=>'3'

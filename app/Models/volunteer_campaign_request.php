@@ -14,6 +14,7 @@ class volunteer_campaign_request extends Model
         'target',
         'maxDate',
         'image',
+        'location_id'
     ];
     public function user()
     {

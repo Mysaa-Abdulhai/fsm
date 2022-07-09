@@ -15,7 +15,8 @@ class volunteer_campaign extends Model
         'volunteer_number',
         'target',
         'maxDate',
-        'image'
+        'image',
+        'location_id'
     ];
 //    public function user()
 //    {

@@ -38,9 +38,8 @@ class UserController extends Controller
             'volunteer_number'     => 'required|int',
             'target'     => 'required|string',
             'maxDate'     => 'required|date',
-            'image' => 'required',
             'country'  => 'required|string',
-            'city'  => 'required|string',
+                'city'  => 'required|string',
             'street'  => 'required|string',
 
         ]);
@@ -48,17 +47,16 @@ class UserController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
 
 
-        //image
-        $image = $request->file('image');
-        $image_name = time() . '.' . $image->getClientOriginalExtension();
-        $image->move('public/storage/images', $image_name);
-
-
         $location=new location();
         $location->country=$request->country;
         $location->city=$request->city;
         $location->street=$request->street;
         $location->save();
+
+        //image
+        $image = $request->file('image');
+        $image_name = time() . '.' . $image->getClientOriginalExtension();
+        $image->move('images', $image_name);
 
         $campaign_request=new volunteer_campaign_request();
         $campaign_request->type=$request->type;
@@ -69,6 +67,7 @@ class UserController extends Controller
         $campaign_request->image=$request->$image_name;
         $campaign_request->user_id=auth()->user()->id;
         $campaign_request->location_id=$location->id;
+        $campaign_request->save();
         return response()->json([
                     'message'  => 'request added Successfully',
                     'campaign_request'  => $campaign_request,
@@ -97,6 +96,7 @@ class UserController extends Controller
         $campaign_request->maxDate=$request->maxDate;
         $campaign_request->image=$image_name;
         $campaign_request->user_id=auth()->user()->id;
+        $campaign_request->save();
         return response()->json([
             'message'  => 'request added Successfully',
             'campaign_request'  => $campaign_request,

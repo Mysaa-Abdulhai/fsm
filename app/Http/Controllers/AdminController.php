@@ -53,9 +53,10 @@ class AdminController extends Controller
         ]);
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
-        $campaign_request = volunteer_campaign_request::where('id', '=', $request->id);
+        $campaign_request = volunteer_campaign_request::where('id', '=', $request->id)->get()   ;
         if ($request->accept) {
             $campaign = new volunteer_campaign();
+
             $campaign->location_id = $campaign_request->location_id;
             $campaign->image = $campaign_request->image;
             $campaign->details = $campaign_request->details;
@@ -79,7 +80,7 @@ class AdminController extends Controller
         }
     }
 
-    public function determine_admin(Request $request)
+    public function determine_leader(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'campaign_id' => 'required|int',

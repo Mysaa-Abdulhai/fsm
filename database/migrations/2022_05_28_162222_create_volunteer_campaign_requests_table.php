@@ -1,7 +1,6 @@
 <?php
 use App\Models\User;
 use App\Models\location;
-use App\Models\photo;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,7 +19,7 @@ return new class extends Migration
                 $table->id();
                 $table->foreignId('user_id');
                 $table->foreignId('location_id');
-                $table->text('image');
+                $table->text('image')->nullable();
                 $table->string('details');
                 $table->string('type');
                 $table->integer('volunteer_number');

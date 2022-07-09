@@ -21,15 +21,13 @@ class AcceptPermission
     {
         $permissionName=$request->route()->getName();
         $user_role=user_role::where('user_id','=',auth()->user()->id)->get();
-        $user_role=$user_role->toArray();
         foreach ($user_role as $x)
         {
-            if(Permission::query()->where('name','=',$permissionName)->where('role_id','=',$x)->exists())
+            if(Permission::query()->where('name','=',$permissionName)->where('role_id','=',$x->role_id)->exists())
                 return $next($request);
         }
         return response()->json([
             'message' => 'Access Denied',
         ],403);
-//        return redirect('/api/notAdmin');
     }
 }

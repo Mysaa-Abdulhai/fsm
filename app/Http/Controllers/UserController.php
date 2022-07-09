@@ -81,17 +81,21 @@ class UserController extends Controller
             'description'     => 'required|string',
             'total_value'     => 'required|int',
             'maxDate'     => 'required|date',
-            'image' => 'binary',
+            'image' => 'required',
         ]);
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
+
+        $image = $request->file('image');
+        $image_name = time() . '.' . $image->getClientOriginalExtension();
+        $image->move('public/storage/images', $image_name);
 
         $campaign_request=new donation_campaign_request();
         $campaign_request->name=$request->name;
         $campaign_request->description =$request->description;
         $campaign_request->total_value=$request->total_value;
         $campaign_request->maxDate=$request->maxDate;
-        $campaign_request->image=$request->image;
+        $campaign_request->image=$image_name;
         $campaign_request->user_id=auth()->user()->id;
         return response()->json([
             'message'  => 'request added Successfully',
@@ -116,6 +120,10 @@ class UserController extends Controller
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
 
+        $image = $request->file('image');
+        $image_name = time() . '.' . $image->getClientOriginalExtension();
+        $image->move('public/storage/images', $image_name);
+
         $location=new location();
         $location->country=$request->country;
         $location->city=$request->city;
@@ -129,7 +137,7 @@ class UserController extends Controller
         $volunteer_form->study=$request->study;
         $volunteer_form->skills=$request->skills;
         $volunteer_form->phoneNumber=$request->phoneNumber;
-        $volunteer_form->image=$request->image;
+        $volunteer_form->image=$image_name;
         $volunteer_form->location_id=$location->id;
         $volunteer_form->user_id=auth()->user()->id;
 

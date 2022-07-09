@@ -24,12 +24,12 @@ class EmailVerificationController extends Controller
             event(new Verified($request->user()));
 
         }
-//        User::where('id','=',auth()->user()->id)->update(['is_verified'=>true]);
-//        $user_role= new user_role([
-//            'user_id'=> auth()->user()->id,
-//            'role_id'=> 2
-//        ]);
-//        $user_role->save();
+        User::where('id','=',auth()->user()->id)->update(['is_verified'=>true]);
+        $user_role= new user_role([
+            'user_id'=> auth()->user()->id,
+            'role_id'=> 2
+        ]);
+        $user_role->save();
         return response()->json([
             'message' => 'Email verified',
         ], 201);

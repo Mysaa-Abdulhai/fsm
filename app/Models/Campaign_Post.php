@@ -12,15 +12,11 @@ class Campaign_Post extends Model
     protected $fillable = [
         'title',
         'body',
-        'photo',
-<<<<<<< HEAD
+        'image',
+        'volunteer_campaign_id'
   ];
-=======
-    ];
->>>>>>> 57f92eaa12f7d8ceabd86701bf628f057b4c0de8
-
     public function volunteer_campaign()
     {
-        return $this->belongsTo(campaign_volunteer::class, 'volunteer_campaign_id');
+        return $this->belongsTo(volunteer_campaign::class, 'volunteer_campaign_id');
     }
 }

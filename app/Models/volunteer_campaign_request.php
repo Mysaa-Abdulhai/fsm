@@ -17,7 +17,7 @@ class volunteer_campaign_request extends Model
     ];
     public function user()
     {
-        return $this->belongsTo(user::class,'user_id');
+        return $this->belongsTo(User::class,'user_id');
     }
     public function volunteer_campaign()
     {

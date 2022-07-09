@@ -40,7 +40,23 @@ class DatabaseSeeder extends Seeder
         $permission=
             [
                 [
-                    'name'=>'gogogaaga',
+                    'name'=>'add_volunteer_campaign',
+                    'role_id'=>'1'
+                ],
+                [
+                    'name'=>'add_donation_campaign',
+                    'role_id'=>'1'
+                ],
+                [
+                    'name'=>'add_posts',
+                    'role_id'=>'1'
+                ],
+                [
+                    'name'=>'updatePosts',
+                    'role_id'=>'1'
+                ],
+                [
+                    'name'=>'updatePosts',
                     'role_id'=>'1'
                 ],
                 [
@@ -71,13 +87,13 @@ class DatabaseSeeder extends Seeder
                     'name'=>'show_posts_of_campaign',
                     'role_id'=>'2'
                 ],
-//              [
-//                  'name'=>'admin',
-//                  'role_id'=>'3'
-//              ],
+              [
+                  'name'=>'admin',
+                  'role_id'=>'add_campaign_post'
+              ],
             ];
         permission::insert($permission);
 
-        ChatRoom::insert(['name'=>['new room']]);
+        ChatRoom::insert(['volunteer_campaign_id'=>0,'name'=>'new room']);
     }
 }

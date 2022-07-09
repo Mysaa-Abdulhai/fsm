@@ -29,15 +29,15 @@ class volunteer_campaign extends Model
     {
         return $this->belongsTo(related: volunteer_campaign_request::class,foreignKey: 'volunteer_campaign_request_id');
     }
-    public function campaign_volunteers()
-    {
-        return $this->hasMany(campaign_volunteer::class);
-    }
     public function leader() {
         return $this->belongsTo(related: leader::class,foreignKey: 'leader_id');
     }
-    public function Compaign_Posts()
+    public function Campaign_Posts()
     {
-        return $this->hasMany(Compaign_Post::class);
+        return $this->hasMany(Campaign_Post::class);
+    }
+    public function volunteers()
+    {
+        return $this->hasMany(volunteer::class);
     }
 }

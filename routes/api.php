@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\LeaderController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Middleware\DoesNotHaveForm;
 use Illuminate\Http\Request;
@@ -55,7 +56,7 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission']],func
 
     Route::get('show_public_posts',[UserController::class,'show_public_posts'])->name('show_public_posts');
 
-    Route::get('show_posts_of_campaign',[UserController::class,'show_posts_of_campaign'])->name('show_posts_of_campaign');
+//    Route::get('show_posts_of_campaign',[UserController::class,'show_posts_of_campaign'])->name('show_posts_of_campaign');
 
 
     //admin
@@ -64,7 +65,9 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission']],func
 
 
     //leader
-
+    Route::post('add_campaign_post',[LeaderController::class,'add_campaign_post'])->name('add_campaign_post');
 });
 
+Route::post('add_campaign_post',[LeaderController::class,'add_campaign_post'])->name('add_campaign_post')->middleware('auth:sanctum');
+Route::get('show_posts_of_campaign',[UserController::class,'show_posts_of_campaign'])->name('show_posts_of_campaign')->middleware('auth:sanctum');
 

@@ -54,10 +54,6 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(volunteer_form::class);
     }
-    public function campaign_volunteers()
-    {
-        return $this->hasMany(campaign_volunteer::class);
-    }
     public function ChatMessages()
     {
         return $this->hasMany(ChatMessage::class);
@@ -69,6 +65,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function leader()
     {
         return $this->hasOne(leader::class);
+    }
+    public function volunteers()
+    {
+        return $this->hasMany(volunteer::class);
     }
 }
 

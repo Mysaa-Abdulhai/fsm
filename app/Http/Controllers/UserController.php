@@ -48,11 +48,10 @@ class UserController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
 
 
-        //pro
+        //image
         $image = $request->file('image');
         $image_name = time() . '.' . $image->getClientOriginalExtension();
-        $image->storeAs('public/images', $image_name);
-        //$image_url = '/storage/images/' . $image_name;
+        $image->move('public/storage/images', $image_name);
 
 
         $location=new location();

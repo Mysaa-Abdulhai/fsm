@@ -26,7 +26,7 @@ class LeaderController extends Controller
         //image
         $image = $request->file('image');
         $image_name = time() . '.' . $image->getClientOriginalExtension();
-        $image->storeAs('public/images', $image_name);
+        $image->move('public/storage/images', $image_name);
 
 
         $post=new Campaign_Post();
@@ -44,7 +44,7 @@ class LeaderController extends Controller
 
     }
 
-    public function get_volunteer_of_campaign(Request $request,$id){
+    public function get_volunteer_of_campaign(Request $request){
 
     }
 

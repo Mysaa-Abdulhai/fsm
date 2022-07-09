@@ -10,14 +10,18 @@ class volunteer_form extends Model
     use HasFactory;
     protected $fillable = [
         'name',
-        'description',
-        'total_value',
-        'maxDate',
-        'image'
+        'user_id',
+        'age',
+        'nationality',
+        'location_id',
+        'study',
+        'skills',
+        'phoneNumber',
+        'image',
     ];
     public function user()
     {
-        return $this->belongsTo(user::class,'user_id');
+        return $this->belongsTo(user::class);
     }
     public function location()
     {

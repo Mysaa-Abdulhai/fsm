@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\user_role;
-use App\Traits\ApiResponder;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -13,20 +12,6 @@ use phpDocumentor\Reflection\Types\Null_;
 
 class EmailVerificationController extends Controller
 {
-//    public function sendVerificationEmail(Request $request)
-//    {
-//
-//        if ($request->user()->hasVerifiedEmail()) {
-//            return [
-//                'message' => 'Already Verified'
-//            ];
-//        }
-//
-//        $request->user()->sendEmailVerificationNotification();
-//
-//        return ['status' => 'verification-link-sent'];
-//    }
-
     public function verify(EmailVerificationRequest $request)
     {
         if ($request->user()->hasVerifiedEmail()) {
@@ -39,13 +24,12 @@ class EmailVerificationController extends Controller
             event(new Verified($request->user()));
 
         }
-        User::where('id','=',auth()->user()->id)->update(['is_verified'=>true]);
-        $user_role=
-            [
-                'user_id'=> auth()->user()->id,
-                'role_id'=> 2
-            ];
-        user_role::insert($user_role);
+//        User::where('id','=',auth()->user()->id)->update(['is_verified'=>true]);
+//        $user_role= new user_role([
+//            'user_id'=> auth()->user()->id,
+//            'role_id'=> 2
+//        ]);
+//        $user_role->save();
         return response()->json([
             'message' => 'Email verified',
         ], 201);

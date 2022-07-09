@@ -56,10 +56,6 @@ class DatabaseSeeder extends Seeder
                     'role_id'=>'1'
                 ],
                 [
-                    'name'=>'updatePosts',
-                    'role_id'=>'1'
-                ],
-                [
                     'name'=>'show_volunteer_campaign',
                     'role_id'=>'2'
                 ],
@@ -88,12 +84,10 @@ class DatabaseSeeder extends Seeder
                     'role_id'=>'2'
                 ],
               [
-                  'name'=>'admin',
-                  'role_id'=>'add_campaign_post'
+                  'name'=>'add_campaign_post',
+                  'role_id'=>'3'
               ],
             ];
         permission::insert($permission);
-
-        ChatRoom::insert(['volunteer_campaign_id'=>0,'name'=>'new room']);
     }
 }

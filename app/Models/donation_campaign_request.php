@@ -8,18 +8,16 @@ class donation_campaign_request extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name',
+        'user_id',
+        'title',
         'description',
-        'total_value',
-        'maxDate',
+        'goal',
+        'end_at',
+        'seenAndAccept',
         'image',
     ];
     public function user()
     {
         return $this->belongsTo(user::class,'user_id');
-    }
-    public function donation_campaign(): \Illuminate\Database\Eloquent\Relations\HasOne
-    {
-        return $this->hasOne(donation_campaign::class);
     }
 }

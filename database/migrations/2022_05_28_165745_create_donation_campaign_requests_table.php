@@ -15,12 +15,13 @@ return new class extends Migration
     {
         Schema::create('donation_campaign_requests', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->longText('description');
             $table->foreignId('user_id');
+            $table->string('title');
+            $table->longText('description');
             $table->text('image');
-            $table->integer('total_value');
-            $table->date('maxDate');
+            $table->integer('goal');
+            $table->integer('end_at');
+            $table->boolean('seenAndAccept')->default(false);
             $table->timestamps();
         });
     }

@@ -26,7 +26,7 @@ class LeaderController extends Controller
         //image
         $image = $request->file('image');
         $image_name = time() . '.' . $image->getClientOriginalExtension();
-        $image->move('public/storage/images', $image_name);
+        $image->move('images', $image_name);
 
 
         $post=new Campaign_Post();

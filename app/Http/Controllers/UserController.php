@@ -33,13 +33,14 @@ class UserController extends Controller
     }
     public function volunteer_campaign_request(Request $request){
         $validator= Validator::make($request->all(), [
+            'image'=>'required',
             'details'=>'required|string',
             'type'     => 'required|string',
             'volunteer_number'     => 'required|int',
             'target'     => 'required|string',
             'maxDate'     => 'required|date',
             'country'  => 'required|string',
-                'city'  => 'required|string',
+            'city'  => 'required|string',
             'street'  => 'required|string',
 
         ]);
@@ -47,16 +48,18 @@ class UserController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
 
 
-        $location=new location();
-        $location->country=$request->country;
-        $location->city=$request->city;
-        $location->street=$request->street;
-        $location->save();
+
 
         //image
         $image = $request->file('image');
         $image_name = time() . '.' . $image->getClientOriginalExtension();
         $image->move('images', $image_name);
+
+        $location=new location();
+        $location->country=$request->country;
+        $location->city=$request->city;
+        $location->street=$request->street;
+        $location->save();
 
         $campaign_request=new volunteer_campaign_request();
         $campaign_request->type=$request->type;
@@ -85,9 +88,10 @@ class UserController extends Controller
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
 
+        //image
         $image = $request->file('image');
         $image_name = time() . '.' . $image->getClientOriginalExtension();
-        $image->move('public/storage/images', $image_name);
+        $image->move('images', $image_name);
 
         $campaign_request=new donation_campaign_request();
         $campaign_request->name=$request->name;
@@ -120,9 +124,10 @@ class UserController extends Controller
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
 
+        //image
         $image = $request->file('image');
         $image_name = time() . '.' . $image->getClientOriginalExtension();
-        $image->move('public/storage/images', $image_name);
+        $image->move('images', $image_name);
 
         $location=new location();
         $location->country=$request->country;

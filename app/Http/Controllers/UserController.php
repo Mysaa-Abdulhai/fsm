@@ -13,6 +13,7 @@ use App\Models\volunteer_campaign;
 use App\Models\location;
 class UserController extends Controller
 {
+
     public function show_volunteer_campaign(Request $request){
         $campaign=volunteer_campaign::all();
         return response()->json([
@@ -38,13 +39,12 @@ class UserController extends Controller
             'details'=>'required|string',
             'type'     => 'required|string',
             'volunteer_number'     => 'required|int',
-            'target'     => 'required|string',
             'maxDate'     => 'required|date',
             'country'  => 'required|string',
             'city'  => 'required|string',
             'street'  => 'required|string',
-            'longitude' => 'required|decimal',
-            'latitude' => 'required|decimal'
+            'longitude' => 'required|numeric|between:-90.00000000,90.00000000',
+            'latitude' => 'required|numeric|between:-90,90'
         ]);
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
@@ -68,13 +68,12 @@ class UserController extends Controller
         $campaign_request->type=$request->type;
         $campaign_request->details =$request->type;
         $campaign_request->volunteer_number=$request->volunteer_number;
-        $campaign_request->target=$request->target;
         $campaign_request->maxDate=$request->maxDate;
-        $campaign_request->image=$request->$image_name;
+        $campaign_request->image=$image_name;
         $campaign_request->user_id=auth()->user()->id;
         $campaign_request->location_id=$location->id;
-        $campaign_request->longitude=$location->longitude;
-        $campaign_request->latitude=$location->latitude;
+        $campaign_request->longitude=$request->longitude;
+        $campaign_request->latitude=$request->latitude;
         $campaign_request->save();
         return response()->json([
                     'message'  => 'request added Successfully',

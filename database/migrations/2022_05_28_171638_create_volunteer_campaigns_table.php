@@ -24,8 +24,8 @@ return new class extends Migration
             $table->string('details');
             $table->string('type');
             $table->integer('volunteer number');
-            $table->decimal('longitude', 10, 7);
-            $table->decimal('latitude', 10, 7);
+            $table->decimal('longitude', 10, 8);
+            $table->decimal('latitude', 10, 8);
             $table->date('maxDate');
             $table->timestamps();
         });

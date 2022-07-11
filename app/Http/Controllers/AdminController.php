@@ -38,7 +38,7 @@ class AdminController extends Controller
 
     public function all_volunteer_form()
     {
-        $forms = volunteer_form::all();
+        $forms = volunteer_form::where('leaderInFuture','=',true)->get();
         return response()->json([
             'message' => 'campaign added successfully',
             'forms' => $forms
@@ -61,10 +61,19 @@ class AdminController extends Controller
             $campaign->image = $campaign_request->image;
             $campaign->details = $campaign_request->details;
             $campaign->type = $campaign_request->type;
+            $campaign->name = $campaign_request->name;
             $campaign->volunteer_number = $campaign_request->volunteer_number;
-            $campaign->target = $campaign_request->target;
+            $campaign->logitude = $campaign_request->longitude;
+            $campaign->latitude = $campaign_request->latitude;
             $campaign->maxDate = $campaign_request->maxDate;
             $campaign->save();
+
+            $group=new ChatRoom();
+            $group->name=$campaign->name;
+            $group->volunteer_campaign_id=$campaign->id;
+            $group->save();
+
+
             $campaign_request->delete();
             $room = new ChatRoom();
 
@@ -97,6 +106,7 @@ class AdminController extends Controller
         return response()->json([
             'message' => 'leader set successfully',
         ], 200);
+
     }
 
     public function response_on_donation_campaign_request(Request $request)
@@ -119,81 +129,5 @@ class AdminController extends Controller
                 'message' => 'request deleted',
             ], 200);
         }
-    }
-    public function add_posts(Request $request){
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string',
-            'body'  => 'required|string' ,
-            'image' => 'required'
-        ]);
-
-        if ($validator->fails()){
-            return response()->json([
-                'error',
-                $validator->getMessageBag()
-            ],400);
-        }
-
-        //image
-        $image = $request->file('image');
-        $image_name = time() . '.' . $image->getClientOriginalExtension();
-        $image->move('public/storage/images', $image_name);
-
-        $new_post = new public_post();
-        $new_post->title = $request->title ;
-        $new_post->body  = $request->body ;
-        $new_post->image = $request->$image_name ;
-        $new_post->save();
-
-        return response()->json([
-            'post'    => $new_post,
-            'message' => 'Post added Successfully'
-        ],200);
-    }
-    public function updatePosts(Request $request, $id){
-        $post = public_post::find($id);
-        if(!$post)
-            return response()->json([
-                'message' => 'Post you have requested not found'
-            ]);
-        $validator = Validator::make($request->all(),[
-            'title' => 'required|string' ,
-            'body'  => 'required|string' ,
-            'image' => 'required'
-        ]);
-
-        if ($validator->fails()){
-            return response()->json(['message' => 'pleas Enter an info to update !'],400);
-        }
-
-        //image
-        $image = $request->file('image');
-        $image_name = time() . '.' . $image->getClientOriginalExtension();
-        $image->move('public/storage/images', $image_name);
-
-
-        $post->title = $request->title ;
-        $post->body = $request->body ;
-        $post->photo = $image_name;
-
-        $post->save();
-        return response()->json([
-            'update post' => $post ,
-            'message' => 'post updated successfully'
-        ],200);
-
-    }
-
-    public function deletePublicPost($id){
-        $post = public_post::find($id);
-        if ( is_null($post)){
-            return response()->json([
-                'message' => 'Post you have requested not found !'
-            ],400);
-        }
-        $post->delete();
-        return response()->json([
-            'message' => 'Post deleted successfully !'
-        ],200);
     }
 }

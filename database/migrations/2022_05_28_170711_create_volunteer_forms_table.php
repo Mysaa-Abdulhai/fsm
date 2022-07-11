@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('study');
             $table->string('skills');
             $table->integer('phoneNumber');
+            $table->boolean('leaderInFuture')->default(false);
             $table->text('image');
             $table->timestamps();
         });

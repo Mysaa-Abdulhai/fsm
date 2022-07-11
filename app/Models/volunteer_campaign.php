@@ -13,10 +13,11 @@ class volunteer_campaign extends Model
         'details',
         'type',
         'volunteer_number',
-        'target',
         'maxDate',
         'image',
-        'location_id'
+        'location_id',
+        'longitude',
+        'latitude',
     ];
 //    public function user()
 //    {

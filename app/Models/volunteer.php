@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class volunteer extends Model
 {
     use HasFactory;
+    protected $fillable =[
+        'user_id',
+        'volunteer_campaign_id'
+        ];
     public function user()
     {
         return $this->belongsTo(User::class,'user_id');

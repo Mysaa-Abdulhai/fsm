@@ -17,6 +17,7 @@ class volunteer_form extends Model
         'study',
         'skills',
         'phoneNumber',
+        'leaderInFuture',
         'image',
     ];
     public function user()

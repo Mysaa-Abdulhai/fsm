@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Campaign_Post;
+use App\Models\volunteer;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
@@ -43,9 +44,4 @@ class LeaderController extends Controller
         ],200);
 
     }
-
-    public function get_volunteer_of_campaign(Request $request){
-
-    }
-
 }

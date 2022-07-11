@@ -33,6 +33,7 @@ class UserController extends Controller
     }
     public function volunteer_campaign_request(Request $request){
         $validator= Validator::make($request->all(), [
+            'name'=>'required|string',
             'image'=>'required',
             'details'=>'required|string',
             'type'     => 'required|string',
@@ -42,7 +43,8 @@ class UserController extends Controller
             'country'  => 'required|string',
             'city'  => 'required|string',
             'street'  => 'required|string',
-
+            'longitude' => 'required|decimal',
+            'latitude' => 'required|decimal'
         ]);
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
@@ -62,6 +64,7 @@ class UserController extends Controller
         $location->save();
 
         $campaign_request=new volunteer_campaign_request();
+        $campaign_request->name=$request->name;
         $campaign_request->type=$request->type;
         $campaign_request->details =$request->type;
         $campaign_request->volunteer_number=$request->volunteer_number;
@@ -70,6 +73,8 @@ class UserController extends Controller
         $campaign_request->image=$request->$image_name;
         $campaign_request->user_id=auth()->user()->id;
         $campaign_request->location_id=$location->id;
+        $campaign_request->longitude=$location->longitude;
+        $campaign_request->latitude=$location->latitude;
         $campaign_request->save();
         return response()->json([
                     'message'  => 'request added Successfully',
@@ -119,6 +124,7 @@ class UserController extends Controller
                 'country' => 'required|string',
                 'city' => 'required|string',
                 'street' => 'required|string',
+                'leaderInFuture'=>'required|boolean'
           ]);
 
         if ($validator->fails())
@@ -144,6 +150,7 @@ class UserController extends Controller
         $volunteer_form->phoneNumber=$request->phoneNumber;
         $volunteer_form->image=$image_name;
         $volunteer_form->location_id=$location->id;
+        $volunteer_form->leaderInFuture=$location->leaderInFuture;
         $volunteer_form->user_id=auth()->user()->id;
 
         return response()->json([

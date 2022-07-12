@@ -10,7 +10,8 @@ class volunteer extends Model
     use HasFactory;
     protected $fillable =[
         'user_id',
-        'volunteer_campaign_id'
+        'volunteer_campaign_id',
+        'is_leader',
         ];
     public function user()
     {

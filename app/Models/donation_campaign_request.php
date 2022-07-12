@@ -9,10 +9,10 @@ class donation_campaign_request extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'title',
+        'name',
         'description',
-        'goal',
         'end_at',
+        'total_value',
         'seenAndAccept',
         'image',
     ];

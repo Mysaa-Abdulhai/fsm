@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('image');
             $table->string('details');
             $table->string('type');
-            $table->integer('volunteer number');
+            $table->integer('volunteer_number');
             $table->decimal('longitude', 10, 8);
             $table->decimal('latitude', 10, 8);
             $table->date('maxDate');

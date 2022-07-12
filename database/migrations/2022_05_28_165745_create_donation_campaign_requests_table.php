@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     *  Run the migrations.
      *
      * @return void
      */
@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('donation_campaign_requests', function (Blueprint $table) {
             $table->increments('id');
             $table->foreignId('user_id');
-            $table->string('title');
+            $table->string('name');
             $table->longText('description');
             $table->text('image');
-            $table->integer('goal');
+            $table->integer('total_value');
             $table->integer('end_at');
             $table->boolean('seenAndAccept')->default(false);
             $table->timestamps();

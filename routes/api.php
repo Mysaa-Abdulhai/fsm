@@ -8,6 +8,7 @@ use App\Http\Controllers\LeaderController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Middleware\DoesNotHaveForm;
 use App\Models\leader;
+use App\Models\volunteer_campaign_request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,9 +30,9 @@ Route::get('/verify_email/{id}/{hash}', [EmailVerificationController::class, 've
 Route::post('chat/room', [ChatController::class,'messages'])->name('chat/room')->middleware('auth:sanctum');
 Route::post('chat/room/message', [ChatController::class,'newMessage'])->name('chat/room/message')->middleware('auth:sanctum');
 
+//,'verified','acceptPermission'
 
-
-Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission']],function(){
+Route::group(['middleware'=>['auth:sanctum']],function(){
     //user
     Route::get('show_volunteer_campaign',[UserController::class,'show_volunteer_campaign'])->name('show_volunteer_campaign');
 
@@ -47,28 +48,40 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission']],func
 
     Route::get('show_posts_of_campaign',[UserController::class,'show_posts_of_campaign'])->name('show_posts_of_campaign');
 
+    Route::get('join_campaign',[UserController::class,'join_campaign'])->name('join_campaign');
 
     //admin
     Route::get('all_volunteer_campaign_request',[AdminController::class,'all_volunteer_campaign_request'])->name('all_volunteer_campaign_request');
 
+    Route::get('all_volunteer_campaign_request',[AdminController::class,'all_volunteer_campaign_request'])->name('all_volunteer_campaign_request');
+
+    Route::get('all_volunteer_campaign_request',[AdminController::class,'all_volunteer_campaign_request'])->name('all_volunteer_campaign_request');
+
+
+    Route::get('all_volunteer_campaign_request',[AdminController::class,'all_volunteer_campaign_request'])->name('all_volunteer_campaign_request');
+
     Route::get('all_donation_campaign_request',[AdminController::class,'all_donation_campaign_request'])->name('all_donation_campaign_request');
 
-    Route::get('all_volunteer_form',[AdminController::class,'all_volunteer_form'])->name('all_volunteer_form');
+    Route::get('all_user_leader_in_future',[AdminController::class,'all_user_leader_in_future'])->name('all_user_leader_in_future');
 
     Route::post('response_on_volunteer_campaign_request',[AdminController::class,'response_on_volunteer_campaign_request'])->name('response_on_volunteer_campaign_request');
 
-    Route::post('determine_leader',[AdminController::class,'determine_leader'])->name('determine_leader');
 
     Route::post('response_on_donation_campaign_request',[AdminController::class,'response_on_donation_campaign_request'])->name('response_on_donation_campaign_request');
 
-    Route::post('add_posts',[AdminController::class,'add_posts'])->name('add_posts');
+    //posts
+    Route::post('add_public_post',[AdminController::class,'add_public_post'])->name('add_public_post');
 
-    Route::post('updatePosts',[AdminController::class,'updatePosts'])->name('updatePosts');
+    Route::post('update_public_Posts',[AdminController::class,'update_public_Posts'])->name('update_public_Posts');
 
-    Route::delete('deletePublicPost',[AdminController::class,'deletePublicPost'])->name('deletePublicPost');
+    Route::delete('delete_public_post',[AdminController::class,'delete_public_post'])->name('delete_public_post');
+
 
 
 
     //leader
     Route::post('add_campaign_post',[LeaderController::class,'add_campaign_post'])->name('add_campaign_post');
 });
+
+
+

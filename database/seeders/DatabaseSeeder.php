@@ -27,7 +27,10 @@ class DatabaseSeeder extends Seeder
               ],
               [
                   'name'=>'leader'
-              ]
+              ],
+              [
+                  'name'=>'volunteer'
+              ],
             ];
         Role::insert($roles);
 
@@ -51,10 +54,6 @@ class DatabaseSeeder extends Seeder
                 ],
                 [
                     'name'=>'response_on_donation_campaign_request',
-                    'role_id'=>'1'
-                ],
-                [
-                    'name'=>'determine_leader',
                     'role_id'=>'1'
                 ],
                 [
@@ -105,6 +104,10 @@ class DatabaseSeeder extends Seeder
                     'name'=>'show_posts_of_campaign',
                     'role_id'=>'2'
                 ],
+                [
+                    'name'=>'join_campaign',
+                    'role_id'=>'2'
+                ],
 
 
 
@@ -114,6 +117,9 @@ class DatabaseSeeder extends Seeder
                   'name'=>'add_campaign_post',
                   'role_id'=>'3'
               ],
+
+
+
             ];
         permission::insert($permission);
     }

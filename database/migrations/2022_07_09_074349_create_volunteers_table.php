@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('volunteer_campaign_id');
+            $table->boolean('is_leader')->default(false);
             $table->timestamps();
         });
     }

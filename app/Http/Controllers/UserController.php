@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\public_post;
+use App\Models\volunteer;
 use App\Models\volunteer_form;
 use App\Models\Campaign_Post;
 use Illuminate\Support\Facades\Validator;
@@ -86,7 +87,7 @@ class UserController extends Controller
             'name'=>'required|string',
             'description'     => 'required|string',
             'total_value'     => 'required|int',
-            'maxDate'     => 'required|date',
+            'end_at'     => 'required|int',
             'image' => 'required',
         ]);
         if ($validator->fails())
@@ -99,9 +100,9 @@ class UserController extends Controller
 
         $campaign_request=new donation_campaign_request();
         $campaign_request->name=$request->name;
-        $campaign_request->description =$request->description;
+        $campaign_request->description=$request->description;
         $campaign_request->total_value=$request->total_value;
-        $campaign_request->maxDate=$request->maxDate;
+        $campaign_request->end_at=$request->end_at;
         $campaign_request->image=$image_name;
         $campaign_request->user_id=auth()->user()->id;
         $campaign_request->save();
@@ -119,7 +120,7 @@ class UserController extends Controller
                 'study' => 'required|string',
                 'skills' => 'required|string',
                 'phoneNumber' => 'required|int|unique:volunteer_forms,phoneNumber',
-                'image' =>'binary',
+                'image' =>'required',
                 'country' => 'required|string',
                 'city' => 'required|string',
                 'street' => 'required|string',
@@ -149,8 +150,9 @@ class UserController extends Controller
         $volunteer_form->phoneNumber=$request->phoneNumber;
         $volunteer_form->image=$image_name;
         $volunteer_form->location_id=$location->id;
-        $volunteer_form->leaderInFuture=$location->leaderInFuture;
+        $volunteer_form->leaderInFuture=$request->leaderInFuture;
         $volunteer_form->user_id=auth()->user()->id;
+        $volunteer_form->save();
 
         return response()->json([
             'message'  => 'form added Successfully',
@@ -172,12 +174,40 @@ class UserController extends Controller
 
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
-        $posts=Campaign_Post::all()->where('volunteer_campaign_id',$request->id);
+        $posts=Campaign_Post::all()->where('volunteer_campaign_id',$request->id)->first();
 
         return response()->json([
             'post' =>$posts,
             'message' => 'all posts for campaign number'
+        ],200);
+    }
+    public function join_capaign(Request $request)
+    {
+        $validator=Validator::make($request->all(),[
+            'user_id' => 'required|int',
+            'campaign_id' => 'required|int',
         ]);
+
+        if ($validator->fails())
+            return response()->json($validator->errors()->toJson(), 400);
+
+        if(true)
+        {
+            $volunteer=new volunteer;
+            $volunteer->user_id=$request->campaign_id;
+            $volunteer->volunteer_campaign_id=$request->campaign->id;
+            $volunteer->save();
+
+            return response()->json([
+                'message'=>'you join the campaign'
+            ],200);
+        }
+        else
+        {
+            return response()->json([
+                'message' => 'you havn\'t the requirement of campaign'
+            ], 400);
+        }
     }
 
 }

@@ -23,6 +23,7 @@ class volunteer_campaign extends Model
 //    {
 //        return $this->belongsTo(related: User::class);
 //    }
+
     public function ChatRoom()
     {
         return $this->hasOne(ChatRoom::class);

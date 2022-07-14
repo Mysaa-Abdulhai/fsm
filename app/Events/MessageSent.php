@@ -6,7 +6,7 @@ namespace App\Events;
 use App\Models\ChatMessage;
 
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\Channel;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -17,6 +17,7 @@ class MessageSent implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $chatMessage;
+
     public function __construct(chatMessage $chatMessage)
     {
         $this->chatMessage = $chatMessage;
@@ -24,8 +25,9 @@ class MessageSent implements ShouldBroadcast
     public function broadcastAs() {
         return 'message.new';
     }
-    public function broadcastOn(): PrivateChannel
+    public function broadcastOn(): Channel
     {
-        return new PrivateChannel('chat'.$this->chatMessage->chat_room_id);
+        return new Channel('chat.'.$this->chatMessage->chat_room_id);
     }
 }
+

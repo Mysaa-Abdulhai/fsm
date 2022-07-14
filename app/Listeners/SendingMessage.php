@@ -27,5 +27,6 @@ class SendingMessage implements ShouldQueue
      */
     public function handle(MessageSent $event)
     {
+
     }
 }

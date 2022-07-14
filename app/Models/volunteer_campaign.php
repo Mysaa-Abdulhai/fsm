@@ -13,9 +13,14 @@ class volunteer_campaign extends Model
         'details',
         'type',
         'volunteer_number',
+        'current_volunteer_number',
         'maxDate',
         'image',
+        'age',
+        'study',
+        'skills',
         'location_id',
+        'leader_id',
         'longitude',
         'latitude',
     ];
@@ -31,9 +36,6 @@ class volunteer_campaign extends Model
     public function volunteer_campaign_request()
     {
         return $this->belongsTo(related: volunteer_campaign_request::class,foreignKey: 'volunteer_campaign_request_id');
-    }
-    public function leader() {
-        return $this->belongsTo(related: leader::class,foreignKey: 'leader_id');
     }
     public function Campaign_Posts()
     {

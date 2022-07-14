@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\ChatRoom;
 use App\Models\donation_campaign_request;
-use App\Models\leader;
 use App\Models\Profile;
 use App\Models\public_post;
 use App\Models\volunteer_campaign;
-use App\Models\volunteer_form;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -61,7 +59,7 @@ class AdminController extends Controller
             }
             else
                 return response()->json([
-                    'message' => 'no any forms',
+                    'message' => 'no any user want to be leader',
                 ], 400);
     }
 
@@ -69,11 +67,16 @@ class AdminController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required|int',
-            'accept' => 'required|boolean'
+            'accept' => 'required|boolean',
+            'leader_id' => 'required_if:accept,==,true|int',
+            'age' => 'required_if:accept,==,true|int',
+            'study' => 'required_if:accept,==,true|string',
+            'skills' => 'required_if:accept,==,true|string',
         ]);
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
-        //$campaign_request = volunteer_campaign_request::where('id', '=', $request->id)->first();
+
+
         if(volunteer_campaign_request::where('id', '=', $request->id)->exists()) {
             $campaign_request = volunteer_campaign_request::where('id', '=', $request->id)->first();
             if ($request->accept==true) {
@@ -90,7 +93,10 @@ class AdminController extends Controller
                 $campaign->longitude = $campaign_request->longitude;
                 $campaign->latitude = $campaign_request->latitude;
                 $campaign->maxDate = $campaign_request->maxDate;
-                $campaign->leader_id = 0;
+                $campaign->leader_id = $request->leader_id;
+                $campaign->age = $request->age;
+                $campaign->study = $request->study;
+                $campaign->skills = $request->skills;
                 $campaign->save();
 
                 $group = new ChatRoom();
@@ -151,20 +157,13 @@ class AdminController extends Controller
     }
 
     public function add_public_post(Request $request){
-
         $validator = Validator::make($request->all(), [
             'title' => 'required|string',
             'body'  => 'required|string' ,
             'image' => 'required'
         ]);
-
-        if ($validator->fails()){
-            return response()->json([
-                'error',
-                $validator->getMessageBag()
-            ],400);
-        }
-
+        if ($validator->fails())
+            return response()->json($validator->errors()->toJson(), 400);
 
         //image
         $image = $request->file('image');
@@ -183,9 +182,6 @@ class AdminController extends Controller
         ],200);
     }//end
 
-
-
-    // update Posts
     public function update_public_Posts(Request $request){
         $validator=Validator::make($request->all(),[
             'id' => 'required'
@@ -228,10 +224,6 @@ class AdminController extends Controller
 
     }///end
 
-
-
-
-    //Delete post
     public function delete_public_post(Request $request){
         $validator=Validator::make($request->all(),[
             'id' => 'required'
@@ -256,9 +248,64 @@ class AdminController extends Controller
     }//end
 
 
+    public function add_volunteer_campaign(Request $request){
+        $validator = Validator::make($request->all(), [
+            'name'    => 'required|string',
+            'type'    => 'required|string',
+            'details' => 'required|string|min:5',
+            'maxDate' => 'required|date',
+            'volunteer_number' => 'required|int',
+            'volunteer_campaign_request_id' => 'required|int',
+            'image'   => 'required',
+            'leader_id'   => 'required|int',
+            'city'   => 'required|string',
+            'country'   => 'required|string',
+            'street'   => 'required|string',
+            'age'   => 'required|string',
+            'study'   => 'required|string',
+            'skills'   => 'required|string',
 
+        ]);
 
-    public function updateVolunteerCampaign(Request $request){
+        if ($validator->fails())
+            return response()->json($validator->errors()->toJson(), 400);
+
+        //image
+        $image = $request->file('image');
+        $image_name = time() . '.' . $image->getClientOriginalExtension();
+        $image->move('images', $image_name);
+
+        $location=new location();
+        $location->country = $request->country;
+        $location->city    = $request->city;
+        $location->street  = $request->street;
+        $location->save();
+
+        $new_campaign = new volunteer_campaign();
+
+        $new_campaign->name      = $request->name;
+        $new_campaign->type      = $request->type;
+        $new_campaign->details   = $request->details;
+        $new_campaign->maxDate   = $request->maxDate;
+        $new_campaign->volunteer_number = $request->volunteer_number;
+        $new_campaign->location_id  = $location->id;
+        $new_campaign->image     = $image_name;
+        $new_campaign->leader_id = $request->leader_id; //
+        $new_campaign->volunteer_campaign_request_id=$request->volunteer_campaign_request_id;
+        $new_campaign->longitude=$request->longitude;
+        $new_campaign->latitude=$request->latitude;
+        $new_campaign->age=$request->age;
+        $new_campaign->study=$request->study;
+        $new_campaign->skills=$request->skills;
+        $new_campaign->save() ;
+
+        return response()->json([
+            'message'  => 'campaign added Successfully',
+            'campaign' => $new_campaign,
+        ],200);
+    }//end
+
+    public function update_volunteer_campaign(Request $request){
         $validator=Validator::make($request->all(),[
             'id' => 'required|int',
         ]);
@@ -280,9 +327,16 @@ class AdminController extends Controller
         $maxDate = $request->maxDate;
         $volunteer_number = $request->volunteer_number;
         $image   = $request->image;
+        $leader_id   = $request->leader_id;
+        $location_id   = $request->location_id;
+        $latitude   = $request->latitude;
+        $longitude   = $request->longitude;
 
         if(is_null($name) And is_null($type) And is_null($details) And is_null($target) And
-            is_null($maxDate) And is_null($volunteer_number) And is_null($image)){
+            is_null($maxDate) And is_null($volunteer_number) And is_null($image)
+            And is_null($leader_id) And is_null($location_id)And is_null($latitude)
+            And is_null($longitude)
+        ){
             return response()->json([
                 'campaign is' => $campaign ,
                 'message' => 'Enter an information to update !'
@@ -308,7 +362,19 @@ class AdminController extends Controller
             $campaign->volunteer_number = $volunteer_number;
         }
         if (!is_null($image)){
-            $campaign->photo = $image;
+            $campaign->image = $image;
+        }
+        if (!is_null($leader_id)){
+            $campaign->leader_id = $leader_id;
+        }
+        if (!is_null($location_id)){
+            $campaign->location_id = $location_id;
+        }
+        if (!is_null($latitude)){
+            $campaign->latitude = $latitude;
+        }
+        if (!is_null($longitude)){
+            $campaign->longitude = $longitude;
         }
         $campaign->save();
         return response()->json([
@@ -318,7 +384,7 @@ class AdminController extends Controller
     }
 
 
-    public function deleteVolunteerCampaign(Request $request){
+    public function delete_volunteer_campaign(Request $request){
         $validator=Validator::make($request->all(),[
             'id' => 'required'
         ]);
@@ -329,7 +395,7 @@ class AdminController extends Controller
                 $validator->errors()
             ],400 );
 
-        $campaign_id = donation_campaign::find($request->id);
+        $campaign_id = volunteer_campaign::find($request->id);
         if(!$campaign_id)
             return response()->json([
                 'message' => 'campaign you have requested not found !'
@@ -340,6 +406,9 @@ class AdminController extends Controller
             'message' => 'campaign deleted successfully !'
         ],200);
     }//end
+
+
+
 
 
 }

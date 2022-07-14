@@ -22,4 +22,8 @@ class Profile extends Model
         'image',
         ];
     use HasFactory;
+    public function User()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
 }

@@ -1,26 +1,29 @@
 <?php
 
 namespace App\Http\Middleware;
+
+use App\Models\Profile;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-class Admin
+
+class OneProfile
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\JsonResponse
+     * @return @return \Illuminate\Http\JsonResponse
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->isAdmin !== true){
-            return $next($request);
+        if(Profile::where('user_id','=',auth()->user()->id)->exists()==true)
+        {
+            return response()->json([
+                'message' => 'you already have a profile',
+            ],403);
         }
-        return response()->json([
-            'message' => 'you are not an admin',
-        ],403);
+        else
+            return $next($request);
     }
 }

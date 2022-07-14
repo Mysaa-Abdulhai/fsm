@@ -1,0 +1,1635 @@
+{
+	"info": {
+		"_postman_id": "9c2714bf-649e-4866-9591-5494627c83c8",
+		"name": "One Planet",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "register",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "josephg",
+							"type": "default"
+						},
+						{
+							"key": "email",
+							"value": "aga@gmail.com",
+							"type": "default"
+						},
+						{
+							"key": "password",
+							"value": "123qwe",
+							"type": "default"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "default",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/register",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "18|6esHIfqr15DsJfkPlZSAjX4gIDuIoFg7GqNwcv5i",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/logout",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "joseph",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123qwe",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "verify email",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "2|M1lyV0EziWmbVtOcOugb8GOqWxgRDOVY0KwTsBLz",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/verify_email/2/537f2e13265c3f2353284e055ceaf7a6ba5f5de5?expires=1656973905&signature=5e1a28c453bae7a377f4d24133ee674c17cf6c11f244ecb3e934caf01312fa4d",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"verify_email",
+						"2",
+						"537f2e13265c3f2353284e055ceaf7a6ba5f5de5"
+					],
+					"query": [
+						{
+							"key": "expires",
+							"value": "1656973905"
+						},
+						{
+							"key": "signature",
+							"value": "5e1a28c453bae7a377f4d24133ee674c17cf6c11f244ecb3e934caf01312fa4d"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "17|OJ35yybKBSSaCV7S14Egszs9x1mPsSxlIIJExdgB",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/user",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "chat/room",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|JJ8lTbaxs1QxL3wT73NZrjKWKXF5mie8pKahO8e2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "room_id",
+							"value": "1",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/chat/room",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"chat",
+						"room"
+					],
+					"query": [
+						{
+							"key": "room_id",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "room/message",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|JJ8lTbaxs1QxL3wT73NZrjKWKXF5mie8pKahO8e2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "message",
+							"value": "go",
+							"type": "default"
+						},
+						{
+							"key": "room_id",
+							"value": "1",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/chat/room/message",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"chat",
+						"room",
+						"message"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteAccount",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "46|H1N5sdVM7AjsOOAwcnWVxm115Xay61hf6zKlOfMR",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/deleteAccount",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"deleteAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "show_volunteer_campaign",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|29bFOUq14qNJMyN3cOPAqjM0iOOLVPNpIDZoGjzO",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/show_volunteer_campaign",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"show_volunteer_campaign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "show_details_of_volunteer_campaign",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|snbsNncpkP1K9K2WbcKn3hAAPFdzZp9bH7aCHoZe",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/show_details_of_volunteer_campaign?id=1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"show_details_of_volunteer_campaign"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "volunteer_campaign_request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|29bFOUq14qNJMyN3cOPAqjM0iOOLVPNpIDZoGjzO",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/joseph/Desktop/photo_2022-06-28_16-48-36.jpg"
+						},
+						{
+							"key": "details",
+							"value": "trhr",
+							"type": "text"
+						},
+						{
+							"key": "volunteer_number",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "erhrehr",
+							"type": "text"
+						},
+						{
+							"key": "maxDate",
+							"value": "2002-07-07",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "j",
+							"type": "text"
+						},
+						{
+							"key": "country",
+							"value": "regerg",
+							"type": "text"
+						},
+						{
+							"key": "city",
+							"value": "grerge",
+							"type": "text"
+						},
+						{
+							"key": "street",
+							"value": "rtjtrj",
+							"type": "text"
+						},
+						{
+							"key": "longitude",
+							"value": "9",
+							"type": "text"
+						},
+						{
+							"key": "latitude",
+							"value": "9",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/joseph/Desktop/lecture/DataBase/new.png",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/volunteer_campaign_request",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"volunteer_campaign_request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "donation_campaign_request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|4wswZ1xt3Up99v4UEiOjeoBlycwYfkz4SWqCpWyC",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/joseph/Desktop/lecture/DataBase/theroritical/photo_2022-06-28_16-48-39.jpg"
+						},
+						{
+							"key": "name",
+							"value": "ohboh",
+							"type": "default"
+						},
+						{
+							"key": "description",
+							"value": "pojopj",
+							"type": "default"
+						},
+						{
+							"key": "end_at",
+							"value": "33",
+							"type": "default"
+						},
+						{
+							"key": "total_value",
+							"value": "33",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/donation_campaign_request",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"donation_campaign_request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "show_public_posts",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "4|XYcGDvPt7N5apGeHQMAgHe9JpXh5ntACvRS3qD5l",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/show_public_posts",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"show_public_posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_public_post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|zlI8z1Uklu9BXRhNkHN00ae7vBBj5F0PNmsIib40",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "new mmmmm",
+							"type": "default"
+						},
+						{
+							"key": "body",
+							"value": "new kkkk new mmmmmnew kkkk new kkkk new kkkk new kkkk ",
+							"type": "default"
+						},
+						{
+							"key": "photo",
+							"type": "file",
+							"src": "/C:/Users/joseph/Desktop/photo_2022-06-28_16-48-36.jpg"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/add_public_post",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"add_public_post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update_public_posts",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "4|XYcGDvPt7N5apGeHQMAgHe9JpXh5ntACvRS3qD5l",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "1",
+							"type": "default"
+						},
+						{
+							"key": "title",
+							"value": "bc",
+							"type": "default"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/update_public_Posts",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"update_public_Posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete_public_post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "9|1Z0uahVyYcMTGLg9DWFy6NdNij5GHkMua02yqbZx",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/delete_public_post",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"delete_public_post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "show_posts_of_campaign",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|GWoyiS9hbT2FvEybp24Q8tBHR9GNfvLpFjEvfOxN",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/show_posts_of_campaign?id=2",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"show_posts_of_campaign"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_campaign_post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|QPL9OaTNsOgTrBUGWi50VBE559a2Yl7U0VOkSc4W",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "eherh",
+							"type": "text"
+						},
+						{
+							"key": "body",
+							"value": "bhioklhiujhbg",
+							"type": "text"
+						},
+						{
+							"key": "volunteer_campaign_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/joseph/Desktop/lecture/DataBase/new.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/add_campaign_post",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"add_campaign_post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "all_volunteer_campaign_request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|SHk5ccwmUQmjnOkjmDM9X6RNwdSyQtNkH9b1UesD",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/all_volunteer_campaign_request",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"all_volunteer_campaign_request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "all_donation_campaign_request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|4wswZ1xt3Up99v4UEiOjeoBlycwYfkz4SWqCpWyC",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/all_donation_campaign_request",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"all_donation_campaign_request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "response_on_volunteer_campaign_request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|zlI8z1Uklu9BXRhNkHN00ae7vBBj5F0PNmsIib40",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "9",
+							"type": "default"
+						},
+						{
+							"key": "accept",
+							"value": "0",
+							"type": "default"
+						},
+						{
+							"key": "leader_id",
+							"value": "1",
+							"type": "default",
+							"disabled": true
+						},
+						{
+							"key": "age",
+							"value": "",
+							"type": "default",
+							"disabled": true
+						},
+						{
+							"key": "study",
+							"value": "",
+							"type": "default",
+							"disabled": true
+						},
+						{
+							"key": "skills",
+							"value": "",
+							"type": "default",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/response_on_volunteer_campaign_request",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"response_on_volunteer_campaign_request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "response_on_donation_campaign_request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|4wswZ1xt3Up99v4UEiOjeoBlycwYfkz4SWqCpWyC",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "3",
+							"type": "default"
+						},
+						{
+							"key": "accept",
+							"value": "1",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/response_on_donation_campaign_request",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"response_on_donation_campaign_request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_volunteer_campaign",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|2sOWY8YYMJhtMnFhQeofLOzP78DNvCVNgTxvJDLY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "ujgkijug",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "oiuhbioh",
+							"type": "text"
+						},
+						{
+							"key": "details",
+							"value": "effwwfe",
+							"type": "text"
+						},
+						{
+							"key": "maxDate",
+							"value": "2022-03-03",
+							"type": "text"
+						},
+						{
+							"key": "volunteer_number",
+							"value": "33",
+							"type": "text"
+						},
+						{
+							"key": "leader_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/joseph/Desktop/photo_2022-06-28_16-48-36.jpg"
+						},
+						{
+							"key": "city",
+							"value": "iugiug",
+							"type": "default"
+						},
+						{
+							"key": "country",
+							"value": "ohbioh",
+							"type": "default"
+						},
+						{
+							"key": "street",
+							"value": "ioubikg",
+							"type": "default"
+						},
+						{
+							"key": "volunteer_campaign_request_id",
+							"value": "2",
+							"type": "default"
+						},
+						{
+							"key": "longitude",
+							"value": "9",
+							"type": "default"
+						},
+						{
+							"key": "latitude",
+							"value": "9",
+							"type": "default"
+						},
+						{
+							"key": "age",
+							"value": "15",
+							"type": "default"
+						},
+						{
+							"key": "skills",
+							"value": "ohu",
+							"type": "default"
+						},
+						{
+							"key": "study",
+							"value": "igug",
+							"type": "default"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/add_volunteer_campaign",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"add_volunteer_campaign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update_volunteer_campaign",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|zlI8z1Uklu9BXRhNkHN00ae7vBBj5F0PNmsIib40",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "1",
+							"type": "default"
+						},
+						{
+							"key": "name",
+							"value": "ziziff",
+							"type": "default"
+						},
+						{
+							"key": "longitude",
+							"value": "9",
+							"type": "default"
+						},
+						{
+							"key": "leader_id",
+							"value": "2",
+							"type": "default"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/update_volunteer_campaign",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"update_volunteer_campaign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete_volunteer_campaign",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/delete_volunteer_campaign",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"delete_volunteer_campaign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "all_user_leader_in_future",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|eBe5dt4HoMb0g1lwzqTQAiHJyxRuUKgrC2VSTQYT",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "127.0.0.1:8000/api/all_user_leader_in_future",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"all_user_leader_in_future"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|2sOWY8YYMJhtMnFhQeofLOzP78DNvCVNgTxvJDLY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "ohbob",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "hoi",
+							"type": "text"
+						},
+						{
+							"key": "birth_date",
+							"value": "2002-02-02",
+							"type": "text"
+						},
+						{
+							"key": "nationality",
+							"value": "ugi",
+							"type": "text"
+						},
+						{
+							"key": "study",
+							"value": "igug",
+							"type": "text"
+						},
+						{
+							"key": "skills",
+							"value": "ohu",
+							"type": "text"
+						},
+						{
+							"key": "phoneNumber",
+							"value": "89678",
+							"type": "text"
+						},
+						{
+							"key": "city",
+							"value": "vgbv",
+							"type": "text"
+						},
+						{
+							"key": "country",
+							"value": "ivi",
+							"type": "text"
+						},
+						{
+							"key": "street",
+							"value": "vhjv",
+							"type": "text"
+						},
+						{
+							"key": "leaderInFuture",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/joseph/Desktop/photo_2022-06-28_16-48-36.jpg"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/add_profile",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"add_profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "join_campaign",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|2sOWY8YYMJhtMnFhQeofLOzP78DNvCVNgTxvJDLY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/join_campaign?campaign_id=1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"join_campaign"
+					],
+					"query": [
+						{
+							"key": "campaign_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

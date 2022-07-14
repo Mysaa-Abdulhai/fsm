@@ -15,15 +15,15 @@ return new class extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id');
             $table->string('name');
             $table->string('gender');
-            $table->integer('birth_date')->date_format('Y-m-d');
-            $table->foreignId('user_id');
-            $table->string('nationality');
-            $table->foreignId('location_id');
-            $table->string('study');
-            $table->string('skills');
-            $table->integer('phoneNumber');
+            $table->date('birth_date');
+            $table->string('nationality')->nullable();
+            $table->foreignId('location_id')->nullable();
+            $table->string('study')->nullable();
+            $table->string('skills')->nullable();
+            $table->integer('phoneNumber')->nullable();
             $table->boolean('leaderInFuture')->default(false);
             $table->text('image');
             $table->timestamps();

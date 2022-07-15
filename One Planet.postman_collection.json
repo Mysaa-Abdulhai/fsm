@@ -118,7 +118,7 @@
 					"urlencoded": [
 						{
 							"key": "name",
-							"value": "joseph",
+							"value": "josephg",
 							"type": "text"
 						},
 						{
@@ -1479,7 +1479,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|2sOWY8YYMJhtMnFhQeofLOzP78DNvCVNgTxvJDLY",
+							"value": "1|Y8VMX59RYEleGjsb3P8nSfYUloLcCu6nB9s0vTrt",
 							"type": "string"
 						}
 					]
@@ -1495,11 +1495,6 @@
 				"body": {
 					"mode": "formdata",
 					"formdata": [
-						{
-							"key": "name",
-							"value": "ohbob",
-							"type": "text"
-						},
 						{
 							"key": "gender",
 							"value": "hoi",
@@ -1626,6 +1621,201 @@
 							"key": "campaign_id",
 							"value": "1"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register_code",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "josephg",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "aa@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123qwe",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/register_code",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"register_code"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "verify code",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|Y8VMX59RYEleGjsb3P8nSfYUloLcCu6nB9s0vTrt",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "verification_code",
+							"value": "268055",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/verify",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"verify"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "resend code",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|Y8VMX59RYEleGjsb3P8nSfYUloLcCu6nB9s0vTrt",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/resend",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"resend"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update_profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|qp72NtcIcoSfUwtY0q5U6nLmWiYt1EQ4xj3HpZ9B",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "city",
+							"value": "oooo",
+							"type": "default"
+						},
+						{
+							"key": "country",
+							"value": "yuhfcuy",
+							"type": "default"
+						},
+						{
+							"key": "street",
+							"value": "iygvui",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/update_profile",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"update_profile"
 					]
 				}
 			},

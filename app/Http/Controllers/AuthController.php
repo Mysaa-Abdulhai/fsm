@@ -1,20 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Controllers\EmailVerificationController;
-use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\user_role;
-use Illuminate\Auth\Events\Verified;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Notifications\VerificationCode;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-use phpDocumentor\Reflection\Types\Boolean;
 
 class AuthController extends Controller
 {
@@ -29,12 +22,6 @@ class AuthController extends Controller
         if ($validator->fails())
         return response()->json(
             $validator->errors()->toJson(), 400);
-
-
-        $fields = $request->validate([
-            'email'    => 'required|string|email|unique:users,email',
-            'password' => 'required|string'
-        ]);
 
         $user = new User();
         $user->name  = $request->name;
@@ -128,5 +115,39 @@ class AuthController extends Controller
             'message' => 'Logged out'
         ],200);
     }
+
+    //code
+
+
+
+    public function register_code(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'name'     => 'required|string|unique:users,name',
+            'email'    => 'required|string|email|unique:users,email',
+            'password' => 'required|string'
+        ]);
+
+        if ($validator->fails())
+            return response()->json(
+                $validator->errors()->toJson(), 400);
+
+        $user = new User();
+        $user->name  = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->save();
+        $token = $user->createToken('myapptoken')->plainTextToken;
+
+        $user->generateCode();
+        $user->notify(new VerificationCode());
+
+        return response()->json([
+            'message' => 'User successfully registered',
+            'user' => $user,
+            'token' => $token
+        ], 201);
+    }
 }
+
 

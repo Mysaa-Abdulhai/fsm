@@ -190,9 +190,9 @@ class AdminController extends Controller
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
 
-        $poste_id = public_post::find($request->id);
+        $post_id = public_post::find($request->id);
 
-        if(!$poste_id)
+        if(!$post_id)
             return response()->json([
                 'message' => 'Post you have requested not found !'
             ]);
@@ -203,22 +203,23 @@ class AdminController extends Controller
 
         if(is_null($title) And is_null($body) And is_null($photo)){
             return response()->json([
-                'poste is' => $poste_id ,
-                'message' => 'Enter an information to update !'
+                'message' => 'Enter an information to update !',
+                'post is' => $post_id ,
+
             ]);
         }
         if(! is_null($title)){
-            $poste_id->title = $title;
+            $post_id->title = $title;
         }
         if(! is_null($body)){
-            $poste_id->body = $body;
+            $post_id->body = $body;
         }
         if(! is_null($photo)){
-            $poste_id->photo = $photo;
+            $post_id->photo = $photo;
         }
-        $poste_id->save();
+        $post_id->save();
         return response()->json([
-            'update post' => $poste_id ,
+            'update post' => $post_id ,
             'message' => 'post updated successfully'
         ],200);
 
@@ -235,13 +236,13 @@ class AdminController extends Controller
                 $validator->errors()
             ],400 );
 
-        $poste_id = public_post::find($request->id);
-        if(!$poste_id)
+        $post_id = public_post::find($request->id);
+        if(!$post_id)
             return response()->json([
                 'message' => 'Post you have requested not found !'
             ]);
 
-        $poste_id->delete();
+        $post_id->delete();
         return response()->json([
             'message' => 'Post deleted successfully !'
         ],200);
@@ -338,8 +339,8 @@ class AdminController extends Controller
             And is_null($longitude)
         ){
             return response()->json([
-                'campaign is' => $campaign ,
-                'message' => 'Enter an information to update !'
+                'message' => 'Enter an information to update !',
+                'campaign is' => $campaign
             ]);
         }
 
@@ -368,7 +369,13 @@ class AdminController extends Controller
             $campaign->leader_id = $leader_id;
         }
         if (!is_null($location_id)){
-            $campaign->location_id = $location_id;
+            $loc_id=$campaign->location_id;
+            $location = location::where('id','=',$loc_id)->first;
+            $location->country = $request->country;
+            $location->city    = $request->city;
+            $location->street  = $request->street;
+            $location->save();
+
         }
         if (!is_null($latitude)){
             $campaign->latitude = $latitude;
@@ -405,7 +412,7 @@ class AdminController extends Controller
         return response()->json([
             'message' => 'campaign deleted successfully !'
         ],200);
-    }//end
+    }
 
 
 

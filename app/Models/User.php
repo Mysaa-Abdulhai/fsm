@@ -20,7 +20,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'is_verified'
+        'is_verified',
+        'verification_code',
+        'code_expires_at',
     ];
 
     /**
@@ -31,6 +33,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password',
         'remember_token',
+        'verification_code'
     ];
 
     /**
@@ -65,6 +68,22 @@ class User extends Authenticatable implements MustVerifyEmail
     public function Profile()
     {
         return $this->hasOne(Profile::class);
+    }
+    //code
+    public function generateCode()
+    {
+        $this->timestamps = false;
+        $this->verification_code = rand(100000, 999999);
+        $this->code_expires_at = now()->addMinutes(10);
+        $this->save();
+    }
+    public function resetCode()
+    {
+        $this->timestamps = false;
+        $this->verification_code=Null;
+        $this->code_expires_at=Null;
+
+        $this->save();
     }
 }
 

@@ -195,7 +195,7 @@ class UserController extends Controller
             else
               {
                   return response()->json([
-                   'message' => 'you havn\'t the requirement of campaign'
+                   'message' => 'you haven\'t the requirement of campaign'
               ], 400);
            }
 
@@ -204,18 +204,9 @@ class UserController extends Controller
 
     public function add_profile(Request $request){
         $validator = Validator::make($request->all(),[
-            'name'        => 'required|string',
             'gender'      => 'required|string',
             'birth_date'  => 'required|date',
             'image'       => 'required',
-//            'nationality' => 'required|string',
-//            'study'       => 'required|string',
-//            'skills'      => 'required|string',
-//            'leaderInFuture'      => 'required|boolean',
-//            'phoneNumber' => 'required|int',
-//            'city'       => 'required|string',
-//            'country'       => 'required|string',
-//            'street'       => 'required|string',
         ]);
         if ($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
@@ -229,7 +220,7 @@ class UserController extends Controller
 
 
         $user_pro = new Profile();
-        $user_pro->name        = $request->name;
+        $user_pro->name        = auth()->user()->name;
         $user_pro->gender      = $request->gender;
         $user_pro->birth_date  = $request->birth_date;
         $user_pro->image       = $image_name ;
@@ -272,8 +263,97 @@ class UserController extends Controller
         return response()->json([
             'your_profile' => $user_pro,
             'message' => ' your profile created successfully '
-        ]);
-    }//end
+        ],200);
+    }
+
+
+    public function update_profile(Request $request){
+
+        $id=auth()->user()->id;
+        if(Profile::where('user_id','=',$id)->exists())
+        {
+            $pro=Profile::where('user_id','=',$id)->first();
+            if(is_null($request->image) And is_null($request->birth_date) And is_null($request->gender)
+                And is_null($request->nationality) And is_null($request->city) And is_null($request->country) And is_null($request->street)
+                And is_null($request->study) And is_null($request->skills)And is_null($request->leaderInFuture)
+                And is_null($request->phoneNumber)
+            ){
+                return response()->json([
+                    'message' => 'enter information to update your profile',
+                    'campaign is' => $pro
+                ]);
+            }
+            if(!is_null($request->image))
+            {
+                //image
+                $image = $request->file('image');
+                $image_name = time() . '.' . $image->getClientOriginalExtension();
+                $image->move('images', $image_name);
+                $pro->image = $image_name ;
+                $pro->save();
+            }
+            if(!is_null($request->birth_date))
+            {
+                $pro->birth_date = $request->birth_date ;
+                $pro->save();
+            }
+            if(!is_null($request->gender))
+            {
+                $pro->gender = $request->gender ;
+                $pro->save();
+            }
+            if(!is_null($request->nationality))
+            {
+                $pro->nationality = $request->nationality ;
+                $pro->save();
+            }
+            if(!is_null($request->city)
+                ||!is_null($request->country)
+                || !is_null($request->street))
+            {
+                $loc_id=$pro->location_id;
+                $location = location::where('id','=',$loc_id)->first();
+                $location->country = $request->country;
+                $location->city    = $request->city;
+                $location->street  = $request->street;
+                $location->save();
+                $pro->save();
+
+            }
+            if(!is_null($request->study))
+            {
+                $pro->study = $request->study ;
+                $pro->save();
+            }
+            if(!is_null($request->skills))
+            {
+                $pro->skills = $request->skills ;
+                $pro->save();
+            }
+            if(!is_null($request->leaderInFuture))
+            {
+                $pro->leaderInFuture = $request->leaderInFuture ;
+                $pro->save();
+
+            }
+            if(!is_null($request->phoneNumber))
+            {
+                $pro->phoneNumber = $request->phoneNumber ;
+                $pro->save();
+            }
+
+            else
+                return response()->json([
+                    'message' => 'your profile updated successfully',
+                    'profile' => $pro
+                ]);
+        }
+        else
+            return response()->json([
+                'message' => ' your haven\'t profile to update it '
+            ],200);
+
+    }
 
 
 

@@ -61,15 +61,25 @@ class DatabaseSeeder extends Seeder
                     'role_id'=>'1'
                 ],
                 [
-                    'name'=>'add_donation_campaign',
+                    'name'=>'update_volunteer_campaign',
                     'role_id'=>'1'
                 ],
                 [
-                    'name'=>'add_posts',
+                    'name'=>'delete_volunteer_campaign',
+                    'role_id'=>'1'
+                ],
+
+
+                [
+                    'name'=>'add_public_post',
                     'role_id'=>'1'
                 ],
                 [
-                    'name'=>'updatePosts',
+                    'name'=>'update_public_Posts',
+                    'role_id'=>'1'
+                ],
+                [
+                    'name'=>'delete_public_post',
                     'role_id'=>'1'
                 ],
 
@@ -93,10 +103,6 @@ class DatabaseSeeder extends Seeder
                     'role_id'=>'2'
                 ],
                 [
-                    'name'=>'volunteer_form',
-                    'role_id'=>'2'
-                ],
-                [
                     'name'=>'show_public_posts',
                     'role_id'=>'2'
                 ],
@@ -108,6 +114,16 @@ class DatabaseSeeder extends Seeder
                     'name'=>'join_campaign',
                     'role_id'=>'2'
                 ],
+                [
+                    'name'=>'add_profile',
+                    'role_id'=>'2'
+                ],
+                [
+                    'name'=>'update_profile',
+                    'role_id'=>'2'
+                ],
+
+
 
 
 

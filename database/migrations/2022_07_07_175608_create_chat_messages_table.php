@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('chat_room_id');
             $table->foreignId('user_id');
+            $table->string('name');
             $table->text('message');
             $table->timestamps();
         });

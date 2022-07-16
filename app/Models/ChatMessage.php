@@ -12,6 +12,7 @@ class ChatMessage extends Model
         'chat_room_id',
         'user_id',
         'message',
+        'name',
     ];
     public function room()
     {

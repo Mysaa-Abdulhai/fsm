@@ -20,16 +20,8 @@ class ChatController extends Controller
         ]);
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
-        return DB::table('chat_messages')->orderBy('created_at', 'DESC')
+        return DB::table('chat_messages')->select('user_id','name','message')->orderBy('created_at', 'DESC')
             ->get();
-//        return ChatMessage::select('message')->with('User')->where('chat_room_id', '=', $request->room_id)
-//            ->orderBy('created_at', 'DESC')->get();
-//        return DB::table('chat_messages')
-//            ->select('users.id','name','message')
-//            ->join('users','users.id','=','chat_messages.user_id')
-//            ->where('chat_messages.chat_room_id', '=', $request->room_id)
-//            ->orderBy('chat_messages.created_at', 'DESC')
-//            ->get();
 
     }
 

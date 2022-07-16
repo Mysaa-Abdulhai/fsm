@@ -311,7 +311,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|JJ8lTbaxs1QxL3wT73NZrjKWKXF5mie8pKahO8e2",
+							"value": "2|4G94YrY7aG79l1QbjWm2KrVzd9wQXzABrqlbUIFl",
 							"type": "string"
 						}
 					]
@@ -329,7 +329,7 @@
 					"urlencoded": [
 						{
 							"key": "message",
-							"value": "go",
+							"value": "",
 							"type": "default"
 						},
 						{
@@ -595,6 +595,69 @@
 			"response": []
 		},
 		{
+			"name": "add_public_post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|zlI8z1Uklu9BXRhNkHN00ae7vBBj5F0PNmsIib40",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "new mmmmm",
+							"type": "default"
+						},
+						{
+							"key": "body",
+							"value": "new kkkk new mmmmmnew kkkk new kkkk new kkkk new kkkk ",
+							"type": "default"
+						},
+						{
+							"key": "photo",
+							"type": "file",
+							"src": "/C:/Users/joseph/Desktop/photo_2022-06-28_16-48-36.jpg"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/add_public_post",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"add_public_post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "donation_campaign_request",
 			"request": {
 				"auth": {
@@ -691,69 +754,6 @@
 					"path": [
 						"api",
 						"show_public_posts"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "add_public_post",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "1|zlI8z1Uklu9BXRhNkHN00ae7vBBj5F0PNmsIib40",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "default"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "title",
-							"value": "new mmmmm",
-							"type": "default"
-						},
-						{
-							"key": "body",
-							"value": "new kkkk new mmmmmnew kkkk new kkkk new kkkk new kkkk ",
-							"type": "default"
-						},
-						{
-							"key": "photo",
-							"type": "file",
-							"src": "/C:/Users/joseph/Desktop/photo_2022-06-28_16-48-36.jpg"
-						}
-					],
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "127.0.0.1:8000/api/add_public_post",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"add_public_post"
 					]
 				}
 			},
@@ -1434,44 +1434,6 @@
 			"response": []
 		},
 		{
-			"name": "all_user_leader_in_future",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "1|eBe5dt4HoMb0g1lwzqTQAiHJyxRuUKgrC2VSTQYT",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "default"
-					}
-				],
-				"url": {
-					"raw": "127.0.0.1:8000/api/all_user_leader_in_future",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"all_user_leader_in_future"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "add_profile",
 			"request": {
 				"auth": {
@@ -1569,6 +1531,44 @@
 					"path": [
 						"api",
 						"add_profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "all_user_leader_in_future",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|eBe5dt4HoMb0g1lwzqTQAiHJyxRuUKgrC2VSTQYT",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "127.0.0.1:8000/api/all_user_leader_in_future",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"all_user_leader_in_future"
 					]
 				}
 			},

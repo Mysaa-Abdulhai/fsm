@@ -17,10 +17,18 @@ class MessageSent implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $chatMessage;
+    public $name;
+    public $message;
+    public $room_id;
+    public $user_id;
 
-    public function __construct(chatMessage $chatMessage)
+    public function __construct(ChatMessage $chatMessage,$message,$name,$room_id,$user_id)
     {
         $this->chatMessage = $chatMessage;
+        $this->name = $name;
+        $this->message = $message;
+        $this->room_id = $room_id;
+        $this->user_id = $user_id;
     }
     public function broadcastAs() {
         return 'message.new';

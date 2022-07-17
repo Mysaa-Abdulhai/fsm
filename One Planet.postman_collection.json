@@ -6,10 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "register",
-			"protocolProfileBehavior": {
-				"disabledSystemHeaders": {}
-			},
+			"name": "register_code",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -25,28 +22,22 @@
 						{
 							"key": "name",
 							"value": "josephg",
-							"type": "default"
+							"type": "text"
 						},
 						{
 							"key": "email",
-							"value": "aga@gmail.com",
-							"type": "default"
+							"value": "aa@gmail.com",
+							"type": "text"
 						},
 						{
 							"key": "password",
 							"value": "123qwe",
-							"type": "default"
-						},
-						{
-							"key": "",
-							"value": "",
-							"type": "default",
-							"disabled": true
+							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/register",
+					"raw": "http://127.0.0.1:8000/api/register_code",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -57,7 +48,95 @@
 					"port": "8000",
 					"path": [
 						"api",
-						"register"
+						"register_code"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "verify code",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|Y8VMX59RYEleGjsb3P8nSfYUloLcCu6nB9s0vTrt",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "verification_code",
+							"value": "268055",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/verify",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"verify"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "resend code",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|Y8VMX59RYEleGjsb3P8nSfYUloLcCu6nB9s0vTrt",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/resend",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"resend"
 					]
 				}
 			},
@@ -118,12 +197,12 @@
 					"urlencoded": [
 						{
 							"key": "name",
-							"value": "josephg",
+							"value": "Aziz",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "123qwe",
+							"value": "azoz123",
 							"type": "text"
 						}
 					]
@@ -141,57 +220,6 @@
 					"path": [
 						"api",
 						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "verify email",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "2|M1lyV0EziWmbVtOcOugb8GOqWxgRDOVY0KwTsBLz",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "default"
-					}
-				],
-				"url": {
-					"raw": "http://127.0.0.1:8000/api/verify_email/2/537f2e13265c3f2353284e055ceaf7a6ba5f5de5?expires=1656973905&signature=5e1a28c453bae7a377f4d24133ee674c17cf6c11f244ecb3e934caf01312fa4d",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"verify_email",
-						"2",
-						"537f2e13265c3f2353284e055ceaf7a6ba5f5de5"
-					],
-					"query": [
-						{
-							"key": "expires",
-							"value": "1656973905"
-						},
-						{
-							"key": "signature",
-							"value": "5e1a28c453bae7a377f4d24133ee674c17cf6c11f244ecb3e934caf01312fa4d"
-						}
 					]
 				}
 			},
@@ -354,45 +382,6 @@
 						"chat",
 						"room",
 						"message"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "deleteAccount",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "46|H1N5sdVM7AjsOOAwcnWVxm115Xay61hf6zKlOfMR",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "default"
-					}
-				],
-				"url": {
-					"raw": "http://127.0.0.1:8000/api/deleteAccount",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"deleteAccount"
 					]
 				}
 			},
@@ -1621,143 +1610,6 @@
 							"key": "campaign_id",
 							"value": "1"
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "register_code",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "default"
-					}
-				],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "name",
-							"value": "josephg",
-							"type": "text"
-						},
-						{
-							"key": "email",
-							"value": "aa@gmail.com",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "123qwe",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "http://127.0.0.1:8000/api/register_code",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"register_code"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "verify code",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "1|Y8VMX59RYEleGjsb3P8nSfYUloLcCu6nB9s0vTrt",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "default"
-					}
-				],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "verification_code",
-							"value": "268055",
-							"type": "default"
-						}
-					]
-				},
-				"url": {
-					"raw": "http://127.0.0.1:8000/api/verify",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"verify"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "resend code",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "1|Y8VMX59RYEleGjsb3P8nSfYUloLcCu6nB9s0vTrt",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "default"
-					}
-				],
-				"url": {
-					"raw": "http://127.0.0.1:8000/api/resend",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"resend"
 					]
 				}
 			},

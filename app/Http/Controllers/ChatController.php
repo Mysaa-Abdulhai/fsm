@@ -20,7 +20,8 @@ class ChatController extends Controller
         ]);
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
-        return DB::table('chat_messages')->select('user_id','name','message')->orderBy('created_at', 'DESC')
+
+        return DB::table('chat_messages')->select('user_id as id','name','message')->orderBy('created_at', 'DESC')
             ->get();
 
     }
@@ -36,7 +37,7 @@ class ChatController extends Controller
         if (ChatRoom::where('id', $request->room_id)->exists()) {
             $newMessage = new ChatMessage;
             $newMessage->user_id = auth()->user()->id;
-            $newMessage->name = auth()->User()->name;
+            $newMessage->name = auth()->user()->name;
             $newMessage->chat_room_id = $request->room_id;
             $newMessage->message = $request->message;
             $newMessage->save();
@@ -46,7 +47,7 @@ class ChatController extends Controller
 //                $newMessage
                 'Message' => 'message sent',
                 'message' => $newMessage->message,
-                'user' => auth()->User()->name,
+                'name' => auth()->user()->name,
                 'id'=> $newMessage->user_id,
             ], 200);
         }

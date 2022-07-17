@@ -19,9 +19,10 @@ class MessageSent implements ShouldBroadcast
     public $chatMessage;
 
 
-    public function __construct(ChatMessage $chatMessage)
+    public function __construct(chatMessage $chatMessage)
     {
         $this->chatMessage = $chatMessage;
+
     }
     public function broadcastAs() {
         return 'message.new';

@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\ChatRoom;
+use App\Models\User;
+use App\Models\user_role;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Role;
@@ -17,6 +19,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $user=
+            [
+              'name'=>'Aziz',
+              'email'=>'aboda123.azoz56@gmail.com',
+              'password'=>bcrypt('azoz123'),
+              'is_verified'=>'1',
+            ];
+        User::insert($user);
+
+        $user_role=
+           [ [
+                'user_id'=>1,
+                'role_id'=>1,
+            ],
+        [
+            'user_id'=>1,
+            'role_id'=>2,
+        ]];
+        user_role::insert($user_role);
+
         $roles=
             [
               [

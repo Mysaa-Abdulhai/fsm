@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\user_role;
+use App\Models\volunteer;
 use App\Notifications\VerificationCode;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -92,19 +94,36 @@ class AuthController extends Controller
          }
 
         $token = $user->createToken('myapptoken')->plainTextToken;
-        $user_role=user_role::select('role_id')->where('user_id','=',auth()->user()->id)->get();
-        $user_role=$user_role->toArray();
-        $arr=[];
-        foreach ($user_role as $x)
-        {
-            $per=Role::where('id','=',$x)->first();
-            array_push($arr,$per->Permissions()->get());
-        }
+
+        $roles=DB::table('user_roles')
+            ->select('roles.name')
+            ->join('roles','roles.id','=','user_roles.role_id')
+            ->where('user_id', '=', auth()->user()->id)
+            ->get();
+         foreach($roles as $role)
+         {
+             if($role->name=='leader')
+             {
+                 $campaign=volunteer::where('user_id','=',auth()->user()->id)->where('is_leader','=',1)->select('volunteer_campaign_id')->get();return response()->json([
+                 'message' => 'User logged in Successfully',
+                 'user'  => $user,
+                 'token' => $token,
+                 'roles'=> $roles,
+                 'campaigns'=>$campaign
+             ],200);
+             }
+         }
+
+        $ro=DB::table('user_roles')
+            ->select('roles.name')
+            ->join('roles','roles.id','=','user_roles.role_id')
+            ->where('user_id', '=', auth()->user()->id)
+            ->get();
         return response()->json([
             'message' => 'User logged in Successfully',
             'user'  => $user,
             'token' => $token,
-            'per'=> $arr
+            'roles'=> $ro
         ],200);
     }
 

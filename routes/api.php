@@ -40,7 +40,7 @@ Route::post('chat/room/message', [ChatController::class,'newMessage'])->name('ch
 
 
 //,'verified','acceptPermission'
-Route::group(['middleware'=>['auth:sanctum']],function(){
+Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission']],function(){
     //user
     Route::get('show_volunteer_campaign',[UserController::class,'show_volunteer_campaign'])->name('show_volunteer_campaign');
 

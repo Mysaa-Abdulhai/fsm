@@ -45,6 +45,13 @@ class UserController extends Controller
             $id=$campaign->leader_id;
             $name=user::select('name')->where('id','=',$id)->first();
             return response()->json([
+                'name'=>$campaign->name,
+                'image'=>$campaign->image,
+                'details'=>$campaign->details,
+                'type'=>$campaign->type,
+                'longitude'=>$campaign->longitude,
+                'latitude'=>$campaign->latitude,
+                'maxDate'=>$campaign->maxDate,
                 'leader_name' => $name->name,
                 'current_volunteer_number' => $campaign->current_volunteer_number,
                 'volunteer_number' => $campaign->volunteer_number,

@@ -74,58 +74,59 @@ class AuthController extends Controller
 
         // Check email
         $user = User::where('name', $request->name)->first();
-         if($user->is_verified==false){
-             return response()->json([
-                 'message' => 'your email isn\'t verified',
-             ],403);
-         }
+        $x = $user->is_verified;
+        if ($x == false) {
+            return response()->json([
+                'message' => 'your email isn\'t verified',
+            ], 403);
+        }
 
-         try {
-             if (!auth()->attempt($login_data->validated())) {
-                 return response()->json([
-                     'message' => 'Invalid Credentials',
-                 ],403);
+        try {
+            if (!auth()->attempt($login_data->validated())) {
+                return response()->json([
+                    'message' => 'Invalid Credentials',
+                ], 403);
 
-             }
-         } catch (ValidationException $e) {
-             return response()->json([
-                 'message' => 'Bad creds',
-             ],403);
-         }
+            }
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Bad creds',
+            ], 403);
+        }
 
         $token = $user->createToken('myapptoken')->plainTextToken;
 
-        $roles=DB::table('user_roles')
+        $roles = DB::table('user_roles')
             ->select('roles.name')
-            ->join('roles','roles.id','=','user_roles.role_id')
+            ->join('roles', 'roles.id', '=', 'user_roles.role_id')
             ->where('user_id', '=', auth()->user()->id)
             ->get();
-         foreach($roles as $role)
-         {
-             if($role->name=='leader')
-             {
-                 $campaign=volunteer::where('user_id','=',auth()->user()->id)->where('is_leader','=',1)->select('volunteer_campaign_id')->get();return response()->json([
-                 'message' => 'User logged in Successfully',
-                 'user'  => $user,
-                 'token' => $token,
-                 'roles'=> $roles,
-                 'campaigns'=>$campaign
-             ],200);
-             }
-         }
+        foreach ($roles as $role) {
+            if ($role->name == 'leader') {
+                $campaign = volunteer::where('user_id', '=', auth()->user()->id)->where('is_leader', '=', 1)->select('volunteer_campaign_id')->get();
+                return response()->json([
+                    'message' => 'User logged in Successfully',
+                    'user' => $user,
+                    'token' => $token,
+                    'roles' => $roles,
+                    'campaigns' => $campaign
+                ], 200);
+            }
+        }
 
-        $ro=DB::table('user_roles')
+        $ro = DB::table('user_roles')
             ->select('roles.name')
-            ->join('roles','roles.id','=','user_roles.role_id')
+            ->join('roles', 'roles.id', '=', 'user_roles.role_id')
             ->where('user_id', '=', auth()->user()->id)
             ->get();
         return response()->json([
             'message' => 'User logged in Successfully',
-            'user'  => $user,
+            'user' => $user,
             'token' => $token,
-            'roles'=> $ro
-        ],200);
+            'roles' => $ro
+        ], 200);
     }
+
 
 
     public function logout(Request $request) {

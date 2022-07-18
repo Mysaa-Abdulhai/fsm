@@ -40,7 +40,7 @@ Route::post('chat/room/message', [ChatController::class,'newMessage'])->name('ch
 
 
 //,'verified','acceptPermission'
-Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission']],function(){
+Route::group(['middleware'=>['auth:sanctum' ]],function(){
     //user
     Route::get('show_volunteer_campaign',[UserController::class,'show_volunteer_campaign'])->name('show_volunteer_campaign');
 
@@ -53,6 +53,8 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission']],func
     Route::post('add_profile',[UserController::class,'add_profile'])->name('add_profile')->middleware('oneProfile');
 
     Route::post('update_profile',[UserController::class,'update_profile'])->name('update_profile');
+
+    Route::get('show_profile',[UserController::class,'show_profile'])->name('show_profile');
 
 
 

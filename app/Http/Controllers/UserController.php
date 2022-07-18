@@ -363,5 +363,23 @@ class UserController extends Controller
     }
 
 
+    public function show_profile(Request $request){
+
+        if(Profile::where('id', auth()->user()->id)->exists())
+        {
+            $pro = Profile::where('id', auth()->user()->id)->first();
+
+            return response()->json([
+                'profile'=>$pro,
+                ],200);
+        }
+        else
+            return response()->json([
+                'message' => 'your haven\'t a profile',
+            ], 400);
+
+    }
+
+
 
 }

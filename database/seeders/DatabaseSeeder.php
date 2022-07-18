@@ -144,6 +144,10 @@ class DatabaseSeeder extends Seeder
                     'name'=>'update_profile',
                     'role_id'=>'2'
                 ],
+                [
+                    'name'=>'show_profile',
+                    'role_id'=>'2'
+                ],
 
 
 

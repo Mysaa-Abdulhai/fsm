@@ -168,7 +168,7 @@ class AdminController extends Controller
         //image
         $image = $request->file('image');
         $image_name = time() . '.' . $image->getClientOriginalExtension();
-        $image->move('image', $image_name);
+        $image->move('images', $image_name);
 
         $new_post = new public_post();
         $new_post->title = $request->title ;

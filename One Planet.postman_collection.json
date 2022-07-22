@@ -57,16 +57,6 @@
 		{
 			"name": "verify code",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "1|Y8VMX59RYEleGjsb3P8nSfYUloLcCu6nB9s0vTrt",
-							"type": "string"
-						}
-					]
-				},
 				"method": "POST",
 				"header": [
 					{
@@ -80,7 +70,7 @@
 					"urlencoded": [
 						{
 							"key": "verification_code",
-							"value": "268055",
+							"value": "521526",
 							"type": "default"
 						}
 					]
@@ -1423,109 +1413,6 @@
 			"response": []
 		},
 		{
-			"name": "add_profile",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "1|Y8VMX59RYEleGjsb3P8nSfYUloLcCu6nB9s0vTrt",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "default"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "gender",
-							"value": "hoi",
-							"type": "text"
-						},
-						{
-							"key": "birth_date",
-							"value": "2002-02-02",
-							"type": "text"
-						},
-						{
-							"key": "nationality",
-							"value": "ugi",
-							"type": "text"
-						},
-						{
-							"key": "study",
-							"value": "igug",
-							"type": "text"
-						},
-						{
-							"key": "skills",
-							"value": "ohu",
-							"type": "text"
-						},
-						{
-							"key": "phoneNumber",
-							"value": "89678",
-							"type": "text"
-						},
-						{
-							"key": "city",
-							"value": "vgbv",
-							"type": "text"
-						},
-						{
-							"key": "country",
-							"value": "ivi",
-							"type": "text"
-						},
-						{
-							"key": "street",
-							"value": "vhjv",
-							"type": "text"
-						},
-						{
-							"key": "leaderInFuture",
-							"value": "0",
-							"type": "text"
-						},
-						{
-							"key": "image",
-							"type": "file",
-							"src": "/C:/Users/joseph/Desktop/photo_2022-06-28_16-48-36.jpg"
-						}
-					],
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "127.0.0.1:8000/api/add_profile",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"add_profile"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "all_user_leader_in_future",
 			"request": {
 				"auth": {
@@ -1616,14 +1503,14 @@
 			"response": []
 		},
 		{
-			"name": "update_profile",
+			"name": "add_profile",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|qp72NtcIcoSfUwtY0q5U6nLmWiYt1EQ4xj3HpZ9B",
+							"value": "1|Ku4VrDFyqx3RwLptyO0UREN7WABrehVzgoiFN3WM",
 							"type": "string"
 						}
 					]
@@ -1640,19 +1527,78 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "city",
-							"value": "oooo",
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/joseph/Desktop/photo_2022-06-28_16-48-36.jpg"
+						},
+						{
+							"key": "name",
+							"value": "jugvbiukjg",
 							"type": "default"
 						},
 						{
-							"key": "country",
-							"value": "yuhfcuy",
+							"key": "bio",
+							"value": "hjvcj",
 							"type": "default"
 						},
 						{
-							"key": "street",
-							"value": "iygvui",
+							"key": "study",
+							"value": "fvuyfu",
 							"type": "default"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/add_profile",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"add_profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update_profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|Ku4VrDFyqx3RwLptyO0UREN7WABrehVzgoiFN3WM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "afewa",
+							"type": "text",
+							"disabled": true
 						}
 					]
 				},
@@ -1684,7 +1630,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|1xdnS0d9ehB7SO9znFlyWjX2yGVqrphsU0bKsTSY",
+							"value": "1|Ku4VrDFyqx3RwLptyO0UREN7WABrehVzgoiFN3WM",
 							"type": "string"
 						}
 					]

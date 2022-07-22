@@ -211,8 +211,9 @@ class UserController extends Controller
 
     public function add_profile(Request $request){
         $validator = Validator::make($request->all(),[
-            'gender'      => 'required|string',
-            'birth_date'  => 'required|date',
+            'name'       => 'required|string',
+            'bio'       => 'required|string',
+            'study'       => 'required|string',
             'image'       => 'required',
         ]);
         if ($validator->fails()){
@@ -227,35 +228,26 @@ class UserController extends Controller
 
 
         $user_pro = new Profile();
-        $user_pro->name        = auth()->user()->name;
-        $user_pro->gender      = $request->gender;
-        $user_pro->birth_date  = $request->birth_date;
+        $user_pro->name      = $request->name;
+        $user_pro->bio  = $request->bio;
+        $user_pro->study  = $request->study;
         $user_pro->image       = $image_name ;
         $user_pro->user_id     = auth()->user()->id;
-
         if(!is_null($request->nationality))
         {
             $user_pro->nationality = $request->nationality ;
         }
-        if(!is_null($request->city)
-        &&!is_null($request->country)
-        && !is_null($request->street))
+        if(!is_null($request->gender))
         {
-            $location = new location();
-            $location->country = $request->country;
-            $location->city    = $request->city;
-            $location->street  = $request->street;
-            $location->save();
-            $user_pro->location_id = $location->id;
-
-        }
-        if(!is_null($request->study))
-        {
-            $user_pro->study = $request->study ;
+            $user_pro->gender = $request->gender ;
         }
         if(!is_null($request->skills))
         {
             $user_pro->skills = $request->skills ;
+        }
+        if(!is_null($request->birth_date))
+        {
+            $user_pro->birth_date = $request->birth_date     ;
         }
         if(!is_null($request->leaderInFuture))
         {
@@ -281,7 +273,7 @@ class UserController extends Controller
         {
             $pro=Profile::where('user_id','=',$id)->first();
             if(is_null($request->image) And is_null($request->birth_date) And is_null($request->gender)
-                And is_null($request->nationality) And is_null($request->city) And is_null($request->country) And is_null($request->street)
+                And is_null($request->nationality)And is_null($request->bio)And is_null($request->name)
                 And is_null($request->study) And is_null($request->skills)And is_null($request->leaderInFuture)
                 And is_null($request->phoneNumber)
             ){
@@ -304,28 +296,24 @@ class UserController extends Controller
                 $pro->birth_date = $request->birth_date ;
                 $pro->save();
             }
-            if(!is_null($request->gender))
+            if(!is_null($request->name))
             {
-                $pro->gender = $request->gender ;
+                $pro->name = $request->name ;
+                $pro->save();
+            }
+            if(!is_null($request->gender)) {
+                $pro->gender = $request->gender;
+                $pro->save();
+            }
+            if(!is_null($request->bio))
+            {
+                $pro->bio = $request->bio ;
                 $pro->save();
             }
             if(!is_null($request->nationality))
             {
                 $pro->nationality = $request->nationality ;
                 $pro->save();
-            }
-            if(!is_null($request->city)
-                ||!is_null($request->country)
-                || !is_null($request->street))
-            {
-                $loc_id=$pro->location_id;
-                $location = location::where('id','=',$loc_id)->first();
-                $location->country = $request->country;
-                $location->city    = $request->city;
-                $location->street  = $request->street;
-                $location->save();
-                $pro->save();
-
             }
             if(!is_null($request->study))
             {
@@ -357,7 +345,7 @@ class UserController extends Controller
         }
         else
             return response()->json([
-                'message' => ' your haven\'t profile to update it '
+                'message' => ' you haven\'t profile to update it '
             ],200);
 
     }
@@ -365,9 +353,9 @@ class UserController extends Controller
 
     public function show_profile(Request $request){
 
-        if(Profile::where('id', auth()->user()->id)->exists())
+        if(Profile::where('user_id', auth()->user()->id)->exists())
         {
-            $pro = Profile::where('id', auth()->user()->id)->first();
+            $pro = Profile::where('user_id', auth()->user()->id)->first();
 
             return response()->json([
                 'profile'=>$pro,
@@ -375,7 +363,7 @@ class UserController extends Controller
         }
         else
             return response()->json([
-                'message' => 'your haven\'t a profile',
+                'message' => 'you haven\'t a profile',
             ], 400);
 
     }

@@ -17,11 +17,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->string('name');
-            $table->string('gender');
-            $table->date('birth_date');
+            $table->string('gender')->nullable();
+            $table->string('bio');
+            $table->date('birth_date')->nullable();
             $table->string('nationality')->nullable();
-            $table->foreignId('location_id')->nullable();
-            $table->string('study')->nullable();
+            $table->string('study');
             $table->string('skills')->nullable();
             $table->integer('phoneNumber')->nullable();
             $table->boolean('leaderInFuture')->default(false);

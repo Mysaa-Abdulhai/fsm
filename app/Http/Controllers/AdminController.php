@@ -47,6 +47,24 @@ class AdminController extends Controller
         ], 400);
     }
 
+    public function acceptAndUnanswered(Request $request)
+    {
+        if(donation_campaign_request::where('seenAndAccept', '=', false)->exists())
+        {
+            $campaigns = donation_campaign_request::where('seenAndAccept', '=', true)->get();
+            $campaign = donation_campaign_request::where('seenAndAccept', '=', false)->get();
+            return response()->json([
+                'accept' => $campaigns->count(),
+                'unanswered' => $campaign->count(),
+            ], 200);
+
+        }
+        else
+            return response()->json([
+                'message' => 'no any request',
+            ], 400);
+    }
+
     public function all_user_leader_in_future()
     {
 

@@ -82,6 +82,8 @@ Route::group(['middleware'=>['auth:sanctum' ]],function(){
 
     Route::get('all_donation_campaign_request',[AdminController::class,'all_donation_campaign_request'])->name('all_donation_campaign_request');
 
+    Route::get('acceptAndUnanswered',[AdminController::class,'acceptAndUnanswered'])->name('acceptAndUnanswered');
+
     Route::get('all_user_leader_in_future',[AdminController::class,'all_user_leader_in_future'])->name('all_user_leader_in_future');
 
     Route::post('response_on_volunteer_campaign_request',[AdminController::class,'response_on_volunteer_campaign_request'])->name('response_on_volunteer_campaign_request');

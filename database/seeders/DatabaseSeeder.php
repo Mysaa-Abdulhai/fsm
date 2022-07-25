@@ -104,6 +104,10 @@ class DatabaseSeeder extends Seeder
                     'name'=>'delete_public_post',
                     'role_id'=>'1'
                 ],
+                [
+                    'name'=>'all_user_leader_in_future',
+                    'role_id'=>'1'
+                ],
 
 
 
@@ -162,6 +166,16 @@ class DatabaseSeeder extends Seeder
 
 
 
+
+              //volunteer
+              [
+                  'name'=>'chat/room',
+                  'role_id'=>'4'
+              ],
+              [
+                  'name'=>'chat/room/message',
+                  'role_id'=>'4'
+              ],
             ];
         permission::insert($permission);
     }

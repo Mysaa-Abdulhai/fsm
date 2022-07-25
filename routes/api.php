@@ -7,7 +7,6 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\LeaderController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\verificationController;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -46,9 +45,9 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
 
     Route::get('show_details_of_volunteer_campaign',[UserController::class,'show_details_of_volunteer_campaign'])->name('show_details_of_volunteer_campaign');
 
-    Route::post('volunteer_campaign_request',[UserController::class,'volunteer_campaign_request'])->name('volunteer_campaign_request');
+    Route::post('volunteer_campaign_request',[UserController::class,'volunteer_campaign_request'])->name('volunteer_campaign_request')->middleware('haveProfile');
 
-    Route::post('donation_campaign_request',[UserController::class,'donation_campaign_request'])->name('donation_campaign_request');
+    Route::post('donation_campaign_request',[UserController::class,'donation_campaign_request'])->name('donation_campaign_request')->middleware('haveProfile');
 
     Route::post('add_profile',[UserController::class,'add_profile'])->name('add_profile')->middleware('oneProfile');
 
@@ -63,7 +62,7 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
 
     Route::get('show_posts_of_campaign',[UserController::class,'show_posts_of_campaign'])->name('show_posts_of_campaign');
 
-    Route::get('join_campaign',[UserController::class,'join_campaign'])->name('join_campaign')->middleware('haveProfile');
+    Route::get('join_campaign',[UserController::class,'join_campaign'])->name('join_campaign')->middleware('fullProfile');
 
 
 

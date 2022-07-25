@@ -6,13 +6,14 @@ use App\Models\ChatRoom;
 use App\Models\donation_campaign_request;
 use App\Models\Profile;
 use App\Models\public_post;
+use App\Models\user_role;
+use App\Models\volunteer;
 use App\Models\volunteer_campaign;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB ;
 use App\Models\volunteer_campaign_request;
-use Exception;
+
 
 use App\Models\location;
 class AdminController extends Controller
@@ -20,9 +21,13 @@ class AdminController extends Controller
     public function all_volunteer_campaign_request()
     {
         if(volunteer_campaign_request::exists()) {
+            $campaign=DB::table('volunteer_campaign_requests')
+            ->select('profiles.name as user name','profiles.image as user image','volunteer_campaign_requests.*')
+            ->join('profiles','volunteer_campaign_requests.user_id','=','profiles.user_id')
+            ->get();
             return response()->json([
                 'message' => 'campaign added successfully',
-                'requests' => volunteer_campaign_request::all()
+                'requests' => $campaign
             ], 200);
         }
         else
@@ -35,10 +40,14 @@ class AdminController extends Controller
     {
         if(donation_campaign_request::where('seenAndAccept', '=', false)->exists())
         {
-        $campaigns = donation_campaign_request::where('seenAndAccept', '=', false)->get();
+            $campaign=DB::table('donation_campaign_requests')
+                ->select('profiles.name as user name','profiles.image as user image','donation_campaign_requests.*')
+                ->join('profiles','donation_campaign_requests.user_id','=','profiles.user_id')
+                ->where('donation_campaign_requests.seenAndAccept', '=', false)
+                ->get();
         return response()->json([
             'message' => 'campaign added successfully',
-            'requests' => $campaigns
+            'requests' => $campaign
         ], 200);
         }
          else
@@ -49,15 +58,19 @@ class AdminController extends Controller
 
     public function acceptAndUnanswered(Request $request)
     {
-        if(donation_campaign_request::where('seenAndAccept', '=', false)->exists())
+        if(donation_campaign_request::where('seenAndAccept', '=', false)->exists()||volunteer_campaign_request::exists()
+        ||volunteer_campaign::exists())
         {
-            $campaigns = donation_campaign_request::where('seenAndAccept', '=', true)->get();
-            $campaign = donation_campaign_request::where('seenAndAccept', '=', false)->get();
+            $dcampaigns = donation_campaign_request::where('seenAndAccept', '=', true)->get();
+            $dcampaign = donation_campaign_request::where('seenAndAccept', '=', false)->get();
+            $vcampaign=volunteer_campaign::get();
+            $vcampaigns=volunteer_campaign_request::get();
             return response()->json([
-                'accept' => $campaigns->count(),
-                'unanswered' => $campaign->count(),
+                'accepted donation campaign' => $dcampaigns->count(),
+                'unanswered donation campaign' => $dcampaign->count(),
+                'accepted volunteer campaign' => $vcampaign->count(),
+                'unanswered volunteer campaign' => $vcampaigns->count(),
             ], 200);
-
         }
         else
             return response()->json([
@@ -122,6 +135,16 @@ class AdminController extends Controller
                 $group->volunteer_campaign_id = $campaign->id;
                 $group->save();
 
+                $pro=Profile::select('user_id')->where('id','=',$request->leader_id)->first();
+                $id=$pro->user_id;
+                user_role::create(['user_id'=> $id,'role_id'=> 3],
+                    ['user_id'=> $id, 'role_id'=> 4]);
+
+                $volunteer = new volunteer;
+                $volunteer->user_id = $id;
+                $volunteer->volunteer_campaign_id = $campaign->id;
+                $volunteer->is_leader = true;
+                $volunteer->save();
 
                 $campaign_request->delete();
 
@@ -309,7 +332,7 @@ class AdminController extends Controller
         $new_campaign->volunteer_number = $request->volunteer_number;
         $new_campaign->location_id  = $location->id;
         $new_campaign->image     = $image_name;
-        $new_campaign->leader_id = $request->leader_id; //
+        $new_campaign->leader_id = $request->leader_id;
         $new_campaign->volunteer_campaign_request_id=$request->volunteer_campaign_request_id;
         $new_campaign->longitude=$request->longitude;
         $new_campaign->latitude=$request->latitude;
@@ -318,11 +341,27 @@ class AdminController extends Controller
         $new_campaign->skills=$request->skills;
         $new_campaign->save() ;
 
+
+        $group = new ChatRoom();
+        $group->name = $new_campaign->name;
+        $group->volunteer_campaign_id = $new_campaign->id;
+        $group->save();
+
+        $pro=Profile::select('user_id')->where('id','=',$request->leader_id)->first();
+        $id=$pro->user_id;
+        user_role::create(['user_id'=> $id,'role_id'=> 3],
+            ['user_id'=> $id, 'role_id'=> 4]);
+
+        $volunteer = new volunteer;
+        $volunteer->user_id = $id;
+        $volunteer->volunteer_campaign_id = $new_campaign->id;
+        $volunteer->is_leader = true;
+        $volunteer->save();
         return response()->json([
             'message'  => 'campaign added Successfully',
             'campaign' => $new_campaign,
         ],200);
-    }//end
+    }
 
     public function update_volunteer_campaign(Request $request){
         $validator=Validator::make($request->all(),[

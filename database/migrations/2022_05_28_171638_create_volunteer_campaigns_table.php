@@ -25,7 +25,6 @@ return new class extends Migration
             $table->string('type');
             $table->integer('age');
             $table->string('study');
-            $table->string('skills');
             $table->integer('volunteer_number');
             $table->integer('current_volunteer_number')->default(0);
             $table->decimal('longitude', 10, 8);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Profile;
+use App\Models\profileSkill;
 use App\Models\public_post;
 use App\Models\User;
 use App\Models\user_role;
@@ -116,22 +117,17 @@ class UserController extends Controller
             'description'     => 'required|string',
             'total_value'     => 'required|int',
             'end_at'     => 'required|int',
-            'image' => 'required',
+            'image' => 'required|string',
         ]);
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
-
-        //image
-        $image = $request->file('image');
-        $image_name = time() . '.' . $image->getClientOriginalExtension();
-        $image->move('images', $image_name);
 
         $campaign_request=new donation_campaign_request();
         $campaign_request->name=$request->name;
         $campaign_request->description=$request->description;
         $campaign_request->total_value=$request->total_value;
         $campaign_request->end_at=$request->end_at;
-        $campaign_request->image=$image_name;
+        $campaign_request->image=$request->image;
         $campaign_request->user_id=auth()->user()->id;
         $campaign_request->save();
         return response()->json([
@@ -239,10 +235,6 @@ class UserController extends Controller
         {
             $user_pro->gender = $request->gender ;
         }
-        if(!is_null($request->skills))
-        {
-            $user_pro->skills = $request->skills ;
-        }
         if(!is_null($request->birth_date))
         {
             $user_pro->birth_date = $request->birth_date     ;
@@ -257,6 +249,13 @@ class UserController extends Controller
         }
 
         $user_pro->save();
+        if(!is_null($request->skills))
+        {
+            foreach ($request->skills as $skill)
+            {
+                profileSkill::create(['name'=>$skill,'Profile_id'=>$user_pro->id]);
+            }
+        }
         return response()->json([
             'your_profile' => $user_pro,
             'message' => ' your profile created successfully '
@@ -320,8 +319,11 @@ class UserController extends Controller
             }
             if(!is_null($request->skills))
             {
-                $pro->skills = $request->skills ;
-                $pro->save();
+              profileSkill::where('Profile_id', '=', $pro->id)->delete();
+              foreach ($request->skills as $skill) {
+                   profileSkill::create(['name' => $skill, 'Profile_id' => $pro->id]);
+              }
+              $skills=profileSkill::select('name')->where('Profile_id','=',$pro->id)->get();
             }
             if(!is_null($request->leaderInFuture))
             {
@@ -338,7 +340,8 @@ class UserController extends Controller
             else
                 return response()->json([
                     'message' => 'your profile updated successfully',
-                    'profile' => $pro
+                    'profile' => $pro,
+                    'skills'=>$skills,
                 ]);
         }
         else
@@ -349,14 +352,16 @@ class UserController extends Controller
     }
 
 
-    public function show_profile(Request $request){
+    public function show_profile(){
 
         if(Profile::where('user_id', auth()->user()->id)->exists())
         {
             $pro = Profile::where('user_id', auth()->user()->id)->first();
+            $skills=profileSkill::select('name')->where('Profile_id','=',$pro->id)->get();
 
             return response()->json([
                 'profile'=>$pro,
+                'skills'=>$skills,
                 ],200);
         }
         else

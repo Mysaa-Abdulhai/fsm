@@ -16,7 +16,6 @@ class Profile extends Model
         'age',
         'nationality',
         'study',
-        'skills',
         'phoneNumber',
         'leaderInFuture',
         'image',
@@ -25,5 +24,9 @@ class Profile extends Model
     public function User()
     {
         return $this->belongsTo(User::class,'user_id');
+    }
+    public function profileSkill()
+    {
+        return $this->hasMany(profileSkill::class);
     }
 }

@@ -658,31 +658,31 @@
 					}
 				],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "image",
-							"type": "file",
-							"src": "/C:/Users/joseph/Desktop/lecture/DataBase/theroritical/photo_2022-06-28_16-48-39.jpg"
-						},
+					"mode": "urlencoded",
+					"urlencoded": [
 						{
 							"key": "name",
 							"value": "ohboh",
-							"type": "default"
+							"type": "text"
 						},
 						{
 							"key": "description",
 							"value": "pojopj",
-							"type": "default"
+							"type": "text"
 						},
 						{
 							"key": "end_at",
 							"value": "33",
-							"type": "default"
+							"type": "text"
 						},
 						{
 							"key": "total_value",
 							"value": "33",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"value": "fe",
 							"type": "default"
 						}
 					]
@@ -1045,7 +1045,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|zlI8z1Uklu9BXRhNkHN00ae7vBBj5F0PNmsIib40",
+							"value": "2|kbZct86Cp0LNnQ5yEoFtJYF7l6hp8yRonX5G7eAT",
 							"type": "string"
 						}
 					]
@@ -1063,7 +1063,7 @@
 					"urlencoded": [
 						{
 							"key": "id",
-							"value": "9",
+							"value": "1",
 							"type": "default"
 						},
 						{
@@ -1079,19 +1079,25 @@
 						},
 						{
 							"key": "age",
-							"value": "",
+							"value": "20",
 							"type": "default",
 							"disabled": true
 						},
 						{
 							"key": "study",
-							"value": "",
+							"value": "fewewf",
 							"type": "default",
 							"disabled": true
 						},
 						{
-							"key": "skills",
-							"value": "",
+							"key": "skills[]",
+							"value": "bi",
+							"type": "default",
+							"disabled": true
+						},
+						{
+							"key": "skills[]",
+							"value": "mef",
 							"type": "default",
 							"disabled": true
 						}
@@ -1177,7 +1183,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|2sOWY8YYMJhtMnFhQeofLOzP78DNvCVNgTxvJDLY",
+							"value": "2|kbZct86Cp0LNnQ5yEoFtJYF7l6hp8yRonX5G7eAT",
 							"type": "string"
 						}
 					]
@@ -1264,13 +1270,23 @@
 							"type": "default"
 						},
 						{
-							"key": "skills",
-							"value": "ohu",
+							"key": "study",
+							"value": "igug",
 							"type": "default"
 						},
 						{
-							"key": "study",
-							"value": "igug",
+							"key": "skills[]",
+							"value": "gvi",
+							"type": "default"
+						},
+						{
+							"key": "skills[]",
+							"value": "daw",
+							"type": "default"
+						},
+						{
+							"key": "skills[]",
+							"value": "jkbk",
 							"type": "default"
 						}
 					],
@@ -1305,7 +1321,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|zlI8z1Uklu9BXRhNkHN00ae7vBBj5F0PNmsIib40",
+							"value": "2|kbZct86Cp0LNnQ5yEoFtJYF7l6hp8yRonX5G7eAT",
 							"type": "string"
 						}
 					]
@@ -1323,22 +1339,17 @@
 					"urlencoded": [
 						{
 							"key": "id",
-							"value": "1",
-							"type": "default"
+							"value": "7",
+							"type": "text"
 						},
 						{
-							"key": "name",
-							"value": "ziziff",
-							"type": "default"
+							"key": "skills[]",
+							"value": "new",
+							"type": "text"
 						},
 						{
-							"key": "longitude",
-							"value": "9",
-							"type": "default"
-						},
-						{
-							"key": "leader_id",
-							"value": "2",
+							"key": "skills[]",
+							"value": "new1",
 							"type": "default"
 						}
 					],
@@ -1510,7 +1521,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|Ku4VrDFyqx3RwLptyO0UREN7WABrehVzgoiFN3WM",
+							"value": "1|AgUJfHgmthRQ7twPkGsh9tVSjlPmjcDTBR07inAC",
 							"type": "string"
 						}
 					]
@@ -1527,23 +1538,33 @@
 					"mode": "formdata",
 					"formdata": [
 						{
+							"key": "name",
+							"value": "jugvbiukjg",
+							"type": "text"
+						},
+						{
+							"key": "bio",
+							"value": "hjvcj",
+							"type": "text"
+						},
+						{
 							"key": "image",
 							"type": "file",
 							"src": "/C:/Users/joseph/Desktop/photo_2022-06-28_16-48-36.jpg"
 						},
 						{
-							"key": "name",
-							"value": "jugvbiukjg",
-							"type": "default"
-						},
-						{
-							"key": "bio",
-							"value": "hjvcj",
-							"type": "default"
-						},
-						{
 							"key": "study",
-							"value": "fvuyfu",
+							"value": "lhbn",
+							"type": "default"
+						},
+						{
+							"key": "skills[]",
+							"value": "hbh",
+							"type": "default"
+						},
+						{
+							"key": "skills[]",
+							"value": "ib",
 							"type": "default"
 						}
 					],
@@ -1578,7 +1599,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|Ku4VrDFyqx3RwLptyO0UREN7WABrehVzgoiFN3WM",
+							"value": "1|AgUJfHgmthRQ7twPkGsh9tVSjlPmjcDTBR07inAC",
 							"type": "string"
 						}
 					]
@@ -1595,10 +1616,14 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "name",
-							"value": "afewa",
-							"type": "text",
-							"disabled": true
+							"key": "skills[]",
+							"value": "me",
+							"type": "text"
+						},
+						{
+							"key": "skills[]",
+							"value": ",e",
+							"type": "default"
 						}
 					]
 				},

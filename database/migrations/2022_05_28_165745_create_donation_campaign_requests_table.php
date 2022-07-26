@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->string('name');
             $table->longText('description');
-            $table->text('image');
+            $table->string('image');
             $table->integer('total_value');
             $table->integer('end_at');
             $table->boolean('seenAndAccept')->default(false);

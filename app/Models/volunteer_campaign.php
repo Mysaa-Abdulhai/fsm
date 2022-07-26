@@ -18,7 +18,6 @@ class volunteer_campaign extends Model
         'image',
         'age',
         'study',
-        'skills',
         'location_id',
         'leader_id',
         'longitude',
@@ -44,5 +43,9 @@ class volunteer_campaign extends Model
     public function volunteers()
     {
         return $this->hasMany(volunteer::class);
+    }
+    public function campaignSkill()
+    {
+        return $this->hasMany(campaignSkill::class);
     }
 }

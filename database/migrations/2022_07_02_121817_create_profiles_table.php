@@ -22,7 +22,6 @@ return new class extends Migration
             $table->date('birth_date')->nullable();
             $table->string('nationality')->nullable();
             $table->string('study');
-            $table->string('skills')->nullable();
             $table->integer('phoneNumber')->nullable();
             $table->boolean('leaderInFuture')->default(false);
             $table->text('image');

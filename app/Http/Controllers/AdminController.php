@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\campaignSkill;
 use App\Models\ChatRoom;
 use App\Models\donation_campaign_request;
 use App\Models\Profile;
@@ -102,7 +103,7 @@ class AdminController extends Controller
             'leader_id' => 'required_if:accept,==,true|int',
             'age' => 'required_if:accept,==,true|int',
             'study' => 'required_if:accept,==,true|string',
-            'skills' => 'required_if:accept,==,true|string',
+            'skills' => 'required_if:accept,==,true',
         ]);
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
@@ -127,8 +128,15 @@ class AdminController extends Controller
                 $campaign->leader_id = $request->leader_id;
                 $campaign->age = $request->age;
                 $campaign->study = $request->study;
-                $campaign->skills = $request->skills;
                 $campaign->save();
+                foreach($request->skills as $skill)
+                {
+                    campaignSkill::create(['name'=>$skill,'volunteer_campaign_id'=>$campaign->id]);
+                }
+
+
+                $skills=campaignSkill::select('name')->where('volunteer_campaign_id','=',$campaign->id)->get();
+
 
                 $group = new ChatRoom();
                 $group->name = $campaign->name;
@@ -151,6 +159,7 @@ class AdminController extends Controller
                 return response()->json([
                     'message' => 'campaign added successfully',
                     'campaign' => $campaign,
+                    'skills'=>$skills
                 ], 200);
             } else {
                 $campaign_request->delete();
@@ -305,7 +314,7 @@ class AdminController extends Controller
             'street'   => 'required|string',
             'age'   => 'required|string',
             'study'   => 'required|string',
-            'skills'   => 'required|string',
+            'skills'   => 'required|array',
 
         ]);
 
@@ -338,9 +347,14 @@ class AdminController extends Controller
         $new_campaign->latitude=$request->latitude;
         $new_campaign->age=$request->age;
         $new_campaign->study=$request->study;
-        $new_campaign->skills=$request->skills;
         $new_campaign->save() ;
 
+        foreach($request->skills as $skill)
+        {
+            campaignSkill::create(['name'=>$skill,'volunteer_campaign_id'=>$new_campaign->id]);
+        }
+
+        $skills=campaignSkill::select('name')->where('volunteer_campaign_id','=',$new_campaign->id)->get();
 
         $group = new ChatRoom();
         $group->name = $new_campaign->name;
@@ -360,6 +374,7 @@ class AdminController extends Controller
         return response()->json([
             'message'  => 'campaign added Successfully',
             'campaign' => $new_campaign,
+            'skills'=>$skills
         ],200);
     }
 
@@ -389,11 +404,15 @@ class AdminController extends Controller
         $location_id   = $request->location_id;
         $latitude   = $request->latitude;
         $longitude   = $request->longitude;
+        $study   = $request->study;
+        $age   = $request->age;
+        $skills=$request->skills;
 
         if(is_null($name) And is_null($type) And is_null($details) And is_null($target) And
             is_null($maxDate) And is_null($volunteer_number) And is_null($image)
             And is_null($leader_id) And is_null($location_id)And is_null($latitude)
-            And is_null($longitude)
+            And is_null($longitude)And is_null($study)And is_null($age)
+            And is_null($skills)
         ){
             return response()->json([
                 'message' => 'Enter an information to update !',
@@ -425,6 +444,12 @@ class AdminController extends Controller
         if (!is_null($leader_id)){
             $campaign->leader_id = $leader_id;
         }
+        if (!is_null($study)){
+            $campaign->study = $study;
+        }
+        if (!is_null($age)){
+            $campaign->age = $age;
+        }
         if (!is_null($location_id)){
             $loc_id=$campaign->location_id;
             $location = location::where('id','=',$loc_id)->first;
@@ -441,9 +466,18 @@ class AdminController extends Controller
             $campaign->longitude = $longitude;
         }
         $campaign->save();
+        if(!is_null($request->skills))
+        {
+            campaignSkill::where('volunteer_campaign_id', '=', $campaign->id)->delete();
+            foreach ($request->skills as $skill) {
+                campaignSkill::create(['name' => $skill, 'volunteer_campaign_id' => $campaign->id]);
+            }
+            $skills=campaignSkill::select('name')->where('volunteer_campaign_id','=',$campaign->id)->get();
+        }
         return response()->json([
             'message' => 'Campaign updated Successfully !',
-            'update campaign ' => $campaign
+            'update campaign ' => $campaign,
+            'skills'=>$skills
         ]);
     }
 
@@ -459,13 +493,14 @@ class AdminController extends Controller
                 $validator->errors()
             ],400 );
 
-        $campaign_id = volunteer_campaign::find($request->id);
-        if(!$campaign_id)
+        $campaign = volunteer_campaign::find($request->id);
+        if(!$campaign)
             return response()->json([
                 'message' => 'campaign you have requested not found !'
             ]);
+        campaignSkill::where('volunteer_campaign_id', '=', $campaign->id)->delete();
+        $campaign->delete();
 
-        $campaign_id->delete();
         return response()->json([
             'message' => 'campaign deleted successfully !'
         ],200);

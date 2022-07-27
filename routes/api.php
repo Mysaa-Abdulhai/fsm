@@ -103,3 +103,55 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
     Route::post('add_campaign_post',[LeaderController::class,'add_campaign_post'])->name('add_campaign_post');
 });
 
+Route::get('/token_firebase',function(Request $request){
+    $SERVER_API_KEY='AAAACIU4Yhk:APA91bGBOKbSvvlUnOYHyUqfcmK6W-iXzn_qh9k636JxcqQsmV1kuGwHnIosditCThJkK4hAmNHjHDK6HjUjNVDto5XZjjpwWjFdRO6czT0IYMNx25ASXMIAB0RWlawPEWeCqfdkSNpE';
+
+    $token_1 = $request->token;
+
+    $data = [
+
+        "registration_ids" => [
+            $token_1
+        ],
+
+        "notification" => [
+
+            "title" => 'hello',
+
+            "body" => 'fuck u',
+
+            "sound"=> "default"
+
+        ],
+
+    ];
+
+    $dataString = json_encode($data);
+
+    $headers = [
+
+        'Authorization: key=' . $SERVER_API_KEY,
+
+        'Content-Type: application/json',
+
+    ];
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+
+    curl_setopt($ch, CURLOPT_POST, true);
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+    $response = curl_exec($ch);
+
+    dd($response);
+
+});

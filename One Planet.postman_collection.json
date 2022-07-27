@@ -1183,7 +1183,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "2|kbZct86Cp0LNnQ5yEoFtJYF7l6hp8yRonX5G7eAT",
+							"value": "4|eLBKNAnPaQHnlYiBXODFNvqIYf4NNKx68tnRFhzU",
 							"type": "string"
 						}
 					]
@@ -1200,58 +1200,69 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "name",
-							"value": "ujgkijug",
-							"type": "text"
-						},
-						{
-							"key": "type",
-							"value": "oiuhbioh",
-							"type": "text"
-						},
-						{
-							"key": "details",
-							"value": "effwwfe",
-							"type": "text"
-						},
-						{
-							"key": "maxDate",
-							"value": "2022-03-03",
-							"type": "text"
-						},
-						{
-							"key": "volunteer_number",
-							"value": "33",
-							"type": "text"
-						},
-						{
-							"key": "leader_id",
-							"value": "1",
-							"type": "text"
-						},
-						{
 							"key": "image",
 							"type": "file",
 							"src": "/C:/Users/joseph/Desktop/photo_2022-06-28_16-48-36.jpg"
 						},
 						{
+							"key": "skills",
+							"value": "rgger,zz,zizi",
+							"type": "default"
+						},
+						{
+							"key": "name",
+							"value": "uyfu",
+							"type": "default"
+						},
+						{
+							"key": "type",
+							"value": "gbvgv",
+							"type": "default"
+						},
+						{
+							"key": "age",
+							"value": "23",
+							"type": "default"
+						},
+						{
+							"key": "study",
+							"value": "iug",
+							"type": "default"
+						},
+						{
+							"key": "volunteer_number",
+							"value": "23",
+							"type": "default"
+						},
+						{
+							"key": "leader_id",
+							"value": "1",
+							"type": "default"
+						},
+						{
 							"key": "city",
-							"value": "iugiug",
+							"value": "ugi",
+							"contentType": "",
 							"type": "default"
 						},
 						{
 							"key": "country",
-							"value": "ohbioh",
+							"value": "iuvu",
 							"type": "default"
 						},
 						{
 							"key": "street",
-							"value": "ioubikg",
+							"value": "vbgio",
 							"type": "default"
 						},
 						{
-							"key": "volunteer_campaign_request_id",
-							"value": "2",
+							"key": "details",
+							"value": "vbjdfgfdg",
+							"type": "default"
+						},
+						{
+							"key": "maxDate",
+							"value": "2022-02-02",
 							"type": "default"
 						},
 						{
@@ -1262,31 +1273,6 @@
 						{
 							"key": "latitude",
 							"value": "9",
-							"type": "default"
-						},
-						{
-							"key": "age",
-							"value": "15",
-							"type": "default"
-						},
-						{
-							"key": "study",
-							"value": "igug",
-							"type": "default"
-						},
-						{
-							"key": "skills[]",
-							"value": "gvi",
-							"type": "default"
-						},
-						{
-							"key": "skills[]",
-							"value": "daw",
-							"type": "default"
-						},
-						{
-							"key": "skills[]",
-							"value": "jkbk",
 							"type": "default"
 						}
 					],
@@ -1321,7 +1307,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "2|kbZct86Cp0LNnQ5yEoFtJYF7l6hp8yRonX5G7eAT",
+							"value": "4|eLBKNAnPaQHnlYiBXODFNvqIYf4NNKx68tnRFhzU",
 							"type": "string"
 						}
 					]
@@ -1335,21 +1321,16 @@
 					}
 				],
 				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "skills",
+							"value": "gogo,gaga",
+							"type": "default"
+						},
 						{
 							"key": "id",
-							"value": "7",
-							"type": "text"
-						},
-						{
-							"key": "skills[]",
-							"value": "new",
-							"type": "text"
-						},
-						{
-							"key": "skills[]",
-							"value": "new1",
+							"value": "32",
 							"type": "default"
 						}
 					],
@@ -1599,7 +1580,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|AgUJfHgmthRQ7twPkGsh9tVSjlPmjcDTBR07inAC",
+							"value": "3|fJvQ5OCXnqrf7SAORJ0KreXffAAgW05p2YRHrs2F",
 							"type": "string"
 						}
 					]
@@ -1610,22 +1591,27 @@
 						"key": "Accept",
 						"value": "application/json",
 						"type": "default"
+					},
+					{
+						"key": "Accept",
+						"value": "text/plain",
+						"type": "default"
 					}
 				],
 				"body": {
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "skills[]",
-							"value": "me",
-							"type": "text"
-						},
-						{
-							"key": "skills[]",
-							"value": ",e",
+							"key": "skills",
+							"value": "new,n,mm",
 							"type": "default"
 						}
-					]
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
 					"raw": "127.0.0.1:8000/api/update_profile",

@@ -306,15 +306,16 @@ class AdminController extends Controller
             'details' => 'required|string|min:5',
             'maxDate' => 'required|date',
             'volunteer_number' => 'required|int',
-            'volunteer_campaign_request_id' => 'required|int',
             'image'   => 'required',
             'leader_id'   => 'required|int',
             'city'   => 'required|string',
             'country'   => 'required|string',
             'street'   => 'required|string',
-            'age'   => 'required|string',
+            'age'   => 'required|int',
             'study'   => 'required|string',
-            'skills'   => 'required|array',
+            'skills'   => 'required',
+            'longitude'   => 'required|numeric|between:-90.00000000,90.00000000',
+            'latitude' => 'required|numeric|between:-90.00000000,90.00000000',
 
         ]);
 
@@ -342,14 +343,15 @@ class AdminController extends Controller
         $new_campaign->location_id  = $location->id;
         $new_campaign->image     = $image_name;
         $new_campaign->leader_id = $request->leader_id;
-        $new_campaign->volunteer_campaign_request_id=$request->volunteer_campaign_request_id;
+        $new_campaign->volunteer_campaign_request_id=0;
         $new_campaign->longitude=$request->longitude;
         $new_campaign->latitude=$request->latitude;
         $new_campaign->age=$request->age;
         $new_campaign->study=$request->study;
         $new_campaign->save() ;
-
-        foreach($request->skills as $skill)
+        $array=$request->skills;
+        $array=explode(",",$array);
+        foreach($array as $skill)
         {
             campaignSkill::create(['name'=>$skill,'volunteer_campaign_id'=>$new_campaign->id]);
         }
@@ -469,11 +471,14 @@ class AdminController extends Controller
         if(!is_null($request->skills))
         {
             campaignSkill::where('volunteer_campaign_id', '=', $campaign->id)->delete();
-            foreach ($request->skills as $skill) {
-                campaignSkill::create(['name' => $skill, 'volunteer_campaign_id' => $campaign->id]);
+            $array=$request->skills;
+            $array=explode(",",$array);
+            foreach($array as $skill)
+            {
+                campaignSkill::create(['name'=>$skill,'volunteer_campaign_id'=>$campaign->id]);
             }
-            $skills=campaignSkill::select('name')->where('volunteer_campaign_id','=',$campaign->id)->get();
         }
+
         return response()->json([
             'message' => 'Campaign updated Successfully !',
             'update campaign ' => $campaign,

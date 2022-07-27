@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Profile;
+use App\Models\profileSkill;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -24,11 +25,10 @@ class FullProfile
             ],403);
         }
         $pro=Profile::where('user_id','=',auth()->user()->id)->first();
-//        if($pro::whereNull(['nationality','study','skills',
-//                'leaderInFuture','phoneNumber','city','country','street'])==false)
+        $skill=profileSkill::where('Profile_id','=',$pro->id)->exists();
         if($pro->nationality==null
         &&$pro->gender==null
-        &&$pro->skills==null
+        &&$skill==false
         &&$pro->birth_date==null
         &&$pro->leaderInFuture==null
         &&$pro->phoneNumber==null

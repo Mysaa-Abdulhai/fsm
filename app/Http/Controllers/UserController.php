@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\campaignSkill;
 use App\Models\Profile;
 use App\Models\profileSkill;
 use App\Models\public_post;
@@ -15,6 +16,8 @@ use App\Models\donation_campaign_request;
 use Illuminate\Http\Request;
 use App\Models\volunteer_campaign;
 use App\Models\location;
+use phpDocumentor\Reflection\Types\Null_;
+
 class UserController extends Controller
 {
 
@@ -162,7 +165,6 @@ class UserController extends Controller
     public function join_campaign(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            //'user_id' => 'required|int',
             'campaign_id' => 'required|int',
         ]);
 
@@ -171,12 +173,22 @@ class UserController extends Controller
 
         $pro=Profile::where('user_id', '=', auth()->user()->id)->first();
         $camp=volunteer_campaign::where('id','=',$request->campaign_id)->first();
+        $campSkills=campaignSkill::where('volunteer_campaign_id','=',$camp->id)->pluck('name');
+        $proSkills=profileSkill::where('Profile_id','=',$pro->id)->pluck('name');
+        $campSkills->toArray();
+        $proSkills->toArray();
+        $accept=false;
+        if($campSkills->diff($proSkills)->isEmpty())
+        {
+            $accept=true;
+        }
         $age = Carbon::parse($pro->birth_date)->diff(Carbon::now())->y;
             if($pro->study==$camp->study
-            &&$pro->skills==$camp->skills
+            &&$accept==true
             &&$age>=$camp->age
             )
             {
+
                 $volunteer = new volunteer;
                 $volunteer->user_id = auth()->user()->id;
                 $volunteer->volunteer_campaign_id = $request->campaign_id;
@@ -249,9 +261,12 @@ class UserController extends Controller
         }
 
         $user_pro->save();
+
         if(!is_null($request->skills))
         {
-            foreach ($request->skills as $skill)
+            $array=$request->skills;
+            $array=explode(",",$array);
+            foreach($array as $skill)
             {
                 profileSkill::create(['name'=>$skill,'Profile_id'=>$user_pro->id]);
             }
@@ -319,11 +334,14 @@ class UserController extends Controller
             }
             if(!is_null($request->skills))
             {
-              profileSkill::where('Profile_id', '=', $pro->id)->delete();
-              foreach ($request->skills as $skill) {
-                   profileSkill::create(['name' => $skill, 'Profile_id' => $pro->id]);
-              }
-              $skills=profileSkill::select('name')->where('Profile_id','=',$pro->id)->get();
+                profileSkill::select('name')->where('Profile_id','=',$pro->id)->delete();
+                $array=$request->skills;
+                $array=explode(",",$array);
+                foreach($array as $skill)
+                {
+                    profileSkill::create(['name'=>$skill,'Profile_id'=>$pro->id]);
+                }
+                $skills=profileSkill::select('name')->where('Profile_id','=',$pro->id)->get();
             }
             if(!is_null($request->leaderInFuture))
             {

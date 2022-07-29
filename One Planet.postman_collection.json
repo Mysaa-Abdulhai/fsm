@@ -194,6 +194,11 @@
 							"key": "password",
 							"value": "azoz123",
 							"type": "text"
+						},
+						{
+							"key": "toke",
+							"value": "zizizizi",
+							"type": "default"
 						}
 					]
 				},
@@ -385,7 +390,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|29bFOUq14qNJMyN3cOPAqjM0iOOLVPNpIDZoGjzO",
+							"value": "39|tRG8TsAddnuv1kbRTpjffo7FPPUrUS7OuSiKUAJh",
 							"type": "string"
 						}
 					]
@@ -568,69 +573,6 @@
 					"path": [
 						"api",
 						"volunteer_campaign_request"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "add_public_post",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "5|OEvAneRfy8eZD0yjKD727wogGw5GE0VMMxdUPM6h",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "default"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "title",
-							"value": "new mmmmm",
-							"type": "default"
-						},
-						{
-							"key": "body",
-							"value": "new kkkk new mmmmmnew kkkk new kkkk new kkkk new kkkk ",
-							"type": "default"
-						},
-						{
-							"key": "image",
-							"type": "file",
-							"src": "/C:/Users/joseph/Desktop/photo_2022-06-28_16-48-36.jpg"
-						}
-					],
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "127.0.0.1:8000/api/add_public_post",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"add_public_post"
 					]
 				}
 			},
@@ -854,7 +796,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|GWoyiS9hbT2FvEybp24Q8tBHR9GNfvLpFjEvfOxN",
+							"value": "6|71e7b6a7hkDt07ypybQ6x7dB9NnZ333jtc6rOGnI",
 							"type": "string"
 						}
 					]
@@ -872,7 +814,7 @@
 					"urlencoded": []
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/show_posts_of_campaign?id=2",
+					"raw": "http://127.0.0.1:8000/api/show_posts_of_campaign?id=1",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -888,7 +830,7 @@
 					"query": [
 						{
 							"key": "id",
-							"value": "2"
+							"value": "1"
 						}
 					]
 				}
@@ -1183,7 +1125,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "4|eLBKNAnPaQHnlYiBXODFNvqIYf4NNKx68tnRFhzU",
+							"value": "11|qiP9ydM045qrvyU7cCi60GQeyZOuf1AjILY0UWRg",
 							"type": "string"
 						}
 					]
@@ -1236,7 +1178,7 @@
 						},
 						{
 							"key": "leader_id",
-							"value": "1",
+							"value": "13",
 							"type": "default"
 						},
 						{
@@ -1502,7 +1444,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|AgUJfHgmthRQ7twPkGsh9tVSjlPmjcDTBR07inAC",
+							"value": "10|uosKmKyIYcCGyTsouQVWFh7X1Wh1QkvBhfnbqWdh",
 							"type": "string"
 						}
 					]
@@ -1539,13 +1481,33 @@
 							"type": "default"
 						},
 						{
-							"key": "skills[]",
-							"value": "hbh",
+							"key": "skills",
+							"value": "zizi,zizi2",
 							"type": "default"
 						},
 						{
-							"key": "skills[]",
-							"value": "ib",
+							"key": "nationality",
+							"value": "",
+							"type": "default"
+						},
+						{
+							"key": "gender",
+							"value": "",
+							"type": "default"
+						},
+						{
+							"key": "birth_date",
+							"value": "",
+							"type": "default"
+						},
+						{
+							"key": "leaderInFuture",
+							"value": "",
+							"type": "default"
+						},
+						{
+							"key": "phoneNumber",
+							"value": "",
 							"type": "default"
 						}
 					],
@@ -1756,6 +1718,345 @@
 					"path": [
 						"api",
 						"token_firebase"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "chart",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "127.0.0.1:8000/api/chart",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"chart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_public_post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "5|OEvAneRfy8eZD0yjKD727wogGw5GE0VMMxdUPM6h",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "new mmmmm",
+							"type": "default"
+						},
+						{
+							"key": "body",
+							"value": "new kkkk new mmmmmnew kkkk new kkkk new kkkk new kkkk ",
+							"type": "default"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/joseph/Desktop/photo_2022-06-28_16-48-36.jpg"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/add_public_post",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"add_public_post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_public_like",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|71e7b6a7hkDt07ypybQ6x7dB9NnZ333jtc6rOGnI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "2",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/add_public_like",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"add_public_like"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "unlike_public",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|71e7b6a7hkDt07ypybQ6x7dB9NnZ333jtc6rOGnI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "1",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/unlike_public",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"unlike_public"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_public_comment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|71e7b6a7hkDt07ypybQ6x7dB9NnZ333jtc6rOGnI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "1",
+							"type": "default"
+						},
+						{
+							"key": "text",
+							"value": "zizi",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/add_public_comment",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"add_public_comment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_campaign_like",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|71e7b6a7hkDt07ypybQ6x7dB9NnZ333jtc6rOGnI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "1",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/add_campaign_like",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"add_campaign_like"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "unlike_campaign",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|71e7b6a7hkDt07ypybQ6x7dB9NnZ333jtc6rOGnI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "2",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/unlike_campaign",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"unlike_campaign"
 					]
 				}
 			},

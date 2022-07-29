@@ -177,7 +177,7 @@ class UserController extends Controller
 
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
-        $po=Campaign_Post::all()->where('volunteer_campaign_id',$request->id)->get();
+        $po=Campaign_Post::where('volunteer_campaign_id',$request->id)->get();
         $posts=collect();
         foreach ($po as $post)
         {
@@ -454,14 +454,23 @@ class UserController extends Controller
         }
         if(public_post::where('id','=',$request->id)->exists())
         {
-            public_like::create([
-                'user_id'=>auth()->user()->id,
-                'public_post_id'=>$request->id,
-            ]);
-            return response()->json([
-                'message' => 'you liked the post',
-                'number of likes on post' => public_like::where('public_post_id','=',$request->id)->count()
-            ], 200);
+            if(public_like::where('public_post_id','=',$request->id)->where('user_id','=',auth()->user()->id)->exists())
+            {
+                return response()->json([
+                    'message' => 'you already like the post',
+                ], 403);
+            }
+            else
+            {
+                public_like::create([
+                    'user_id' => auth()->user()->id,
+                    'public_post_id' => $request->id,
+                ]);
+                return response()->json([
+                    'message' => 'you liked the post',
+                    'number of likes on post' => public_like::where('public_post_id', '=', $request->id)->count()
+                ], 200);
+            }
         }
         else
             return response()->json([
@@ -501,14 +510,23 @@ class UserController extends Controller
         }
         if(Campaign_Post::where('id','=',$request->id)->exists())
         {
-            campaign_like::create([
-                'user_id'=>auth()->user()->id,
-                'Campaign_Post_id'=>$request->id,
-            ]);
-            return response()->json([
-                'message' => 'you liked the post',
-                'number of likes on post' => public_like::where('Campaign_Post_id','=',$request->id)->count()
-            ], 200);
+            if(campaign_like::where('Campaign_Post_id','=',$request->id)->where('user_id','=',auth()->user()->id)->exists()) {
+                return response()->json([
+                    'message' => 'you already like the post',
+                ], 403);
+            }
+            else
+            {
+
+                campaign_like::create([
+                    'user_id' => auth()->user()->id,
+                    'Campaign_Post_id' => $request->id,
+                ]);
+                return response()->json([
+                    'message' => 'you liked the post',
+                    'number of likes on post' => campaign_like::where('Campaign_Post_id', '=', $request->id)->count()
+                ], 200);
+            }
         }
         else
             return response()->json([
@@ -525,9 +543,9 @@ class UserController extends Controller
         }
         if(Campaign_Post::where('id','=',$request->id)->exists())
         {
-            if(campaign_like::where('Campaign_Post_id','=',$request->id AND 'user_id','=',auth()->user()->id)->exists())
+            if(campaign_like::where('Campaign_Post_id','=',$request->id)->where('user_id','=',auth()->user()->id)->exists())
             {
-                campaign_like::where('public_post_id','=',$request->id AND 'user_id','=',auth()->user()->id)->delete();
+                campaign_like::where('Campaign_Post_id','=',$request->id)->where('user_id','=',auth()->user()->id)->delete();
             }
             return response()->json([
                 'message' => 'you unliked the post',

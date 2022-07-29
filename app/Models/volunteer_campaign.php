@@ -48,4 +48,14 @@ class volunteer_campaign extends Model
     {
         return $this->hasMany(campaignSkill::class);
     }
+    public function getSkill()
+    {
+        $skills=collect();
+        $x=campaignSkill::where('volunteer_campaign_id','=',$this->id)->select('name')->get();
+        foreach ($x as $y)
+        {
+            $skills->push($y->name);
+        }
+        return $skills;
+    }
 }

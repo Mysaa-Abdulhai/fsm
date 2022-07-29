@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\campaign_like;
 use App\Models\campaignSkill;
 use App\Models\Profile;
 use App\Models\profileSkill;
+use App\Models\public_comment;
+use App\Models\public_like;
 use App\Models\public_post;
 use App\Models\User;
 use App\Models\user_role;
@@ -16,24 +19,32 @@ use App\Models\donation_campaign_request;
 use Illuminate\Http\Request;
 use App\Models\volunteer_campaign;
 use App\Models\location;
-use phpDocumentor\Reflection\Types\Null_;
+use Illuminate\Support\Facades\DB ;
+use phpDocumentor\Reflection\Types\Collection;
 
 class UserController extends Controller
 {
 
-    public function show_volunteer_campaign(Request $request){
+    public function show_volunteer_campaign(){
         if (volunteer_campaign::exists())
         {
-            $campaign = volunteer_campaign::all();
+            $camp=collect();
+            $campaigns = volunteer_campaign::all();
+
+            foreach ($campaigns as $campaign)
+            {
+                $skills=$campaign->getSkill();
+                $camp->push([$campaign,$skills]);
+            }
             return response()->json([
-                'campaign' => $campaign,
+                'campaigns' => $camp,
             ], 200);
         }
         else
             return response()->json([
                 'message' => 'no any campaign',
-            ], 400);
-    }
+                ], 400);
+        }
 
     public function show_details_of_volunteer_campaign(Request $request){
         $validator = Validator::make($request->all(), [
@@ -45,6 +56,7 @@ class UserController extends Controller
         {
             $campaign = volunteer_campaign::where('id', $request->id)->first();
             $id=$campaign->leader_id;
+            $skills=$campaign->getSkill();
             $name=user::select('name')->where('id','=',$id)->first();
             return response()->json([
                 'name'=>$campaign->name,
@@ -55,6 +67,9 @@ class UserController extends Controller
                 'latitude'=>$campaign->latitude,
                 'maxDate'=>$campaign->maxDate,
                 'leader_name' => $name->name,
+                'age'=>$campaign->age,
+                'study'=>$campaign->study,
+                'skills'=>$skills,
                 'current_volunteer_number' => $campaign->current_volunteer_number,
                 'volunteer_number' => $campaign->volunteer_number,
             ], 200);
@@ -108,6 +123,7 @@ class UserController extends Controller
         $campaign_request->longitude=$request->longitude;
         $campaign_request->latitude=$request->latitude;
         $campaign_request->save();
+
         return response()->json([
                     'message'  => 'request added Successfully',
                     'campaign_request'  => $campaign_request,
@@ -141,7 +157,14 @@ class UserController extends Controller
 
 
     public function show_public_posts(Request $request){
-        $posts=public_post::all();
+        $po=public_post::all();
+        $posts=collect();
+        foreach ($po as$post)
+        {
+            $like=public_like::where('public_post_id','=',$post->id)->count();
+            $comment=public_comment::where('public_post_id','=',$post->id)->get();
+            $posts->push([$post,$like,$comment]);
+        }
         return response()->json([
             'post'  => $posts,
         ],200);
@@ -154,8 +177,13 @@ class UserController extends Controller
 
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
-        $posts=Campaign_Post::all()->where('volunteer_campaign_id',$request->id)->first();
-
+        $po=Campaign_Post::all()->where('volunteer_campaign_id',$request->id)->get();
+        $posts=collect();
+        foreach ($po as $post)
+        {
+            $like=campaign_like::where('Campaign_Post_id','=',$post->id)->count();
+            $posts->push([$post,$like]);
+        }
         return response()->json([
             'post' =>$posts,
             'message' => 'all posts for campaign number'
@@ -271,8 +299,10 @@ class UserController extends Controller
                 profileSkill::create(['name'=>$skill,'Profile_id'=>$user_pro->id]);
             }
         }
+        $skills=profileSkill::where('Profile_id','=',$user_pro->id)->pluck('name');
         return response()->json([
             'your_profile' => $user_pro,
+            'skills'=>$skills,
             'message' => ' your profile created successfully '
         ],200);
     }
@@ -389,6 +419,124 @@ class UserController extends Controller
 
     }
 
+    public function add_public_comment(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id'       => 'required|int',
+            'text'       => 'required|string',
+        ]);
+        if ($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        if(public_post::where('id','=',$request->id)->exists())
+        {
+            $comment=public_comment::create([
+                'user_id'=>auth()->user()->id,
+                'public_post_id'=>$request->id,
+                'text'=>$request->text
+            ]);
+            return response()->json([
+                'message' => 'comment added successfully',
+                'comment'=>$comment
+            ], 200);
+        }
+        else
+            return response()->json([
+                'message' => 'your post not found',
+            ], 403);
+    }
 
+    public function add_public_like(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id'       => 'required|int',
+        ]);
+        if ($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        if(public_post::where('id','=',$request->id)->exists())
+        {
+            public_like::create([
+                'user_id'=>auth()->user()->id,
+                'public_post_id'=>$request->id,
+            ]);
+            return response()->json([
+                'message' => 'you liked the post',
+                'number of likes on post' => public_like::where('public_post_id','=',$request->id)->count()
+            ], 200);
+        }
+        else
+            return response()->json([
+                'message' => 'your post not found',
+            ], 403);
+    }
+
+    public function unlike_public(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id'       => 'required|int',
+        ]);
+        if ($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        if(public_post::where('id','=',$request->id)->exists())
+        {
+            if(public_like::where('public_post_id','=',$request->id AND 'user_id','=',auth()->user()->id)->exists())
+            {
+                public_like::where('public_post_id','=',$request->id AND 'user_id','=',auth()->user()->id)->delete();
+            }
+            return response()->json([
+                'message' => 'you unliked the post',
+            ], 200);
+        }
+        else
+            return response()->json([
+                'message' => 'your post not found',
+            ], 403);
+    }
+
+    public function add_campaign_like(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id'       => 'required|int',
+        ]);
+        if ($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        if(Campaign_Post::where('id','=',$request->id)->exists())
+        {
+            campaign_like::create([
+                'user_id'=>auth()->user()->id,
+                'Campaign_Post_id'=>$request->id,
+            ]);
+            return response()->json([
+                'message' => 'you liked the post',
+                'number of likes on post' => public_like::where('Campaign_Post_id','=',$request->id)->count()
+            ], 200);
+        }
+        else
+            return response()->json([
+                'message' => 'your post not found',
+            ], 403);
+    }
+
+    public function unlike_campaign(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id'       => 'required|int',
+        ]);
+        if ($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        if(Campaign_Post::where('id','=',$request->id)->exists())
+        {
+            if(campaign_like::where('Campaign_Post_id','=',$request->id AND 'user_id','=',auth()->user()->id)->exists())
+            {
+                campaign_like::where('public_post_id','=',$request->id AND 'user_id','=',auth()->user()->id)->delete();
+            }
+            return response()->json([
+                'message' => 'you unliked the post',
+            ], 200);
+        }
+        else
+            return response()->json([
+                'message' => 'your post not found',
+            ], 403);
+    }
 
 }

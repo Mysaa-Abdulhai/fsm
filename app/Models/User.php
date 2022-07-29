@@ -65,6 +65,22 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(volunteer::class);
     }
+    public function notification_tokens()
+    {
+        return $this->hasMany(notification_token::class);
+    }
+    public function public_comments()
+    {
+        return $this->hasMany(public_comment::class);
+    }
+    public function public_likes()
+    {
+        return $this->hasMany(public_like::class);
+    }
+    public function campaign_likes()
+    {
+        return $this->hasMany(campaign_like::class);
+    }
     public function Profile()
     {
         return $this->hasOne(Profile::class);
@@ -80,8 +96,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public function resetCode()
     {
         $this->timestamps = false;
-        $this->verification_code=Null;
-        $this->code_expires_at=Null;
+        $this->verification_code=null;
+        $this->code_expires_at=null;
 
         $this->save();
     }

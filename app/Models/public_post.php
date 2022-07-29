@@ -13,4 +13,8 @@ class   public_post extends Model
         'body',
         'image',
     ];
+    public function public_comments()
+    {
+        return $this->hasMany(public_comment::class);
+    }
 }

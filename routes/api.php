@@ -55,12 +55,22 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
 
     Route::get('show_profile',[UserController::class,'show_profile'])->name('show_profile');
 
-
-
-
+    //public post
     Route::get('show_public_posts',[UserController::class,'show_public_posts'])->name('show_public_posts');
 
+    Route::post('add_public_comment',[UserController::class,'add_public_comment'])->name('add_public_comment');
+
+    Route::post('add_public_like',[UserController::class,'add_public_like'])->name('add_public_like');
+
+    Route::delete('unlike_public',[UserController::class,'unlike_public'])->name('unlike_public');
+
+
+    //campaign post
     Route::get('show_posts_of_campaign',[UserController::class,'show_posts_of_campaign'])->name('show_posts_of_campaign');
+
+    Route::post('add_campaign_like',[UserController::class,'add_campaign_like'])->name('add_campaign_like');
+
+    Route::delete('unlike_campaign',[UserController::class,'unlike_campaign'])->name('unlike_campaign');
 
     Route::get('join_campaign',[UserController::class,'join_campaign'])->name('join_campaign')->middleware('fullProfile');
 
@@ -154,4 +164,17 @@ Route::get('/token_firebase',function(Request $request){
 
     dd($response);
 
+});
+Route::get('/chart',function(Request $request){
+    return response()->json([
+        'data' =>
+            [
+                ['male',2020,200],
+                ['female',2020,50],
+                ['male',2021,250],
+                ['female',2021,4],
+                ['male',2022,70],
+                ['female',2022,300]
+            ]
+    ],200);
 });

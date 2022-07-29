@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\campaignSkill;
 use App\Models\ChatRoom;
 use App\Models\donation_campaign_request;
+use App\Models\notification_token;
 use App\Models\Profile;
+use App\Events\notification;
 use App\Models\public_post;
 use App\Models\user_role;
 use App\Models\volunteer;
@@ -87,7 +89,7 @@ class AdminController extends Controller
                 return response()->json([
                     'message' => 'profiles for user who want to be leader in future',
                     'profiles' => $profiles
-                ], 400);
+                ], 200);
             }
             else
                 return response()->json([
@@ -299,22 +301,23 @@ class AdminController extends Controller
     }//end
 
 
-    public function add_volunteer_campaign(Request $request){
+    public function add_volunteer_campaign(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-            'name'    => 'required|string',
-            'type'    => 'required|string',
+            'name' => 'required|string',
+            'type' => 'required|string',
             'details' => 'required|string|min:5',
             'maxDate' => 'required|date',
             'volunteer_number' => 'required|int',
-            'image'   => 'required',
-            'leader_id'   => 'required|int',
-            'city'   => 'required|string',
-            'country'   => 'required|string',
-            'street'   => 'required|string',
-            'age'   => 'required|int',
-            'study'   => 'required|string',
-            'skills'   => 'required',
-            'longitude'   => 'required|numeric|between:-90.00000000,90.00000000',
+            'image' => 'required',
+            'leader_id' => 'required|int',
+            'city' => 'required|string',
+            'country' => 'required|string',
+            'street' => 'required|string',
+            'age' => 'required|int',
+            'study' => 'required|string',
+            'skills' => 'required',
+            'longitude' => 'required|numeric|between:-90.00000000,90.00000000',
             'latitude' => 'required|numeric|between:-90.00000000,90.00000000',
 
         ]);
@@ -327,55 +330,70 @@ class AdminController extends Controller
         $image_name = time() . '.' . $image->getClientOriginalExtension();
         $image->move('images', $image_name);
 
-        $location=new location();
+        $location = new location();
         $location->country = $request->country;
-        $location->city    = $request->city;
-        $location->street  = $request->street;
+        $location->city = $request->city;
+        $location->street = $request->street;
         $location->save();
 
         $new_campaign = new volunteer_campaign();
 
-        $new_campaign->name      = $request->name;
-        $new_campaign->type      = $request->type;
-        $new_campaign->details   = $request->details;
-        $new_campaign->maxDate   = $request->maxDate;
+        $new_campaign->name = $request->name;
+        $new_campaign->type = $request->type;
+        $new_campaign->details = $request->details;
+        $new_campaign->maxDate = $request->maxDate;
         $new_campaign->volunteer_number = $request->volunteer_number;
-        $new_campaign->location_id  = $location->id;
-        $new_campaign->image     = $image_name;
+        $new_campaign->location_id = $location->id;
+        $new_campaign->image = $image_name;
         $new_campaign->leader_id = $request->leader_id;
-        $new_campaign->volunteer_campaign_request_id=0;
-        $new_campaign->longitude=$request->longitude;
-        $new_campaign->latitude=$request->latitude;
-        $new_campaign->age=$request->age;
-        $new_campaign->study=$request->study;
-        $new_campaign->save() ;
-        $array=$request->skills;
-        $array=explode(",",$array);
-        foreach($array as $skill)
-        {
-            campaignSkill::create(['name'=>$skill,'volunteer_campaign_id'=>$new_campaign->id]);
+        $new_campaign->volunteer_campaign_request_id = 0;
+        $new_campaign->longitude = $request->longitude;
+        $new_campaign->latitude = $request->latitude;
+        $new_campaign->age = $request->age;
+        $new_campaign->study = $request->study;
+        $new_campaign->save();
+        $array = $request->skills;
+        $array = explode(",", $array);
+        foreach ($array as $skill) {
+            campaignSkill::create(['name' => $skill, 'volunteer_campaign_id' => $new_campaign->id]);
         }
 
-        $skills=campaignSkill::select('name')->where('volunteer_campaign_id','=',$new_campaign->id)->get();
+        $skills = campaignSkill::select('name')->where('volunteer_campaign_id', '=', $new_campaign->id)->get();
 
         $group = new ChatRoom();
         $group->name = $new_campaign->name;
         $group->volunteer_campaign_id = $new_campaign->id;
         $group->save();
-
-        $pro=Profile::select('user_id')->where('id','=',$request->leader_id)->first();
-        $id=$pro->user_id;
-        user_role::create(['user_id'=> $id,'role_id'=> 3],
-            ['user_id'=> $id, 'role_id'=> 4]);
+        if (Profile::select('user_id')->where('id', '=', $request->leader_id)->exists())
+        {
+            $pro = Profile::select('user_id')->where('id', '=', $request->leader_id)->first();
+        $id = $pro->user_id;
+        user_role::create(['user_id' => $id, 'role_id' => 3],
+            ['user_id' => $id, 'role_id' => 4]);
 
         $volunteer = new volunteer;
         $volunteer->user_id = $id;
         $volunteer->volunteer_campaign_id = $new_campaign->id;
         $volunteer->is_leader = true;
         $volunteer->save();
+        }
+        else
+            return response()->json([
+                'message' => 'Wrong leader_id'
+            ],403);
+        $tokens=notification_token::all();
+        $send='all notification sent successfully';
+        foreach ($tokens as $token)
+        {
+            if(new notification($token,$new_campaign->name.'new volunteer campaign has been added')==null)
+            {
+                $send='Some notifications may not have been sent';
+            }
+        }
         return response()->json([
             'message'  => 'campaign added Successfully',
             'campaign' => $new_campaign,
+            'notification'=>$send,
             'skills'=>$skills
         ],200);
     }
@@ -392,7 +410,7 @@ class AdminController extends Controller
         if( ! $campaign) {
             return response()->json([
                 'message' => 'campaign you have requested not found'
-            ]);
+            ],403);
         }
 
         $name    = $request->name;

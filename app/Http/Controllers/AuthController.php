@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Role;
+use App\Models\notification_token;
 use App\Models\User;
 use App\Models\user_role;
 use App\Models\volunteer;
@@ -62,13 +62,15 @@ class AuthController extends Controller
         // Validation
         $login_data = Validator::make($request->all(), [
             'name'     => 'required|string',
-            'password' => 'required|string'
-        ]);
+            'password' => 'required|string',
 
+        ]);
+//        Validator::make($request->all(), [
+//            'toke'     => 'required|string',
+//        ]);
         if ($login_data->fails()) {
             return response()->json([
-                'message' => '$login_data->errors()->getMessages()',
-//            return $this->errorResponse($login_data->errors()->getMessages());
+                'message' => $login_data->errors()->getMessages(),
             ],400);
         }
 
@@ -96,6 +98,22 @@ class AuthController extends Controller
 
         $token = $user->createToken('myapptoken')->plainTextToken;
 
+        //notification
+        if($request->toke) {
+            $tokens = notification_token::where('user_id', '=', $user->id)->get();
+            $exists = false;
+            foreach ($tokens as $tok) {
+                if ($tok->token == $request->toke) {
+                    $exists = true;
+                }
+            }
+            if ($exists == false) {
+                notification_token::create([
+                    'user_id' => $user->id,
+                    'token' => $request->toke,
+                ]);
+            }
+        }
         $roles = DB::table('user_roles')
             ->select('roles.name')
             ->join('roles', 'roles.id', '=', 'user_roles.role_id')
@@ -103,7 +121,8 @@ class AuthController extends Controller
             ->get();
         foreach ($roles as $role) {
             if ($role->name == 'leader') {
-                $campaign = volunteer::where('user_id', '=', auth()->user()->id)->where('is_leader', '=', 1)->select('volunteer_campaign_id')->get();
+                $campaign = volunteer::where('user_id', '=', auth()->user()->id)->where('is_leader', '=', 1)
+                    ->select('volunteer_campaign_id')->get();
                 return response()->json([
                     'message' => 'User logged in Successfully',
                     'user' => $user,
@@ -119,6 +138,8 @@ class AuthController extends Controller
             ->join('roles', 'roles.id', '=', 'user_roles.role_id')
             ->where('user_id', '=', auth()->user()->id)
             ->get();
+
+
         return response()->json([
             'message' => 'User logged in Successfully',
             'user' => $user,

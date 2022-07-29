@@ -152,6 +152,26 @@ class DatabaseSeeder extends Seeder
                     'name'=>'show_profile',
                     'role_id'=>'2'
                 ],
+                [
+                    'name'=>'add_public_comment',
+                    'role_id'=>'2'
+                ],
+                [
+                    'name'=>'add_public_like',
+                    'role_id'=>'2'
+                ],
+                [
+                    'name'=>'add_campaign_like',
+                    'role_id'=>'2'
+                ],
+                [
+                    'name'=>'unlike_public',
+                    'role_id'=>'2'
+                ],
+                [
+                    'name'=>'unlike_campaign',
+                    'role_id'=>'2'
+                ],
 
 
 

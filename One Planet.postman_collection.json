@@ -21,18 +21,23 @@
 					"urlencoded": [
 						{
 							"key": "name",
-							"value": "josephg",
+							"value": "aziz",
 							"type": "text"
 						},
 						{
 							"key": "email",
-							"value": "aa@gmail.com",
+							"value": "sg@gmail.com",
 							"type": "text"
 						},
 						{
 							"key": "password",
 							"value": "123qwe",
 							"type": "text"
+						},
+						{
+							"key": "notification_token",
+							"value": "asd",
+							"type": "default"
 						}
 					]
 				},
@@ -187,18 +192,19 @@
 					"urlencoded": [
 						{
 							"key": "name",
-							"value": "Aziz",
+							"value": "sami",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "azoz123",
+							"value": "sami123",
 							"type": "text"
 						},
 						{
 							"key": "toke",
-							"value": "zizizizi",
-							"type": "default"
+							"value": "zizizizisdfds",
+							"type": "default",
+							"disabled": true
 						}
 					]
 				},
@@ -1128,7 +1134,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|3iEBpEvyKotO8MHqpwCxsybI3lZZZ9Wia7wHCc42",
+							"value": "2|EwBYBE6DIde5ncKcj6zupnOLtSlS9YqpZBB3b2p9",
 							"type": "string"
 						}
 					]
@@ -1156,7 +1162,7 @@
 						},
 						{
 							"key": "name",
-							"value": "aaase",
+							"value": "yhj",
 							"type": "default"
 						},
 						{

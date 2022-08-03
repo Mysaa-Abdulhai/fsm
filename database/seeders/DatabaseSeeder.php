@@ -237,5 +237,8 @@ class DatabaseSeeder extends Seeder
               ],
             ];
         permission::insert($permission);
+        $this->call([
+            users::class,
+        ]);
     }
 }

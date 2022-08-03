@@ -9,12 +9,10 @@ use App\Models\ChatRoom;
 use App\Models\donation_campaign_request;
 use App\Models\notification_token;
 use App\Models\Profile;
-use App\Events\notification;
 use App\Models\public_post;
 use App\Models\user_role;
 use App\Models\volunteer;
 use App\Models\volunteer_campaign;
-use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB ;
@@ -327,8 +325,7 @@ class AdminController extends Controller
     public function add_volunteer_campaign(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-            //'type' => 'required', [new Enum(category::fromValue('type'))],
+            'name' => 'required|string|unique:volunteer_campaigns,name',
             'type' => 'required|string',
             'details' => 'required|string|min:5',
             'maxDate' => 'required|date',
@@ -413,18 +410,16 @@ class AdminController extends Controller
             ],403);
 
         $tokens=notification_token::all();
-        $send='all notification sent successfully';
+        $send=collect();
         foreach ($tokens as $token)
         {
-            if(new notification($token->token,$new_campaign->name.'new volunteer campaign has been added')==null)
-            {
-                $send='Some notifications may not have been sent';
-            }
-        }
+            $x=$this->notification($token->token,$new_campaign->name.'new volunteer campaign has been added');
+            $send->push($x);
+        };
         return response()->json([
             'message'  => 'campaign added Successfully',
             'campaign' => $new_campaign,
-            'notification'=>$send,
+            'notification'=>$x,
             'skills'=>$skills
         ],200);
     }
@@ -558,6 +553,59 @@ class AdminController extends Controller
         return response()->json([
             'message' => 'campaign deleted successfully !'
         ],200);
+    }
+
+    public function notification($token,$message)
+    {
+        $SERVER_API_KEY='AAAACIU4Yhk:APA91bGBOKbSvvlUnOYHyUqfcmK6W-iXzn_qh9k636JxcqQsmV1kuGwHnIosditCThJkK4hAmNHjHDK6HjUjNVDto5XZjjpwWjFdRO6czT0IYMNx25ASXMIAB0RWlawPEWeCqfdkSNpE';
+
+        $token_1 =$this;
+
+        $data = [
+
+            "registration_ids" => [
+                $token_1
+            ],
+
+            "notification" => [
+
+                "title" => 'One Planet',
+
+                "body" => $message,
+
+                "sound"=> "default"
+
+            ],
+
+        ];
+
+        $dataString = json_encode($data);
+
+        $headers = [
+
+            'Authorization: key=' . $SERVER_API_KEY,
+
+            'Content-Type: application/json',
+
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+
+        curl_setopt($ch, CURLOPT_POST, true);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+        $response = curl_exec($ch);
+
+        return $response;
     }
 
 

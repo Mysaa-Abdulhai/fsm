@@ -13,40 +13,44 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    public function register(Request $request){
-
-        $validator = Validator::make($request->all(), [
-            'name'     => 'required|string|unique:users,name',
-            'email'    => 'required|string|email|unique:users,email',
-            'password' => 'required|string',
-            'notification_token'=>'required|string'
-        ]);
-
-        if ($validator->fails())
-        return response()->json(
-            $validator->errors()->toJson(), 400);
-
-        $user = new User();
-        $user->name  = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->save();
-        $token = $user->createToken('myapptoken')->plainTextToken;
-
-    notification_token::create([
-                    'user_id' => $user->id,
-                    'token' => $request->notification_token,
-                ]);
-$user->sendEmailVerificationNotification();
-
-        return response()->json([
-            'message' => 'User successfully registered',
-            'user' => $user,
-            'token' => $token,
-            'notification_token'=>$request->notification_token
-        ], 201);
-
-    }
+//    public function register(Request $request){
+//
+//        $validator = Validator::make($request->all(), [
+//            'name'     => 'required|string|unique:users,name',
+//            'email'    => 'required|string|email|unique:users,email',
+//            'password' => 'required|string',
+//            'notification_token'=>'required|string'
+//        ]);
+//
+//        if ($validator->fails())
+//        return response()->json(
+//            $validator->errors()->toJson(), 400);
+//
+//        $user = new User();
+//        $user->name  = $request->name;
+//        $user->email = $request->email;
+//        $user->password = bcrypt($request->password);
+//        $user->save();
+//        $token = $user->createToken('myapptoken')->plainTextToken;
+//
+//        notification_token::create([
+//                    'user_id' => $user->id,
+//                    'token' => $request->notification_token,
+//                ]);
+//         $user->sendEmailVerificationNotification();
+//        $tok=notification_token::where('user_id','=',$user->id)
+//            ->where('token','=',$request->notification_token)
+//            ->select('token');
+//        return response()->json([
+//            'message' => 'User successfully registered',
+//            'user' => $user,
+//            'token' => $token,
+//            'notification token'=>notification_token::where('user_id','=',$user->id)
+//                ->where('token','=',$request->notification_token)
+//                ->select('token')
+//        ], 201);
+//
+//    }
 
 
     public function deleteAccount(Request $request){
@@ -133,6 +137,10 @@ $user->sendEmailVerificationNotification();
                     'message' => 'User logged in Successfully',
                     'user' => $user,
                     'token' => $token,
+                    'notification_token' => notification_token::
+                    where('user_id','=',$user->id)
+                        ->where('token','=',$request->toke)
+                        ->pluck('token'),
                     'roles' => $roles,
                     'campaigns' => $campaign
                 ], 200);
@@ -150,6 +158,10 @@ $user->sendEmailVerificationNotification();
             'message' => 'User logged in Successfully',
             'user' => $user,
             'token' => $token,
+            'notification_token' => notification_token::
+                where('user_id','=',$user->id)
+                ->where('token','=',$request->toke)
+                ->pluck('token'),
             'roles' => $ro
         ], 200);
     }
@@ -172,7 +184,8 @@ $user->sendEmailVerificationNotification();
         $validator = Validator::make($request->all(), [
             'name'     => 'required|string|unique:users,name',
             'email'    => 'required|string|email|unique:users,email',
-            'password' => 'required|string'
+            'password' => 'required|string',
+            'notification_token'=>'required|string'
         ]);
 
         if ($validator->fails())
@@ -188,11 +201,17 @@ $user->sendEmailVerificationNotification();
 
         $user->generateCode();
         $user->notify(new VerificationCode());
-
+        notification_token::create([
+            'user_id' => $user->id,
+            'token' => $request->notification_token,
+        ]);
         return response()->json([
             'message' => 'User successfully registered',
             'user' => $user,
-            'token' => $token
+            'token' => $token,
+            'notification code'=>notification_token::where('user_id','=',$user->id)
+                ->where('token','=',$request->notification_token)
+                ->pluck('token')
         ], 201);
     }
 }

@@ -82,6 +82,6 @@ class notification
 
         $response = curl_exec($ch);
 
-        return $response;
+       dd ($response);
     }
 }

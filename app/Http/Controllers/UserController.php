@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Enums;
 use App\Models\campaign_like;
 use App\Models\campaignSkill;
+use App\Models\favorite;
 use App\Models\Profile;
 use App\Models\profileSkill;
 use App\Models\public_comment;
@@ -12,6 +14,7 @@ use App\Models\User;
 use App\Models\user_role;
 use App\Models\volunteer;
 use App\Models\Campaign_Post;
+use App\Models\volunteer_campaign_rate;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use App\Models\volunteer_campaign_request;
@@ -19,32 +22,32 @@ use App\Models\donation_campaign_request;
 use Illuminate\Http\Request;
 use App\Models\volunteer_campaign;
 use App\Models\location;
-use Illuminate\Support\Facades\DB ;
-use phpDocumentor\Reflection\Types\Collection;
 
 class UserController extends Controller
 {
 
-    public function show_volunteer_campaign(){
-        if (volunteer_campaign::exists())
-        {
-            $camp=collect();
-            $campaigns = volunteer_campaign::all();
-
-            foreach ($campaigns as $campaign)
-            {
-                $skills=$campaign->getSkill();
-                $camp->push([$campaign,$skills]);
-            }
+    public function show_volunteer_campaign(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'category' => 'required|in:natural,human,pets,others',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        if(volunteer_campaign::select('id', 'name', 'image', 'type', 'details', 'volunteer_number', 'current_volunteer_number')->where('type', '=', $request->category)->exists()) {
+            $campaigns = volunteer_campaign::select('id', 'name', 'image', 'type', 'details', 'volunteer_number', 'current_volunteer_number')->where('type', '=', $request->category)->get();
             return response()->json([
-                'campaigns' => $camp,
+                'campaigns' => $campaigns,
             ], 200);
         }
         else
             return response()->json([
-                'message' => 'no any campaign',
-                ], 400);
-        }
+                'message' => 'no any campaign in this category',
+            ], 403);
+    }
+
+
+
 
     public function show_details_of_volunteer_campaign(Request $request){
         $validator = Validator::make($request->all(), [
@@ -55,9 +58,21 @@ class UserController extends Controller
         if(volunteer_campaign::where('id', $request->id)->exists())
         {
             $campaign = volunteer_campaign::where('id', $request->id)->first();
-            $id=$campaign->leader_id;
             $skills=$campaign->getSkill();
-            $name=user::select('name')->where('id','=',$id)->first();
+
+
+            $rate=collect();
+            $rates=volunteer_campaign_rate::where('volunteer_campaign_id','=',$campaign->id)->get();
+            foreach ($rates as $rat){
+                $rate->push($rat->rate);
+            }
+            $rate=$rate->avg();
+
+            $pro = Profile::select('user_id')->where('id', '=', $campaign->leader_id)->first();
+            $id = $pro->user_id;
+            $name=User::select('name')->where('id','=',$id)->first();
+
+
             return response()->json([
                 'name'=>$campaign->name,
                 'image'=>$campaign->image,
@@ -70,6 +85,7 @@ class UserController extends Controller
                 'age'=>$campaign->age,
                 'study'=>$campaign->study,
                 'skills'=>$skills,
+                'rate'=>$rate,
                 'current_volunteer_number' => $campaign->current_volunteer_number,
                 'volunteer_number' => $campaign->volunteer_number,
             ], 200);
@@ -114,7 +130,7 @@ class UserController extends Controller
         $campaign_request=new volunteer_campaign_request();
         $campaign_request->name=$request->name;
         $campaign_request->type=$request->type;
-        $campaign_request->details =$request->type;
+        $campaign_request->details =$request->details;
         $campaign_request->volunteer_number=$request->volunteer_number;
         $campaign_request->maxDate=$request->maxDate;
         $campaign_request->image=$image_name;
@@ -130,29 +146,30 @@ class UserController extends Controller
         ],200);
     }
 
-    public function donation_campaign_request(Request $request){
-        $validator= Validator::make($request->all(), [
-            'name'=>'required|string',
-            'description'     => 'required|string',
-            'total_value'     => 'required|int',
-            'end_at'     => 'required|int',
+    public function donation_campaign_request(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'total_value' => 'required|int',
+            'end_at' => 'required|int',
             'image' => 'required|string',
         ]);
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
 
-        $campaign_request=new donation_campaign_request();
-        $campaign_request->name=$request->name;
-        $campaign_request->description=$request->description;
-        $campaign_request->total_value=$request->total_value;
-        $campaign_request->end_at=$request->end_at;
-        $campaign_request->image=$request->image;
-        $campaign_request->user_id=auth()->user()->id;
+        $campaign_request = new donation_campaign_request();
+        $campaign_request->name = $request->name;
+        $campaign_request->description = $request->description;
+        $campaign_request->total_value = $request->total_value;
+        $campaign_request->end_at = $request->end_at;
+        $campaign_request->image = $request->image;
+        $campaign_request->user_id = auth()->user()->id;
         $campaign_request->save();
         return response()->json([
-            'message'  => 'request added Successfully',
-            'campaign_request'  => $campaign_request,
-        ],200);
+            'message' => 'request added Successfully',
+            'campaign_request' => $campaign_request,
+        ], 200);
     }
 
 
@@ -221,12 +238,13 @@ class UserController extends Controller
                 $volunteer->user_id = auth()->user()->id;
                 $volunteer->volunteer_campaign_id = $request->campaign_id;
                 $volunteer->save();
-
-                $user_role= new user_role([
-                    'user_id'=> auth()->user()->id,
-                    'role_id'=> 4
-                ]);
-                $user_role->save();
+                if(user_role::where('user_id','=',auth()->user()->id)->where('role_id','=',4)->exists()==false) {
+                    $user_role = new user_role([
+                        'user_id' => auth()->user()->id,
+                        'role_id' => 4
+                    ]);
+                    $user_role->save();
+                }
 
                 return response()->json([
                     'message' => 'you join the campaign'
@@ -487,13 +505,18 @@ class UserController extends Controller
         }
         if(public_post::where('id','=',$request->id)->exists())
         {
-            if(public_like::where('public_post_id','=',$request->id AND 'user_id','=',auth()->user()->id)->exists())
+            if(public_like::where('public_post_id','=',$request->id)->where('user_id','=',auth()->user()->id)->exists())
             {
-                public_like::where('public_post_id','=',$request->id AND 'user_id','=',auth()->user()->id)->delete();
+                public_like::where('public_post_id','=',$request->id)->where('user_id','=',auth()->user()->id)->delete();
+                return response()->json([
+                    'message' => 'you unliked the post',
+                ], 200);
             }
-            return response()->json([
-                'message' => 'you unliked the post',
-            ], 200);
+
+            else
+             return response()->json([
+                'message' => 'You don\'t like the post',
+            ], 403);
         }
         else
             return response()->json([
@@ -556,5 +579,205 @@ class UserController extends Controller
                 'message' => 'your post not found',
             ], 403);
     }
+
+    public function favorite_campaign(Request $request){
+        $validator = Validator::make($request->all(),[
+            'volunteer_campaign_id'       => 'required|int',
+        ]);
+        if ($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        if(volunteer_campaign::where('id','=',$request->volunteer_campaign_id)->exists())
+        {
+            if(favorite::where('volunteer_campaign_id','=',$request->volunteer_campaign_id)->where('user_id','=',auth()->user()->id)->exists())
+            {
+                return response()->json([
+                    'message' => 'you already add the campaign to your favorite',
+                ], 403);
+            }
+            else
+            {
+                favorite::create([
+                    'user_id'=>auth()->user()->id,
+                    'volunteer_campaign_id'=>$request->volunteer_campaign_id
+                ]);
+                return response()->json([
+                    'message' => 'you added the campaign to your favorite',
+                ], 200);
+            }
+        }
+        else
+            return response()->json([
+                'message' => 'your campaign not found',
+            ], 403);
+    }
+
+    public function delete_favorite_campaign(Request $request){
+        $validator = Validator::make($request->all(),[
+            'volunteer_campaign_id'       => 'required|int',
+        ]);
+        if ($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        if(volunteer_campaign::where('id','=',$request->volunteer_campaign_id)->exists())
+        {
+            if(favorite::where('volunteer_campaign_id','=',$request->volunteer_campaign_id)->where('user_id','=',auth()->user()->id)->exists()) {
+                favorite::where('volunteer_campaign_id', '=', $request->volunteer_campaign_id)->where('user_id', '=', auth()->user()->id)->delete();
+                return response()->json([
+                    'message' => 'you delete the campaign from favorite',
+                ], 200);
+            }
+            else
+                return response()->json([
+                    'message' => 'your haven\'t rate to delete it',
+                ], 403);
+        }
+        else
+            return response()->json([
+                'message' => 'your campaign not found',
+            ], 403);
+    }
+
+    public function get_favorite(){
+        $fav=favorite::where('user_id', '=', auth()->user()->id)->with('volunteer_campaign')->get()->pluck('volunteer_campaign');
+        return response()->json([
+            'favorite' => $fav,
+        ], 200);
+
+    }
+
+    public function add_rate(Request $request){
+        $validator = Validator::make($request->all(),[
+            'volunteer_campaign_id'       => 'required|int',
+            'rate'       => 'required|int|between:1,5',
+        ]);
+        if ($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        if(volunteer_campaign::where('id','=',$request->volunteer_campaign_id)->exists())
+        {
+            if(volunteer_campaign_rate::where('volunteer_campaign_id','=',$request->volunteer_campaign_id)->where('user_id','=',auth()->user()->id)->exists())
+            {
+                return response()->json([
+                    'message' => 'you already add a rate',
+                ], 403);
+            }
+            else
+            {
+                volunteer_campaign_rate::create([
+                    'user_id'=>auth()->user()->id,
+                    'volunteer_campaign_id'=>$request->volunteer_campaign_id,
+                    'rate'=>$request->rate
+                ]);
+                return response()->json([
+                    'message' => 'you added a rate',
+                ], 200);
+            }
+        }
+        else
+            return response()->json([
+                'message' => 'your campaign not found',
+            ], 403);
+    }
+
+    public function update_rate(Request $request){
+        $validator = Validator::make($request->all(),[
+            'volunteer_campaign_id'       => 'required|int',
+            'rate'       => 'required|int|between:1,5',
+        ]);
+        if ($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        if(volunteer_campaign::where('id','=',$request->volunteer_campaign_id)->exists())
+        {
+            if(volunteer_campaign_rate::where('volunteer_campaign_id','=',$request->volunteer_campaign_id)->where('user_id','=',auth()->user()->id)->exists())
+            {
+                volunteer_campaign_rate::
+                where('volunteer_campaign_id','=',$request->volunteer_campaign_id)
+                    ->where('user_id','=',auth()->user()->id)
+                    ->update(['rate'=>$request->rate]);
+                return response()->json([
+                    'message' => 'you update your rate',
+                ], 200);
+            }
+            else
+            {
+                return response()->json([
+                    'message' => 'you haven\'t rate to update it',
+                ], 403);
+            }
+        }
+        else
+            return response()->json([
+                'message' => 'your campaign not found',
+            ], 403);
+    }
+
+    public function search_name(Request $request){
+        $validator = Validator::make($request->all(), [
+            'name'     => 'required|string',
+        ]);
+        if ($validator->fails())
+            return response()->json($validator->errors()->toJson(), 400);
+        if(volunteer_campaign::where('name','=',$request->name)->exists())
+        {
+            return response()->json([
+                'campaign' => volunteer_campaign::where('name','=',$request->name)->get(),
+            ], 200);
+        }
+        else
+            return response()->json([
+                'message' => 'there is no campaign with this name',
+            ], 403);
+    }
+
+    public function statistics_likes(){
+        if(public_like::where('user_id','=',auth()->user()->id)->exists()) {
+            return response()->json([
+                'likes' => public_like::where('user_id', '=', auth()->user()->id)->count(),
+            ], 200);
+        }
+        else
+            return response()->json([
+                'message' => 'you haven\'t any like ',
+            ], 403);
+    }
+
+    public function statistics_accepted_requests(){
+        $requests=volunteer_campaign_request::where('user_id','=',auth()->user()->id)->where('seen','=',true)->pluck('id');
+        $campaigns=0;
+        foreach ($requests as $camapain)
+        {
+            if(volunteer_campaign::where('volunteer_campaign_request_id','=',$camapain))
+            {
+                $campaigns++;
+            }
+        }
+        if($campaigns==0)
+        {
+            return response()->json([
+                'message' => 'you haven\'t any accepted campaign request',
+            ], 403);
+        }
+        return response()->json([
+            'accepted campaign request' => $campaigns,
+        ], 200);
+
+    }
+
+        public function statistics_campaigns(){
+        if(volunteer::where('user_id','=',auth()->user()->id)->exists()) {
+            return response()->json([
+                'campaigns' => volunteer::where('user_id','=',auth()->user()->id)->count(),
+            ], 200);
+        }
+        else
+            return response()->json([
+                'message' => 'you arn\'t  member in any campaign',
+            ], 403);
+    }
+
+
+
 
 }

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Enums\Category;
 
 return new class extends Migration
 {
@@ -19,10 +20,10 @@ return new class extends Migration
             $table->foreignId('volunteer_campaign_request_id');
             $table->foreignId('leader_id');
             $table->foreignId('location_id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->text('image');
             $table->string('details');
-            $table->string('type');
+            $table->enum('type',['natural','human','pets','others']);
             $table->integer('age');
             $table->string('study');
             $table->integer('volunteer_number');

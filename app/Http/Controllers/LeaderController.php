@@ -9,10 +9,6 @@ use Illuminate\Http\Request;
 
 class LeaderController extends Controller
 {
-    public function chat(Request $request){
-
-    }
-
     public function add_campaign_post(Request $request){
         $validator=Validator::make($request->all(),[
             'title'=>'required|string',
@@ -42,6 +38,27 @@ class LeaderController extends Controller
             'message'=>'post added successfully',
             'psot'=>$post,
         ],200);
+
+    }
+
+    public function add_points(Request $request){
+        $validator = Validator::make($request->all(), [
+            'volunteer_campaign_id'     => 'required|int',
+        ]);
+        if ($validator->fails())
+            return response()->json($validator->errors()->toJson(), 400);
+
+        if(volunteer::where('volunteer_campaign_id','=',$request->volunteer_campaign_id)
+            ->where('user_id','=',auth()->user()->id)
+            ->where('is_leader','=',true)
+            ->exists())
+        {
+
+        }
+        else
+            return response()->json([
+                'message'=>'you arn\'t the leader',
+            ],403);
 
     }
 }

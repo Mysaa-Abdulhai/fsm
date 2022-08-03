@@ -7,8 +7,10 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\LeaderController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\verificationController;
+use App\Models\volunteer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Validator;
 
 Route::middleware(['auth:sanctum','verified'])->get('/user', function (Request $request) {
     return $request->user();
@@ -33,8 +35,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 Route::get('/verify_email/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify')->middleware('auth:sanctum');
 
-Route::post('chat/room', [ChatController::class,'messages'])->name('chat/room')->middleware('auth:sanctum');
-Route::post('chat/room/message', [ChatController::class,'newMessage'])->name('chat/room/message')->middleware('auth:sanctum');
+Route::post('chat/room', [ChatController::class,'messages'])->name('chat/room')->middleware('auth:sanctum')->middleware('volunteerInCampaign');
+Route::post('chat/room/message', [ChatController::class,'newMessage'])->name('chat/room/message')->middleware('auth:sanctum')->middleware('volunteerInCampaign');
 
 
 
@@ -72,11 +74,29 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
 
     Route::delete('unlike_campaign',[UserController::class,'unlike_campaign'])->name('unlike_campaign');
 
+
+    //favorite
+    Route::post('favorite_campaign',[UserController::class,'favorite_campaign'])->name('favorite_campaign');
+
+    Route::delete('delete_favorite_campaign',[UserController::class,'delete_favorite_campaign'])->name('delete_favorite_campaign');
+
+    Route::get('get_favorite',[UserController::class,'get_favorite'])->name('get_favorite');
+
     Route::get('join_campaign',[UserController::class,'join_campaign'])->name('join_campaign')->middleware('fullProfile');
 
+    //rate
+    Route::post('add_rate',[UserController::class,'add_rate'])->name('add_rate');
 
+    Route::post('update_rate',[UserController::class,'update_rate'])->name('update_rate');
 
+    Route::get('search_name',[UserController::class,'search_name'])->name('search_name');
 
+    //statistics
+    Route::get('statistics_likes',[UserController::class,'statistics_likes'])->name('statistics_likes');
+
+    Route::get('statistics_accepted_requests',[UserController::class,'statistics_accepted_requests'])->name('statistics_accepted_requests');
+
+    Route::get('statistics_campaigns',[UserController::class,'statistics_campaigns'])->name('statistics_campaigns');
 
 
     //admin
@@ -108,10 +128,13 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
 
 
 
-
     //leader
     Route::post('add_campaign_post',[LeaderController::class,'add_campaign_post'])->name('add_campaign_post');
+
+    Route::post('add_points',[LeaderController::class,'add_points'])->name('add_points');
 });
+
+
 
 Route::get('/token_firebase',function(Request $request){
     $SERVER_API_KEY='AAAACIU4Yhk:APA91bGBOKbSvvlUnOYHyUqfcmK6W-iXzn_qh9k636JxcqQsmV1kuGwHnIosditCThJkK4hAmNHjHDK6HjUjNVDto5XZjjpwWjFdRO6czT0IYMNx25ASXMIAB0RWlawPEWeCqfdkSNpE';
@@ -162,7 +185,7 @@ Route::get('/token_firebase',function(Request $request){
 
     $response = curl_exec($ch);
 
-    dd($response);
+    return $response;
 
 });
 Route::get('/chart',function(Request $request){
@@ -178,3 +201,5 @@ Route::get('/chart',function(Request $request){
             ]
     ],200);
 });
+
+

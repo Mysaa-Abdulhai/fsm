@@ -384,13 +384,16 @@
 		},
 		{
 			"name": "show_volunteer_campaign",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "39|tRG8TsAddnuv1kbRTpjffo7FPPUrUS7OuSiKUAJh",
+							"value": "1|3iEBpEvyKotO8MHqpwCxsybI3lZZZ9Wia7wHCc42",
 							"type": "string"
 						}
 					]
@@ -403,8 +406,12 @@
 						"type": "default"
 					}
 				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/show_volunteer_campaign",
+					"raw": "http://127.0.0.1:8000/api/show_volunteer_campaign?category=zizi",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -416,6 +423,12 @@
 					"path": [
 						"api",
 						"show_volunteer_campaign"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "zizi"
+						}
 					]
 				}
 			},
@@ -432,7 +445,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|snbsNncpkP1K9K2WbcKn3hAAPFdzZp9bH7aCHoZe",
+							"value": "1|7H6dbUIJKsatMwrur9CMyEC6O3jbZybp8GxT1yVj",
 							"type": "string"
 						}
 					]
@@ -450,7 +463,7 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/show_details_of_volunteer_campaign?id=1",
+					"raw": "http://127.0.0.1:8000/api/show_details_of_volunteer_campaign?id=4",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -466,7 +479,7 @@
 					"query": [
 						{
 							"key": "id",
-							"value": "1"
+							"value": "4"
 						}
 					]
 				}
@@ -481,7 +494,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|29bFOUq14qNJMyN3cOPAqjM0iOOLVPNpIDZoGjzO",
+							"value": "4|DmooOnCrMxOlpUB2OnjWux1gque3Li4UKf4xFEZB",
 							"type": "string"
 						}
 					]
@@ -514,7 +527,7 @@
 						},
 						{
 							"key": "name",
-							"value": "erhrehr",
+							"value": "xxxzzzx",
 							"type": "text"
 						},
 						{
@@ -524,7 +537,7 @@
 						},
 						{
 							"key": "type",
-							"value": "j",
+							"value": "fd",
 							"type": "text"
 						},
 						{
@@ -681,19 +694,22 @@
 			"response": []
 		},
 		{
-			"name": "update_public_posts",
+			"name": "show_posts_of_campaign",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "4|XYcGDvPt7N5apGeHQMAgHe9JpXh5ntACvRS3qD5l",
+							"value": "6|71e7b6a7hkDt07ypybQ6x7dB9NnZ333jtc6rOGnI",
 							"type": "string"
 						}
 					]
 				},
-				"method": "POST",
+				"method": "GET",
 				"header": [
 					{
 						"key": "Accept",
@@ -703,26 +719,11 @@
 				],
 				"body": {
 					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "id",
-							"value": "1",
-							"type": "default"
-						},
-						{
-							"key": "title",
-							"value": "bc",
-							"type": "default"
-						}
-					],
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"urlencoded": []
 				},
 				"url": {
-					"raw": "127.0.0.1:8000/api/update_public_Posts",
+					"raw": "http://127.0.0.1:8000/api/show_posts_of_campaign?id=1",
+					"protocol": "http",
 					"host": [
 						"127",
 						"0",
@@ -732,7 +733,13 @@
 					"port": "8000",
 					"path": [
 						"api",
-						"update_public_Posts"
+						"show_posts_of_campaign"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -780,58 +787,6 @@
 					"path": [
 						"api",
 						"delete_public_post"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "show_posts_of_campaign",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "6|71e7b6a7hkDt07ypybQ6x7dB9NnZ333jtc6rOGnI",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "default"
-					}
-				],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": []
-				},
-				"url": {
-					"raw": "http://127.0.0.1:8000/api/show_posts_of_campaign?id=1",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"show_posts_of_campaign"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "1"
-						}
 					]
 				}
 			},
@@ -896,6 +851,64 @@
 					"path": [
 						"api",
 						"add_campaign_post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update_public_posts",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "4|XYcGDvPt7N5apGeHQMAgHe9JpXh5ntACvRS3qD5l",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "1",
+							"type": "default"
+						},
+						{
+							"key": "title",
+							"value": "bc",
+							"type": "default"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/update_public_Posts",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"update_public_Posts"
 					]
 				}
 			},
@@ -987,7 +1000,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "2|kbZct86Cp0LNnQ5yEoFtJYF7l6hp8yRonX5G7eAT",
+							"value": "1|DRhvyWGrwCVBKcFlSUbfesu9UZBd0yBbId4a1lA3",
 							"type": "string"
 						}
 					]
@@ -1005,43 +1018,33 @@
 					"urlencoded": [
 						{
 							"key": "id",
-							"value": "1",
+							"value": "7",
 							"type": "default"
 						},
 						{
 							"key": "accept",
-							"value": "0",
+							"value": "1",
 							"type": "default"
 						},
 						{
 							"key": "leader_id",
 							"value": "1",
-							"type": "default",
-							"disabled": true
+							"type": "default"
 						},
 						{
 							"key": "age",
 							"value": "20",
-							"type": "default",
-							"disabled": true
+							"type": "default"
 						},
 						{
 							"key": "study",
 							"value": "fewewf",
-							"type": "default",
-							"disabled": true
+							"type": "default"
 						},
 						{
-							"key": "skills[]",
-							"value": "bi",
-							"type": "default",
-							"disabled": true
-						},
-						{
-							"key": "skills[]",
-							"value": "mef",
-							"type": "default",
-							"disabled": true
+							"key": "skills",
+							"value": "mef,mmm,zi",
+							"type": "default"
 						}
 					]
 				},
@@ -1125,7 +1128,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "11|qiP9ydM045qrvyU7cCi60GQeyZOuf1AjILY0UWRg",
+							"value": "1|3iEBpEvyKotO8MHqpwCxsybI3lZZZ9Wia7wHCc42",
 							"type": "string"
 						}
 					]
@@ -1153,12 +1156,12 @@
 						},
 						{
 							"key": "name",
-							"value": "uyfu",
+							"value": "aaase",
 							"type": "default"
 						},
 						{
 							"key": "type",
-							"value": "gbvgv",
+							"value": "human",
 							"type": "default"
 						},
 						{
@@ -1178,7 +1181,7 @@
 						},
 						{
 							"key": "leader_id",
-							"value": "13",
+							"value": "1",
 							"type": "default"
 						},
 						{
@@ -1815,55 +1818,6 @@
 			"response": []
 		},
 		{
-			"name": "add_public_like",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "6|71e7b6a7hkDt07ypybQ6x7dB9NnZ333jtc6rOGnI",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "default"
-					}
-				],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "id",
-							"value": "2",
-							"type": "default"
-						}
-					]
-				},
-				"url": {
-					"raw": "http://127.0.0.1:8000/api/add_public_like",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"add_public_like"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "unlike_public",
 			"request": {
 				"auth": {
@@ -1907,6 +1861,55 @@
 					"path": [
 						"api",
 						"unlike_public"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_public_like",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|71e7b6a7hkDt07ypybQ6x7dB9NnZ333jtc6rOGnI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "2",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/add_public_like",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"add_public_like"
 					]
 				}
 			},
@@ -2057,6 +2060,418 @@
 					"path": [
 						"api",
 						"unlike_campaign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_rate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|7H6dbUIJKsatMwrur9CMyEC6O3jbZybp8GxT1yVj",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "volunteer_campaign_id",
+							"value": "4",
+							"type": "default"
+						},
+						{
+							"key": "rate",
+							"value": "5",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/add_rate",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"add_rate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update_rate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|7H6dbUIJKsatMwrur9CMyEC6O3jbZybp8GxT1yVj",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "volunteer_campaign_id",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "rate",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/update_rate",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"update_rate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "favorite_campaign",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|7H6dbUIJKsatMwrur9CMyEC6O3jbZybp8GxT1yVj",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "volunteer_campaign_id",
+							"value": "4",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/favorite_campaign",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"favorite_campaign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete_favorite_campaign",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|7H6dbUIJKsatMwrur9CMyEC6O3jbZybp8GxT1yVj",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "volunteer_campaign_id",
+							"value": "4",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/delete_favorite_campaign",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"delete_favorite_campaign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_favorite",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|7H6dbUIJKsatMwrur9CMyEC6O3jbZybp8GxT1yVj",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/get_favorite",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"get_favorite"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search_name",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|9gmmmfD0pDrLDuItn3bqFzyhdx2dUzAQu6kfYmZx",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/search_name?name=uyfu",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"search_name"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "uyfu"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "statistics_likes",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|9gmmmfD0pDrLDuItn3bqFzyhdx2dUzAQu6kfYmZx",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/statistics_likes",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"statistics_likes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "statistics_campaigns",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|9gmmmfD0pDrLDuItn3bqFzyhdx2dUzAQu6kfYmZx",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/statistics_campaigns",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"statistics_campaigns"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "statistics_accepted_requests",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|DRhvyWGrwCVBKcFlSUbfesu9UZBd0yBbId4a1lA3",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/statistics_accepted_requests",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"statistics_accepted_requests"
 					]
 				}
 			},

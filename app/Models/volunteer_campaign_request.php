@@ -15,6 +15,7 @@ class volunteer_campaign_request extends Model
         'maxDate',
         'image',
         'location_id',
+        'seen',
         'longitude',
         'latitude',
     ];

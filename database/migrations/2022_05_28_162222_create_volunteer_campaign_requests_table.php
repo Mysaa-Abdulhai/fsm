@@ -1,6 +1,7 @@
 <?php
 use App\Models\User;
 use App\Models\location;
+use App\Enums;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,10 +20,11 @@ return new class extends Migration
                 $table->id();
                 $table->foreignId('user_id');
                 $table->foreignId('location_id');
-                $table->string('name');
+                $table->boolean('seen')->default(false);
+                $table->string('name')->unique();
                 $table->text('image');
                 $table->string('details');
-                $table->string('type');
+                $table->enum('type',['natural','human','pets','others']);
                 $table->integer('volunteer_number');
                 $table->decimal('longitude', 10, 8);
                 $table->decimal('latitude', 10, 8);

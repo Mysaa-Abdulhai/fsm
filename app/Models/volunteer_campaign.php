@@ -44,10 +44,20 @@ class volunteer_campaign extends Model
     {
         return $this->hasMany(volunteer::class);
     }
-    public function campaignSkill()
+    public function campaignSkills()
     {
         return $this->hasMany(campaignSkill::class);
     }
+    public function favorites()
+    {
+        return $this->hasMany(favorite::class);
+    }
+    public function volunteer_campaign_rates()
+    {
+        return $this->hasMany(volunteer_campaign_rate::class);
+    }
+
+
     public function getSkill()
     {
         $skills=collect();

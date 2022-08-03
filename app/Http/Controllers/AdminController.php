@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums;
+use Illuminate\Validation\Rules\Enum;
 use App\Models\campaignSkill;
 use App\Models\ChatRoom;
 use App\Models\donation_campaign_request;
@@ -12,6 +14,7 @@ use App\Models\public_post;
 use App\Models\user_role;
 use App\Models\volunteer;
 use App\Models\volunteer_campaign;
+use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB ;
@@ -19,6 +22,8 @@ use App\Models\volunteer_campaign_request;
 
 
 use App\Models\location;
+use PhpParser\Builder\EnumCase;
+
 class AdminController extends Controller
 {
     public function all_volunteer_campaign_request()
@@ -27,6 +32,7 @@ class AdminController extends Controller
             $campaign=DB::table('volunteer_campaign_requests')
             ->select('profiles.name as user name','profiles.image as user image','volunteer_campaign_requests.*')
             ->join('profiles','volunteer_campaign_requests.user_id','=','profiles.user_id')
+            ->where('seen','=',false)
             ->get();
             return response()->json([
                 'message' => 'campaign added successfully',
@@ -111,9 +117,10 @@ class AdminController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
 
 
-        if(volunteer_campaign_request::where('id', '=', $request->id)->exists()) {
+        if(volunteer_campaign_request::where('id', '=', $request->id)->where('seen','=',false)->exists()) {
             $campaign_request = volunteer_campaign_request::where('id', '=', $request->id)->first();
-            if ($request->accept==true) {
+            if ($request->accept==true)
+            {
 
                 $campaign = new volunteer_campaign();
 
@@ -131,11 +138,11 @@ class AdminController extends Controller
                 $campaign->age = $request->age;
                 $campaign->study = $request->study;
                 $campaign->save();
-                foreach($request->skills as $skill)
-                {
-                    campaignSkill::create(['name'=>$skill,'volunteer_campaign_id'=>$campaign->id]);
+                $array = $request->skills;
+                $array = explode(",", $array);
+                foreach ($array as $skill) {
+                    campaignSkill::create(['name' => $skill, 'volunteer_campaign_id' => $campaign->id]);
                 }
-
 
                 $skills=campaignSkill::select('name')->where('volunteer_campaign_id','=',$campaign->id)->get();
 
@@ -147,8 +154,10 @@ class AdminController extends Controller
 
                 $pro=Profile::select('user_id')->where('id','=',$request->leader_id)->first();
                 $id=$pro->user_id;
-                user_role::create(['user_id'=> $id,'role_id'=> 3],
-                    ['user_id'=> $id, 'role_id'=> 4]);
+                if(user_role::where('user_id','=',$id)->where('role_id','=',4)->exists()==0)
+                {
+                    user_role::create(['user_id' => $id, 'role_id' => 4]);
+                }
 
                 $volunteer = new volunteer;
                 $volunteer->user_id = $id;
@@ -156,14 +165,28 @@ class AdminController extends Controller
                 $volunteer->is_leader = true;
                 $volunteer->save();
 
-                $campaign_request->delete();
+                $campaign_request->update(['seen'=>true]);
+                $campaign_request->save();
 
+                $tokens=notification_token::all();
+
+                $send='all notification sent successfully';
+                foreach ($tokens as $token)
+                {
+                    if(new notification($token,$group->name.'new volunteer campaign has been added')==null)
+                    {
+                        $send='Some notifications may not have been sent';
+                    }
+                }
                 return response()->json([
                     'message' => 'campaign added successfully',
                     'campaign' => $campaign,
+                    'notification'=>$send,
                     'skills'=>$skills
                 ], 200);
-            } else {
+            }
+            else
+            {
                 $campaign_request->delete();
                 return response()->json([
                     'message' => 'request deleted',
@@ -305,6 +328,7 @@ class AdminController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
+            //'type' => 'required', [new Enum(category::fromValue('type'))],
             'type' => 'required|string',
             'details' => 'required|string|min:5',
             'maxDate' => 'required|date',
@@ -367,25 +391,32 @@ class AdminController extends Controller
         if (Profile::select('user_id')->where('id', '=', $request->leader_id)->exists())
         {
             $pro = Profile::select('user_id')->where('id', '=', $request->leader_id)->first();
-        $id = $pro->user_id;
-        user_role::create(['user_id' => $id, 'role_id' => 3],
-            ['user_id' => $id, 'role_id' => 4]);
+             $id = $pro->user_id;
+             if(user_role::where('user_id','=',$id)->where('role_id','=',3)->exists()==false)
+             {
+                     user_role::create(['user_id' => $id, 'role_id' => 3]);
+             }
+            if(user_role::where('user_id','=',$id)->where('role_id','=',4)->exists()==false)
+            {
+                     user_role::create(['user_id' => $id, 'role_id' => 4]);
+            }
 
-        $volunteer = new volunteer;
-        $volunteer->user_id = $id;
-        $volunteer->volunteer_campaign_id = $new_campaign->id;
-        $volunteer->is_leader = true;
-        $volunteer->save();
+              $volunteer = new volunteer;
+             $volunteer->user_id = $id;
+             $volunteer->volunteer_campaign_id = $new_campaign->id;
+              $volunteer->is_leader = true;
+            $volunteer->save();
         }
         else
             return response()->json([
                 'message' => 'Wrong leader_id'
             ],403);
+
         $tokens=notification_token::all();
         $send='all notification sent successfully';
         foreach ($tokens as $token)
         {
-            if(new notification($token,$new_campaign->name.'new volunteer campaign has been added')==null)
+            if(new notification($token->token,$new_campaign->name.'new volunteer campaign has been added')==null)
             {
                 $send='Some notifications may not have been sent';
             }

@@ -172,6 +172,42 @@ class DatabaseSeeder extends Seeder
                     'name'=>'unlike_campaign',
                     'role_id'=>'2'
                 ],
+                [
+                    'name'=>'favorite_campaign',
+                    'role_id'=>'2'
+                ],
+                [
+                    'name'=>'delete_favorite_campaign',
+                    'role_id'=>'2'
+                ],
+                [
+                    'name'=>'add_rate',
+                    'role_id'=>'2'
+                ],
+                [
+                    'name'=>'update_rate',
+                    'role_id'=>'2'
+                ],
+                [
+                    'name'=>'search_name',
+                    'role_id'=>'2'
+                ],
+                [
+                    'name'=>'statistics_likes',
+                    'role_id'=>'2'
+                ],
+                [
+                    'name'=>'statistics_accepted_requests',
+                    'role_id'=>'2'
+                ],
+                [
+                    'name'=>'statistics_campaigns',
+                    'role_id'=>'2'
+                ],
+                [
+                    'name'=>'get_favorite',
+                    'role_id'=>'2'
+                ],
 
 
 
@@ -183,7 +219,10 @@ class DatabaseSeeder extends Seeder
                   'name'=>'add_campaign_post',
                   'role_id'=>'3'
               ],
-
+              [
+                  'name'=>'add_points',
+                  'role_id'=>'3'
+              ],
 
 
 

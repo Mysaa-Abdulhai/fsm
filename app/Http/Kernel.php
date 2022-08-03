@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'oneProfile' => \App\Http\Middleware\OneProfile::class,
         'acceptPermission' => \App\Http\Middleware\AcceptPermission::class,
         'haveProfile' => \App\Http\Middleware\HaveProfile::class,
+        'volunteerInCampaign' => \App\Http\Middleware\VolunteerInCampaign::class,
     ];
 }

@@ -18,7 +18,8 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name'     => 'required|string|unique:users,name',
             'email'    => 'required|string|email|unique:users,email',
-            'password' => 'required|string'
+            'password' => 'required|string',
+            'notification_token'=>'required|string'
         ]);
 
         if ($validator->fails())
@@ -32,12 +33,17 @@ class AuthController extends Controller
         $user->save();
         $token = $user->createToken('myapptoken')->plainTextToken;
 
-        $user->sendEmailVerificationNotification();
+    notification_token::create([
+                    'user_id' => $user->id,
+                    'token' => $request->notification_token,
+                ]);
+$user->sendEmailVerificationNotification();
 
         return response()->json([
             'message' => 'User successfully registered',
             'user' => $user,
-            'token' => $token
+            'token' => $token,
+            'notification_token'=>$request->notification_token;
         ], 201);
 
     }

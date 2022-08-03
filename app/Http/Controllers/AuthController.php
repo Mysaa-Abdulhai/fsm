@@ -43,7 +43,7 @@ $user->sendEmailVerificationNotification();
             'message' => 'User successfully registered',
             'user' => $user,
             'token' => $token,
-            'notification_token'=>$request->notification_token;
+            'notification_token'=>$request->notification_token
         ], 201);
 
     }

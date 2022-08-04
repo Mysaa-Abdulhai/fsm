@@ -69,16 +69,33 @@ class UserController extends Controller
         if(volunteer_campaign::select('id', 'name', 'image', 'type', 'details', 'volunteer_number', 'current_volunteer_number')->where('type', '=', $request->category)->exists()) {
 
             $campaign=collect();
-            $v_campaigns=volunteer_campaign::select('id', 'name', 'image', 'type', 'details', 'volunteer_number', 'current_volunteer_number')->get();
+            $v_campaigns=volunteer_campaign::select('id', 'name', 'image', 'type', 'details', 'volunteer_number', 'current_volunteer_number')->where('type', '=', $request->category)->get();
             foreach ($v_campaigns as $v_campaign) {
-                $rating=collect();
-                $rates=volunteer_campaign_rate::where('volunteer_campaign_id','=',$v_campaign->id)->get();
-                foreach ($rates as $rate)
+                if(volunteer_campaign_rate::where('volunteer_campaign_id','=',$v_campaign->id)->exists())
                 {
-                    $rating->push($rate->rate);
+                    $rating = collect();
+                    $rates = volunteer_campaign_rate::where('volunteer_campaign_id', '=', $v_campaign->id)->get();
+                    foreach ($rates as $rate) {
+                        $rating->push($rate->rate);
+                    }
+                    $rating = $rating->avg();
+                    $campaign->push(['id'=>$v_campaign->id,'name'=>$v_campaign->name,
+                        'image'=>$v_campaign->image,'type'=>$v_campaign->type,
+                        'details'=>$v_campaign->details,
+                        'volunteer_number'=>$v_campaign->volunteer_number,
+                        'current_volunteer_number'=>$v_campaign->current_volunteer_number,
+                        'rate'=>$rating]);
+
                 }
-                $rating=$rating->avg();
-                $campaign->push([$v_campaign,$rating]);
+                else
+                {
+                    $campaign->push(['id' => $v_campaign->id, 'name' => $v_campaign->name,
+                        'image' => $v_campaign->image, 'type' => $v_campaign->type,
+                        'details' => $v_campaign->details,
+                        'volunteer_number' => $v_campaign->volunteer_number,
+                        'current_volunteer_number' => $v_campaign->current_volunteer_number,
+                        'rate' => 0]);
+                }
             }
             return response()->json([
                 'campaigns' => $campaign,
@@ -89,9 +106,6 @@ class UserController extends Controller
                 'message' => 'no any campaign in this category',
             ], 403);
     }
-
-
-
 
     public function show_details_of_volunteer_campaign(Request $request){
         $validator = Validator::make($request->all(), [
@@ -219,7 +233,6 @@ class UserController extends Controller
         ], 200);
     }
 
-
     public function show_public_posts(Request $request){
         $po=public_post::all();
         $posts=collect();
@@ -307,7 +320,6 @@ class UserController extends Controller
 
     }
 
-
     public function add_profile(Request $request){
         $validator = Validator::make($request->all(),[
             'name'       => 'required|string',
@@ -371,7 +383,6 @@ class UserController extends Controller
             'message' => ' your profile created successfully '
         ],200);
     }
-
 
     public function update_profile(Request $request){
 
@@ -463,7 +474,6 @@ class UserController extends Controller
             ],200);
 
     }
-
 
     public function show_profile(){
 
@@ -812,7 +822,7 @@ class UserController extends Controller
 
     }
 
-        public function statistics_campaigns(){
+    public function statistics_campaigns(){
         if(volunteer::where('user_id','=',auth()->user()->id)->exists()) {
             return response()->json([
                 'campaigns' => volunteer::where('user_id','=',auth()->user()->id)->count(),

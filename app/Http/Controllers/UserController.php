@@ -29,15 +29,59 @@ class UserController extends Controller
     public function show_volunteer_campaign(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'category' => 'required|in:natural,human,pets,others',
+            'category' => 'required|in:natural,human,pets,others,all',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
-        if(volunteer_campaign::select('id', 'name', 'image', 'type', 'details', 'volunteer_number', 'current_volunteer_number')->where('type', '=', $request->category)->exists()) {
-            $campaigns = volunteer_campaign::select('id', 'name', 'image', 'type', 'details', 'volunteer_number', 'current_volunteer_number')->where('type', '=', $request->category)->get();
+        if($request->category=='all')
+        {
+            $campaign=collect();
+            $v_campaigns=volunteer_campaign::select('id', 'name', 'image', 'type', 'details', 'volunteer_number', 'current_volunteer_number')->get();
+            foreach ($v_campaigns as $v_campaign) {
+                if(volunteer_campaign_rate::where('volunteer_campaign_id','=',$v_campaign->id)->exists())
+                {
+                    $rating = collect();
+                    $rates = volunteer_campaign_rate::where('volunteer_campaign_id', '=', $v_campaign->id)->get();
+                    foreach ($rates as $rate) {
+                        $rating->push($rate->rate);
+                    }
+                    $rating = $rating->avg();
+                    $campaign->push(['id'=>$v_campaign->id,'name'=>$v_campaign->name,
+                        'image'=>$v_campaign->image,'type'=>$v_campaign->type,
+                        'details'=>$v_campaign->details,
+                        'volunteer_number'=>$v_campaign->volunteer_number,
+                        'current_volunteer_number'=>$v_campaign->current_volunteer_number,
+                        'rate'=>$rating]);
+                }
+                else
+                    $campaign->push(['id'=>$v_campaign->id,'name'=>$v_campaign->name,
+                        'image'=>$v_campaign->image,'type'=>$v_campaign->type,
+                        'details'=>$v_campaign->details,
+                        'volunteer_number'=>$v_campaign->volunteer_number,
+                        'current_volunteer_number'=>$v_campaign->current_volunteer_number,
+                        'rate'=>0]);
+            }
             return response()->json([
-                'campaigns' => $campaigns,
+                'campaigns' => $campaign,
+            ], 200);
+        }
+        if(volunteer_campaign::select('id', 'name', 'image', 'type', 'details', 'volunteer_number', 'current_volunteer_number')->where('type', '=', $request->category)->exists()) {
+
+            $campaign=collect();
+            $v_campaigns=volunteer_campaign::select('id', 'name', 'image', 'type', 'details', 'volunteer_number', 'current_volunteer_number')->get();
+            foreach ($v_campaigns as $v_campaign) {
+                $rating=collect();
+                $rates=volunteer_campaign_rate::where('volunteer_campaign_id','=',$v_campaign->id)->get();
+                foreach ($rates as $rate)
+                {
+                    $rating->push($rate->rate);
+                }
+                $rating=$rating->avg();
+                $campaign->push([$v_campaign,$rating]);
+            }
+            return response()->json([
+                'campaigns' => $campaign,
             ], 200);
         }
         else
@@ -60,13 +104,16 @@ class UserController extends Controller
             $campaign = volunteer_campaign::where('id', $request->id)->first();
             $skills=$campaign->getSkill();
 
-
-            $rate=collect();
-            $rates=volunteer_campaign_rate::where('volunteer_campaign_id','=',$campaign->id)->get();
-            foreach ($rates as $rat){
-                $rate->push($rat->rate);
+            if(volunteer_campaign_rate::where('volunteer_campaign_id','=',$campaign->id)->exists()) {
+                $rate = collect();
+                $rates = volunteer_campaign_rate::where('volunteer_campaign_id', '=', $campaign->id)->get();
+                foreach ($rates as $rat) {
+                    $rate->push($rat->rate);
+                }
+                $rate = $rate->avg();
             }
-            $rate=$rate->avg();
+            else
+                $rate=0;
 
             $pro = Profile::select('user_id')->where('id', '=', $campaign->leader_id)->first();
             $id = $pro->user_id;

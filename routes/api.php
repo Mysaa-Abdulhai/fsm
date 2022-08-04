@@ -129,9 +129,9 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
 
 
     //leader
-    Route::post('add_campaign_post',[LeaderController::class,'add_campaign_post'])->name('add_campaign_post');
+    Route::post('add_campaign_post',[LeaderController::class,'add_campaign_post'])->name('add_campaign_post')->middleware('leaderInCampaign');
 
-    Route::post('add_points',[LeaderController::class,'add_points'])->name('add_points');
+    Route::post('add_points',[LeaderController::class,'add_points'])->name('add_points')->middleware('leaderInCampaign');
 });
 
 

@@ -42,15 +42,13 @@
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/register_code",
-					"protocol": "http",
+					"raw": "https://oneplanetapp.herokuapp.com/api/register_code",
+					"protocol": "https",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"oneplanetapp",
+						"herokuapp",
+						"com"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"register_code"
@@ -81,15 +79,13 @@
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/verify",
-					"protocol": "http",
+					"raw": "https://oneplanetapp.herokuapp.com/api/verify",
+					"protocol": "https",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"oneplanetapp",
+						"herokuapp",
+						"com"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"verify"
@@ -120,15 +116,13 @@
 					}
 				],
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/resend",
-					"protocol": "http",
+					"raw": "https://oneplanetapp.herokuapp.com/api/resend",
+					"protocol": "https",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"oneplanetapp",
+						"herokuapp",
+						"com"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"resend"
@@ -159,15 +153,13 @@
 					}
 				],
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/logout",
-					"protocol": "http",
+					"raw": "https://oneplanetapp.herokuapp.com/api/logout",
+					"protocol": "https",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"oneplanetapp",
+						"herokuapp",
+						"com"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"logout"
@@ -203,8 +195,7 @@
 						{
 							"key": "toke",
 							"value": "zizizizisdfds",
-							"type": "default",
-							"disabled": true
+							"type": "default"
 						}
 					]
 				},
@@ -399,7 +390,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|3iEBpEvyKotO8MHqpwCxsybI3lZZZ9Wia7wHCc42",
+							"value": "3|so5inC2NMuuWKuAvtQpqz39lBENrlq1gGABGL704",
 							"type": "string"
 						}
 					]
@@ -417,7 +408,7 @@
 					"urlencoded": []
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/show_volunteer_campaign?category=zizi",
+					"raw": "http://127.0.0.1:8000/api/show_volunteer_campaign?category=all",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -433,7 +424,7 @@
 					"query": [
 						{
 							"key": "category",
-							"value": "zizi"
+							"value": "all"
 						}
 					]
 				}
@@ -451,7 +442,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|7H6dbUIJKsatMwrur9CMyEC6O3jbZybp8GxT1yVj",
+							"value": "3|so5inC2NMuuWKuAvtQpqz39lBENrlq1gGABGL704",
 							"type": "string"
 						}
 					]
@@ -469,7 +460,7 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/show_details_of_volunteer_campaign?id=4",
+					"raw": "http://127.0.0.1:8000/api/show_details_of_volunteer_campaign?id=1",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -485,7 +476,7 @@
 					"query": [
 						{
 							"key": "id",
-							"value": "4"
+							"value": "1"
 						}
 					]
 				}
@@ -1134,7 +1125,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "2|EwBYBE6DIde5ncKcj6zupnOLtSlS9YqpZBB3b2p9",
+							"value": "1|ASP2HkKdJkzR3lvaVpHIVt8pDCrDLDZ2Ia26QU46",
 							"type": "string"
 						}
 					]
@@ -1162,7 +1153,7 @@
 						},
 						{
 							"key": "name",
-							"value": "yhj",
+							"value": "yhjfdfd",
 							"type": "default"
 						},
 						{
@@ -1213,7 +1204,7 @@
 						},
 						{
 							"key": "maxDate",
-							"value": "2022-02-02",
+							"value": "2022-08-02",
 							"type": "default"
 						},
 						{
@@ -1453,7 +1444,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "10|uosKmKyIYcCGyTsouQVWFh7X1Wh1QkvBhfnbqWdh",
+							"value": "1|ASP2HkKdJkzR3lvaVpHIVt8pDCrDLDZ2Ia26QU46",
 							"type": "string"
 						}
 					]
@@ -2478,6 +2469,70 @@
 					"path": [
 						"api",
 						"statistics_accepted_requests"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_points",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "3|LNKMNDXjtjrZvv19cuNOxCHS1gWhgYMhHfSJnO6J",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "volunteer_campaign_id",
+							"value": "1",
+							"type": "default"
+						},
+						{
+							"key": "point_for_all",
+							"value": "10",
+							"type": "default"
+						},
+						{
+							"key": "point_for_distinguished",
+							"value": "20",
+							"type": "default"
+						},
+						{
+							"key": "ids",
+							"value": "2,31",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/add_points",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"add_points"
 					]
 				}
 			},

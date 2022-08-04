@@ -398,10 +398,10 @@ class AdminController extends Controller
                      user_role::create(['user_id' => $id, 'role_id' => 4]);
             }
 
-              $volunteer = new volunteer;
-             $volunteer->user_id = $id;
-             $volunteer->volunteer_campaign_id = $new_campaign->id;
-              $volunteer->is_leader = true;
+            $volunteer = new volunteer;
+            $volunteer->user_id = $id;
+            $volunteer->volunteer_campaign_id = $new_campaign->id;
+            $volunteer->is_leader = true;
             $volunteer->save();
         }
         else
@@ -409,17 +409,13 @@ class AdminController extends Controller
                 'message' => 'Wrong leader_id'
             ],403);
 
-        $tokens=notification_token::all();
-        $send=collect();
-        foreach ($tokens as $token)
-        {
-            $x=$this->notification($token->token,$new_campaign->name.'new volunteer campaign has been added');
-            $send->push($x);
-        };
+        if(notification_token::exists()) {
+            $tokens = notification_token::all();
+
+        }
         return response()->json([
             'message'  => 'campaign added Successfully',
             'campaign' => $new_campaign,
-            'notification'=>$x,
             'skills'=>$skills
         ],200);
     }

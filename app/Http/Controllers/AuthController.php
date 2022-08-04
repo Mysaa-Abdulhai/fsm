@@ -13,46 +13,6 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-//    public function register(Request $request){
-//
-//        $validator = Validator::make($request->all(), [
-//            'name'     => 'required|string|unique:users,name',
-//            'email'    => 'required|string|email|unique:users,email',
-//            'password' => 'required|string',
-//            'notification_token'=>'required|string'
-//        ]);
-//
-//        if ($validator->fails())
-//        return response()->json(
-//            $validator->errors()->toJson(), 400);
-//
-//        $user = new User();
-//        $user->name  = $request->name;
-//        $user->email = $request->email;
-//        $user->password = bcrypt($request->password);
-//        $user->save();
-//        $token = $user->createToken('myapptoken')->plainTextToken;
-//
-//        notification_token::create([
-//                    'user_id' => $user->id,
-//                    'token' => $request->notification_token,
-//                ]);
-//         $user->sendEmailVerificationNotification();
-//        $tok=notification_token::where('user_id','=',$user->id)
-//            ->where('token','=',$request->notification_token)
-//            ->select('token');
-//        return response()->json([
-//            'message' => 'User successfully registered',
-//            'user' => $user,
-//            'token' => $token,
-//            'notification token'=>notification_token::where('user_id','=',$user->id)
-//                ->where('token','=',$request->notification_token)
-//                ->select('token')
-//        ], 201);
-//
-//    }
-
-
     public function deleteAccount(Request $request){
 
         if(User::where('id',auth()->user()->id)->delete())
@@ -65,8 +25,6 @@ class AuthController extends Controller
             ],402);
     }
 
-
-
     public function login(Request $request) {
 
         // Validation
@@ -75,9 +33,6 @@ class AuthController extends Controller
             'password' => 'required|string',
 
         ]);
-//        Validator::make($request->all(), [
-//            'toke'     => 'required|string',
-//        ]);
         if ($login_data->fails()) {
             return response()->json([
                 'message' => $login_data->errors()->getMessages(),
@@ -107,7 +62,6 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken('myapptoken')->plainTextToken;
-
         //notification
         if($request->toke) {
             $tokens = notification_token::where('user_id', '=', $user->id)->get();
@@ -124,13 +78,15 @@ class AuthController extends Controller
                 ]);
             }
         }
-        $roles = DB::table('user_roles')
+            $roles = DB::table('user_roles')
             ->select('roles.name')
             ->join('roles', 'roles.id', '=', 'user_roles.role_id')
             ->where('user_id', '=', auth()->user()->id)
             ->get();
+
         foreach ($roles as $role) {
             if ($role->name == 'leader') {
+
                 $campaign = volunteer::where('user_id', '=', auth()->user()->id)->where('is_leader', '=', 1)
                     ->select('volunteer_campaign_id')->get();
                 return response()->json([

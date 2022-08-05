@@ -872,7 +872,32 @@ class UserController extends Controller
             ], 403);
     }
 
+    public function male_and_female()
+    {
+        $thisYear= Carbon::now()->year;
+        $thisYear_1= $thisYear-1;
+        $thisYear_2=$thisYear_1-1;
+        $x=Profile::whereYear('created_at', '=', $thisYear)->count();
+        $y=Profile::whereYear('created_at', '=', $thisYear_1)->count();
+        $z=Profile::whereYear('created_at', '=', $thisYear_2)->count();
+        return response()->json([
+            $thisYear=>$x,
+            $thisYear_1=>$y,
+            $thisYear_2=>$z,
+        ], 200);
+    }
 
-
-
+    public function campaigns_in_category()
+    {
+        $natural=volunteer_campaign::where('type','=','natural')->count();
+        $human=volunteer_campaign::where('type','=','human')->count();
+        $pets=volunteer_campaign::where('type','=','pets')->count();
+        $others=volunteer_campaign::where('type','=','others')->count();
+        return response()->json([
+            'natural'=>$natural,
+            'human'=>$human,
+            'pets'=>$pets
+            ,'others'=>$others,
+        ], 200);
+    }
 }

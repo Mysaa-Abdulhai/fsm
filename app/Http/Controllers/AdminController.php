@@ -156,6 +156,11 @@ class AdminController extends Controller
                 {
                     user_role::create(['user_id' => $id, 'role_id' => 4]);
                 }
+                $notifications=notification_token::where('user_id','=',$id)->get();
+                foreach ($notifications as $notification)
+                {
+                    return $this->notification($group->name,$notification->token,'you have been assigned as a leader');
+                }
 
                 $volunteer = new volunteer;
                 $volunteer->user_id = $id;
@@ -163,23 +168,21 @@ class AdminController extends Controller
                 $volunteer->is_leader = true;
                 $volunteer->save();
 
+
+
                 $campaign_request->update(['seen'=>true]);
                 $campaign_request->save();
 
                 $tokens=notification_token::all();
 
-                $send='all notification sent successfully';
                 foreach ($tokens as $token)
                 {
-                    if(new notification($token,$group->name.'new volunteer campaign has been added')==null)
-                    {
-                        $send='Some notifications may not have been sent';
-                    }
+                    $this->notification($group->name,$token->token,'new volunteer campaign has been added');
+
                 }
                 return response()->json([
                     'message' => 'campaign added successfully',
                     'campaign' => $campaign,
-                    'notification'=>$send,
                     'skills'=>$skills
                 ], 200);
             }
@@ -403,6 +406,12 @@ class AdminController extends Controller
             $volunteer->volunteer_campaign_id = $new_campaign->id;
             $volunteer->is_leader = true;
             $volunteer->save();
+
+            $notifications=notification_token::where('user_id','=',$id)->get();
+            foreach ($notifications as $notification)
+            {
+                $this->notification($group->name,$notification->token,'you have been assigned as a leader');
+            }
         }
         else
             return response()->json([
@@ -411,6 +420,10 @@ class AdminController extends Controller
 
         if(notification_token::exists()) {
             $tokens = notification_token::all();
+            foreach ($tokens as $token)
+            {
+                $this->notification($group->name,$token->token,'new volunteer campaign has been added');
+            }
 
         }
         return response()->json([
@@ -551,11 +564,11 @@ class AdminController extends Controller
         ],200);
     }
 
-    public function notification($token,$message)
+    public function notification($title,$token,$message)
     {
         $SERVER_API_KEY='AAAACIU4Yhk:APA91bGBOKbSvvlUnOYHyUqfcmK6W-iXzn_qh9k636JxcqQsmV1kuGwHnIosditCThJkK4hAmNHjHDK6HjUjNVDto5XZjjpwWjFdRO6czT0IYMNx25ASXMIAB0RWlawPEWeCqfdkSNpE';
 
-        $token_1 =$this;
+        $token_1 =$token;
 
         $data = [
 
@@ -565,7 +578,7 @@ class AdminController extends Controller
 
             "notification" => [
 
-                "title" => 'One Planet',
+                "title" => $title,
 
                 "body" => $message,
 

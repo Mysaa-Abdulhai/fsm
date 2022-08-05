@@ -18,37 +18,50 @@ class users extends Seeder
     public function run()
     {
 
-        User::insert([
-            ['name'=>'sami','password'=>bcrypt('sami123'),'email'=>'sami@gmail.com','is_verified'=>1],
-            ['name'=>'salim','password'=>bcrypt('salim123'),'email'=>'salim@gmail.com','is_verified'=>1],
-            ['name'=>'azizi','password'=>bcrypt('aziz123'),'email'=>'azizi@gmail.com','is_verified'=>1],
-            ['name'=>'joseph','password'=>bcrypt('joseph123'),'email'=>'joseph@gmail.com','is_verified'=>1],
-            ['name'=>'shaker','password'=>bcrypt('shaker123'),'email'=>'shaker@gmail.com','is_verified'=>1],
-        ]);
+        User::create(
+            ['name'=>'sami','password'=>bcrypt('sami123')
+                ,'email'=>'sami@gmail.com','is_verified'=>1]);
 
-        user_role::insert([
+        User::create(
+            ['name'=>'salim','password'=>bcrypt('salim123')
+                ,'email'=>'salim@gmail.com','is_verified'=>1]);
+        User::create(
+            ['name'=>'azizi','password'=>bcrypt('aziz123')
+                ,'email'=>'azizi@gmail.com','is_verified'=>1]);
+        User::create(
+            ['name'=>'joseph','password'=>bcrypt('joseph123')
+                ,'email'=>'joseph@gmail.com','is_verified'=>1]);
+        User::create(
+            ['name'=>'shaker','password'=>bcrypt('shaker123')
+                ,'email'=>'shaker@gmail.com','is_verified'=>1]);
+
+
+        user_role::create(
             [
                 'user_id'=>2,
                 'role_id'=>2,
-            ],
+            ]);
+        user_role::create(
             [
                 'user_id'=>3,
                 'role_id'=>2,
-            ],
+            ]);
+        user_role::create(
             [
                 'user_id'=>4,
                 'role_id'=>2,
-            ],
+            ]);
+        user_role::create(
             [
                 'user_id'=>5,
                 'role_id'=>2,
-            ],
+            ]);
+        user_role::create(
             [
                 'user_id'=>6,
                 'role_id'=>2,
-            ],
-        ]);
-        Profile::insert([
+            ]);
+        Profile::create(
             [
                 'user_id'=>2,
                 'name'=>'sdf',
@@ -60,7 +73,8 @@ class users extends Seeder
                 'phoneNumber'=>'234234',
                 'leaderInFuture'=>1,
                 'image'=>'dsfds',
-            ],
+            ]);
+        Profile::create(
             [
                 'user_id'=>3,
                 'name'=>'sdf',
@@ -72,7 +86,8 @@ class users extends Seeder
                 'phoneNumber'=>'234234',
                 'leaderInFuture'=>1,
                 'image'=>'dsfds',
-            ],
+            ]);
+        Profile::create(
             [
                 'user_id'=>4,
                 'name'=>'sdf',
@@ -84,7 +99,8 @@ class users extends Seeder
                 'phoneNumber'=>'234234',
                 'leaderInFuture'=>1,
                 'image'=>'dsfds',
-            ],
+            ]);
+        Profile::create(
             [
                 'user_id'=>5,
                 'name'=>'sdf',
@@ -96,7 +112,8 @@ class users extends Seeder
                 'phoneNumber'=>'234234',
                 'leaderInFuture'=>1,
                 'image'=>'dsfds',
-            ],
+            ]);
+        Profile::create(
             [
                 'user_id'=>6,
                 'name'=>'sdf',
@@ -108,8 +125,8 @@ class users extends Seeder
                 'phoneNumber'=>'234234',
                 'leaderInFuture'=>1,
                 'image'=>'dsfds',
-            ],
-        ]);
+            ]);
+
 
     }
 }

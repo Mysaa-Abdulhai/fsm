@@ -208,6 +208,14 @@ class DatabaseSeeder extends Seeder
                     'name'=>'get_favorite',
                     'role_id'=>'2'
                 ],
+                [
+                    'name'=>'male_and_female',
+                    'role_id'=>'2'
+                ],
+                [
+                    'name'=>'campaigns_in_category',
+                    'role_id'=>'2'
+                ],
 
 
 

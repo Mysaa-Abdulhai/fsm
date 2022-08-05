@@ -98,6 +98,10 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
 
     Route::get('statistics_campaigns',[UserController::class,'statistics_campaigns'])->name('statistics_campaigns');
 
+    Route::get('male_and_female',[UserController::class,'male_and_female'])->name('male_and_female');
+
+    Route::get('campaigns_in_category',[UserController::class,'campaigns_in_category'])->name('campaigns_in_category');
+
 
     //admin
     Route::post('add_volunteer_campaign',[AdminController::class,'add_volunteer_campaign'])->name('add_volunteer_campaign');
@@ -136,7 +140,7 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
 
 
 
-Route::get('/token_firebase',function(Request $request){
+Route::post('/token_firebase',function(Request $request){
     $SERVER_API_KEY='AAAACIU4Yhk:APA91bGBOKbSvvlUnOYHyUqfcmK6W-iXzn_qh9k636JxcqQsmV1kuGwHnIosditCThJkK4hAmNHjHDK6HjUjNVDto5XZjjpwWjFdRO6czT0IYMNx25ASXMIAB0RWlawPEWeCqfdkSNpE';
 
     $token_1 = $request->token;

@@ -16,6 +16,7 @@ use App\Models\volunteer;
 use App\Models\Campaign_Post;
 use App\Models\volunteer_campaign_rate;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Models\volunteer_campaign_request;
 use App\Models\donation_campaign_request;
@@ -132,10 +133,11 @@ class UserController extends Controller
             $pro = Profile::select('user_id')->where('id', '=', $campaign->leader_id)->first();
             $id = $pro->user_id;
             $name=User::select('name')->where('id','=',$id)->first();
-
+            $is_joined=volunteer::where('volunteer_campaign_id','=',$campaign->id)->where('user_id','=',auth()->user()->id)->exists();
             $location=location::where('id','=',$campaign->location_id)->first();
 
             return response()->json([
+                'id'=>$campaign->id,
                 'name'=>$campaign->name,
                 'image'=>$campaign->image,
                 'details'=>$campaign->details,
@@ -151,6 +153,7 @@ class UserController extends Controller
                 'rate'=>$rate,
                 'current_volunteer_number' => $campaign->current_volunteer_number,
                 'volunteer_number' => $campaign->volunteer_number,
+                'is_joined' => $is_joined,
             ], 200);
         }
         else
@@ -241,9 +244,36 @@ class UserController extends Controller
         foreach ($po as$post)
         {
             $like=public_like::where('public_post_id','=',$post->id)->count();
-            $comment=public_comment::where('public_post_id','=',$post->id)->get();
+            $comments=collect();
+            $comm=public_comment::where('public_post_id','=',$post->id)->get();
+            foreach ($comm as $com)
+            {
+                if(Profile::where('user_id','=',$com->user_id)->exists())
+                {
+                    $name=User::where('id','=',$com->user_id)->select('name')->first();
+                    $image=Profile::where('user_id','=',$com->user_id)->select('image')->first();
+                    $comments->push(['text'=>$com->text,'name'=>$name->name,
+                        'image'=>$image->image]);
+                }
+                else
+                {
+                    $name=User::where('id','=',$com->user_id)->select('name')->first();
+                    $comments->push(['text'=>$com->text,'name'=>$name->name,
+                        'image'=>null]);
+                }
+            }
+            $comment=DB::table('public_comments')
+                ->join('profiles','public_comments.user_id','=','profiles.user_id')
+                ->where('public_comments.public_post_id','=',$post->id)
+                ->select('public_comments.*','profiles.image')
+                ->get();
+
+            $is_liked=public_like::where('public_post_id','=',$post->id)->where('user_id','=',auth()->user()->id)->exists();
             $posts->push(['id'=>$post->id,'title'=>$post->title,
-                'body'=>$post->body,'image'=>$post->image,'likes'=>$like,'comment'=>$comment]);
+                'body'=>$post->body,'image'=>$post->image,
+                'likes'=>$like,
+                'comment'=>$comments,
+                'is_liked'=>$is_liked]);
         }
         return response()->json([
             'post'  => $posts,
@@ -262,10 +292,12 @@ class UserController extends Controller
         foreach ($po as $post)
         {
             $like=campaign_like::where('Campaign_Post_id','=',$post->id)->count();
+            $is_liked=campaign_like::where('Campaign_Post_id','=',$post->id)->where('user_id','=',auth()->user()->id)->exists();
             $posts->push(['id'=>$post->id,'title'=>$post->title,
                 'body'=>$post->body,'image'=>$post->image,
                 'volunteer_campaign_id'=>$post->volunteer_campaign_id,
-                'likes'=>$like]);
+                'likes'=>$like,'is_liked'=>$is_liked
+            ]);
         }
         return response()->json([
             'post' =>$posts,

@@ -133,14 +133,16 @@ class UserController extends Controller
             $id = $pro->user_id;
             $name=User::select('name')->where('id','=',$id)->first();
 
+            $location=location::where('id','=',$campaign->location_id)->first();
 
             return response()->json([
                 'name'=>$campaign->name,
                 'image'=>$campaign->image,
                 'details'=>$campaign->details,
                 'type'=>$campaign->type,
-                'longitude'=>$campaign->longitude,
-                'latitude'=>$campaign->latitude,
+                'city'=>$location->city,
+                'country'=>$location->country,
+                'street'=>$location->street,
                 'maxDate'=>$campaign->maxDate,
                 'leader_name' => $name->name,
                 'age'=>$campaign->age,
@@ -240,7 +242,8 @@ class UserController extends Controller
         {
             $like=public_like::where('public_post_id','=',$post->id)->count();
             $comment=public_comment::where('public_post_id','=',$post->id)->get();
-            $posts->push([$post,$like,$comment]);
+            $posts->push(['id'=>$post->id,'title'=>$post->title,
+                'body'=>$post->body,'image'=>$post->image,'likes'=>$like,'comment'=>$comment]);
         }
         return response()->json([
             'post'  => $posts,
@@ -259,7 +262,10 @@ class UserController extends Controller
         foreach ($po as $post)
         {
             $like=campaign_like::where('Campaign_Post_id','=',$post->id)->count();
-            $posts->push([$post,$like]);
+            $posts->push(['id'=>$post->id,'title'=>$post->title,
+                'body'=>$post->body,'image'=>$post->image,
+                'volunteer_campaign_id'=>$post->volunteer_campaign_id,
+                'likes'=>$like]);
         }
         return response()->json([
             'post' =>$posts,

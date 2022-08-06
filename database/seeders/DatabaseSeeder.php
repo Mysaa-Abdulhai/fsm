@@ -108,6 +108,21 @@ class DatabaseSeeder extends Seeder
                     'name'=>'all_user_leader_in_future',
                     'role_id'=>'1'
                 ],
+                [
+                    'name'=>'all_convert_points_request',
+                    'role_id'=>'1'
+                ],
+                [
+                    'name'=>'response_on_convert_points_request',
+                    'role_id'=>'1'
+                ],
+
+
+
+
+
+
+
 
 
 
@@ -214,6 +229,10 @@ class DatabaseSeeder extends Seeder
                 ],
                 [
                     'name'=>'campaigns_in_category',
+                    'role_id'=>'2'
+                ],
+                [
+                    'name'=>'convert_points_request',
                     'role_id'=>'2'
                 ],
 

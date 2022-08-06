@@ -93,6 +93,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(point::class);
     }
+    public function points()
+    {
+        return $this->hasMany(points_convert_request::class);
+    }
 
 
 

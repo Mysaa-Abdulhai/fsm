@@ -23,7 +23,7 @@ return new class extends Migration
                 $table->boolean('seen')->default(false);
                 $table->string('name')->unique();
                 $table->text('image');
-                $table->string('details');
+                $table->longText('details');
                 $table->enum('type',['natural','human','pets','others']);
                 $table->integer('volunteer_number');
                 $table->decimal('longitude', 10, 8);

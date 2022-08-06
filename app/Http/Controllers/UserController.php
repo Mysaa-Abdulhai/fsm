@@ -5,6 +5,8 @@ use App\Enums;
 use App\Models\campaign_like;
 use App\Models\campaignSkill;
 use App\Models\favorite;
+use App\Models\point;
+use App\Models\points_convert_request;
 use App\Models\Profile;
 use App\Models\profileSkill;
 use App\Models\public_comment;
@@ -899,5 +901,31 @@ class UserController extends Controller
             'pets'=>$pets
             ,'others'=>$others,
         ], 200);
+    }
+    public function convert_points_request(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'points'     => 'required|int',
+        ]);
+        if ($validator->fails())
+            return response()->json($validator->errors()->toJson(), 400);
+        $point=point::where('user_id','=',auth()->user()->id)->first();
+        if($point->value>=$request->points)
+        {
+            points_convert_request::create(['user_id'=>auth()->user()->id,
+                    'value'=>$request->points
+            ]);
+            $point->update(['value'=>$point->value-$request->points]);
+            return response()->json([
+                'message' => 'convert request has been sent',
+                'points'=>$point->value
+            ], 200);
+        }
+        else
+            return response()->json([
+                'message' => 'Your points  less than your order',
+                'points'=>$point->value
+            ], 403);
+
     }
 }

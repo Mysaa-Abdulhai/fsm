@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Enums;
+use App\Models\point;
+use App\Models\points_convert_request;
 use Illuminate\Validation\Rules\Enum;
 use App\Models\campaignSkill;
 use App\Models\ChatRoom;
@@ -617,8 +619,61 @@ class AdminController extends Controller
         return $response;
     }
 
+    public function all_convert_points_request()
+    {
+        if(points_convert_request::exists()) {
 
+            $requests=points_convert_request::where('seenAndAccept','=',false)
+                ->select('id','user_id','value')
+            ->get();
+            return response()->json([
+                'requests' => $requests
+            ], 200);
+        }
+        else
+            return response()->json([
+                'message' => 'no any request',
+            ], 400);
+    }
 
-
+    public function response_on_convert_points_request(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|int',
+            'seenAndAccept' => 'required|boolean',
+            'message' => 'required|string',
+        ]);
+        if ($validator->fails())
+            return response()->json($validator->errors()->toJson(), 400);
+        if(points_convert_request::where('id','=',$request->id)->exists())
+        {
+            $demand=points_convert_request::where('id','=',$request->id)->first();
+            if($demand->seenAndAccept=true)
+            {
+                if ($request->seenAndAccept == true) {
+                    $demand->seenAndAccept = true;
+                    $demand->save();
+                    return response()->json([
+                        'message' => $request->message,
+                    ], 200);
+                } else {
+                    $point = point::where('user_id', '=', $demand->user_id)->first();
+                    $point->update(['value' => $point->value + $demand->value]);
+                    $demand->delete();
+                    return response()->json([
+                        'message' => 'request has been rejected',
+                    ], 200);
+                }
+            }
+            else
+                return response()->json([
+                    'message' => 'request has already been answered',
+                ], 403);
+        }
+        else
+            return response()->json([
+                'message' => 'your entered request not found',
+            ], 403);
+    }
 
 }

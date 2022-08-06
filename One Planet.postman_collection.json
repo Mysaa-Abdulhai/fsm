@@ -190,17 +190,17 @@
 					"urlencoded": [
 						{
 							"key": "name",
-							"value": "sami",
+							"value": "Aziz",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "sami123",
+							"value": "azoz123",
 							"type": "text"
 						},
 						{
 							"key": "toke",
-							"value": "zizizizisdfds",
+							"value": "cvDqJ39GTIa05ljE-R7f4k:APA91bE07WSR3Rs6Y-psk3FBwqmXPbafRO5k49enNf97eFzUDPneBJ3xuJNyy0_aqeKAmPOUPVeQb0NR452pxbZW661YfxXCKDNhwN1tKKOKxfruBB1TJrPbyBjLeOiS6LzWW2K857R_",
 							"type": "default"
 						}
 					]
@@ -2481,6 +2481,83 @@
 			"response": []
 		},
 		{
+			"name": "male_and_female",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|0vwvBtxadN0nnuPhc8KbrLPp7bXxpaR0BgBzJLeu",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/male_and_female",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"male_and_female"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "campaigns_in_category",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|EKHMZbTL3UoF899UbBNI4OjPfBtFcZQkYdIyEcrY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "127.0.0.1:8000/api/campaigns_in_category",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"campaigns_in_category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "add_points",
 			"request": {
 				"auth": {
@@ -2539,6 +2616,153 @@
 					"path": [
 						"api",
 						"add_points"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "convert_points_request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "2|ObDudEPYkbzZrse3PqdXF7BA3M0rW2hTUnScPyTU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "points",
+							"value": "200",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/convert_points_request",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"convert_points_request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "all_convert_points_request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "2|M0bqQcLVkIg4bxhBxMt3rkUXVvjeElseNA1rH5y7",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/all_convert_points_request",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"all_convert_points_request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "response_on_convert_points_request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|ACEu9l1grckPbF22NimwC2tOOhpQpB9UJ3ri15LW",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "3",
+							"type": "default"
+						},
+						{
+							"key": "seenAndAccept",
+							"value": "0",
+							"type": "default"
+						},
+						{
+							"key": "message",
+							"value": "zizi",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/response_on_convert_points_request",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"response_on_convert_points_request"
 					]
 				}
 			},

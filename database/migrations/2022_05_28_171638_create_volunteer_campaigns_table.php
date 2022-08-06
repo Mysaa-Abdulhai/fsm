@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignId('location_id');
             $table->string('name')->unique();
             $table->text('image');
-            $table->string('details');
+            $table->longText('details');
             $table->enum('type',['natural','human','pets','others']);
             $table->integer('age');
             $table->string('study');

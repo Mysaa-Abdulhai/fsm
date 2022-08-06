@@ -102,6 +102,14 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
 
     Route::get('campaigns_in_category',[UserController::class,'campaigns_in_category'])->name('campaigns_in_category');
 
+    Route::post('convert_points_request',[UserController::class,'convert_points_request'])->name('convert_points_request');
+
+
+
+
+
+
+
 
     //admin
     Route::post('add_volunteer_campaign',[AdminController::class,'add_volunteer_campaign'])->name('add_volunteer_campaign');
@@ -129,6 +137,10 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
     Route::post('update_public_Posts',[AdminController::class,'update_public_Posts'])->name('update_public_Posts');
 
     Route::delete('delete_public_post',[AdminController::class,'delete_public_post'])->name('delete_public_post');
+
+    Route::get('all_convert_points_request',[AdminController::class,'all_convert_points_request'])->name('all_convert_points_request');
+
+    Route::post('response_on_convert_points_request',[AdminController::class,'response_on_convert_points_request'])->name('response_on_convert_points_request');
 
 
 

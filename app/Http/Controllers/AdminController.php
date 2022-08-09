@@ -43,7 +43,6 @@ class AdminController extends Controller
                 'message' => 'no any request',
             ], 400);
     }
-
     public function all_donation_campaign_request(Request $request)
     {
         if(donation_campaign_request::where('seenAndAccept', '=', false)->exists())
@@ -63,7 +62,6 @@ class AdminController extends Controller
             'message' => 'no any request',
         ], 400);
     }
-
     public function acceptAndUnanswered(Request $request)
     {
         if(donation_campaign_request::where('seenAndAccept', '=', false)->exists()||volunteer_campaign_request::exists()
@@ -85,7 +83,6 @@ class AdminController extends Controller
                 'message' => 'no any request',
             ], 400);
     }
-
     public function all_user_leader_in_future()
     {
 
@@ -101,7 +98,6 @@ class AdminController extends Controller
                     'message' => 'no any user want to be leader',
                 ], 400);
     }
-
     public function response_on_volunteer_campaign_request(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -199,8 +195,6 @@ class AdminController extends Controller
                 'message' => 'This request does not exist',
             ], 400);
     }
-
-
     public function response_on_donation_campaign_request(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -231,7 +225,6 @@ class AdminController extends Controller
                 'message' => 'This request does not exist',
             ], 400);
     }
-
     public function add_public_post(Request $request){
         $validator = Validator::make($request->all(), [
             'title' => 'required|string',
@@ -257,7 +250,6 @@ class AdminController extends Controller
             'message' => 'Post added Successfully'
         ],200);
     }//end
-
     public function update_public_Posts(Request $request){
         $validator=Validator::make($request->all(),[
             'id' => 'required'
@@ -300,22 +292,21 @@ class AdminController extends Controller
         ],200);
 
     }///end
-
     public function delete_public_post(Request $request){
         $validator=Validator::make($request->all(),[
-            'id' => 'required'
+            'id' => 'required|int'
         ]);
 
         if ($validator->fails())
             return response()->json([
-                'message' => 'enter num of post you want to delete it !',
+                'message' => 'enter num of post you want to delete it',
                 $validator->errors()
             ],400 );
 
         $post_id = public_post::find($request->id);
         if(!$post_id)
             return response()->json([
-                'message' => 'Post you have requested not found !'
+                'message' => 'Post you have requested not found'
             ]);
 
         $post_id->delete();
@@ -323,8 +314,6 @@ class AdminController extends Controller
             'message' => 'Post deleted successfully !'
         ],200);
     }//end
-
-
     public function add_volunteer_campaign(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -430,7 +419,6 @@ class AdminController extends Controller
             'skills'=>$skills
         ],200);
     }
-
     public function update_volunteer_campaign(Request $request){
         $validator=Validator::make($request->all(),[
             'id' => 'required|int',
@@ -555,8 +543,6 @@ class AdminController extends Controller
             'skills'=>$skills
         ]);
     }
-
-
     public function delete_volunteer_campaign(Request $request){
         $validator=Validator::make($request->all(),[
             'id' => 'required'
@@ -580,7 +566,6 @@ class AdminController extends Controller
             'message' => 'campaign deleted successfully !'
         ],200);
     }
-
     public function notification($title,$token,$message)
     {
         $SERVER_API_KEY='AAAACIU4Yhk:APA91bGBOKbSvvlUnOYHyUqfcmK6W-iXzn_qh9k636JxcqQsmV1kuGwHnIosditCThJkK4hAmNHjHDK6HjUjNVDto5XZjjpwWjFdRO6czT0IYMNx25ASXMIAB0RWlawPEWeCqfdkSNpE';
@@ -633,7 +618,6 @@ class AdminController extends Controller
 
         return $response;
     }
-
     public function all_convert_points_request()
     {
         if(points_convert_request::exists()) {
@@ -650,7 +634,6 @@ class AdminController extends Controller
                 'message' => 'no any request',
             ], 400);
     }
-
     public function response_on_convert_points_request(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -690,7 +673,6 @@ class AdminController extends Controller
                 'message' => 'your entered request not found',
             ], 403);
     }
-
     public function male_and_female()
     {
 
@@ -707,47 +689,29 @@ class AdminController extends Controller
             $thisYear_2=>$z,
         ], 200);
     }
-
     public function campaigns_in_category()
     {
-        $users=User::all();
-        $Camp=collect();
-        foreach ($users as $user)
-        {
-            $natural = DB::table('volunteers')
-                ->join('volunteer_campaigns', 'volunteers.volunteer_campaign_id', '=', 'volunteer_campaigns.id')
-                ->where('volunteers.user_id', '=', $user->id)
+            $natural = DB::table('volunteer_campaigns')
                 ->where('volunteer_campaigns.type', '=', 'natural')
                 ->count();
 
-            $human = DB::table('volunteers')
-                ->join('volunteer_campaigns', 'volunteers.volunteer_campaign_id', '=', 'volunteer_campaigns.id')
-                ->where('volunteers.user_id', '=', $user->id)
+            $human = DB::table('volunteer_campaigns')
                 ->where('volunteer_campaigns.type', '=', 'human')
                 ->count();
 
-            $pets = DB::table('volunteers')
-                ->join('volunteer_campaigns', 'volunteers.volunteer_campaign_id', '=', 'volunteer_campaigns.id')
-                ->where('volunteers.user_id', '=', $user->id)
+            $pets = DB::table('volunteer_campaigns')
                 ->where('volunteer_campaigns.type', '=', 'pets')
                 ->count();
 
-            $others = DB::table('volunteers')
-                ->join('volunteer_campaigns', 'volunteers.volunteer_campaign_id', '=', 'volunteer_campaigns.id')
-                ->where('volunteers.user_id', '=', $user->id)
+            $others = DB::table('volunteer_campaigns')
                 ->where('volunteer_campaigns.type', '=', 'others')
                 ->count();
 
-            $Camp->push(['user_id'=>$user->id,
-                'natural'=>$natural,
-                'human'=>$human,
-                'pets'=>$pets,
-                'others'=>$others,
-                ]);
-        }
         return response()->json([
-            'campaigns_in_category'=>$Camp
+            'natural'=>$natural,
+            'human'=>$human,
+            'pets'=>$pets,
+            'others'=>$others,
         ], 200);
     }
-
 }

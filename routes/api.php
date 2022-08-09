@@ -30,7 +30,7 @@ Route::get('/resend', [verificationController::class, 'resend'])->middleware(['a
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::delete('/delete_account', [AuthController::class, 'deleteAccount'])->middleware('auth:sanctum');
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::delete('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 
 Route::get('/verify_email/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify')->middleware('auth:sanctum');
@@ -62,18 +62,14 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
 
     Route::post('add_public_comment',[UserController::class,'add_public_comment'])->name('add_public_comment');
 
-    Route::post('add_public_like',[UserController::class,'add_public_like'])->name('add_public_like');
+    Route::post('public_post_like',[UserController::class,'public_post_like'])->name('public_post_like');
 
-    Route::delete('unlike_public',[UserController::class,'unlike_public'])->name('unlike_public');
 
 
     //campaign post
     Route::get('show_posts_of_campaign',[UserController::class,'show_posts_of_campaign'])->name('show_posts_of_campaign');
 
-    Route::post('add_campaign_like',[UserController::class,'add_campaign_like'])->name('add_campaign_like');
-
-    Route::delete('unlike_campaign',[UserController::class,'unlike_campaign'])->name('unlike_campaign');
-
+    Route::post('campaign_post_like',[UserController::class,'campaign_post_like'])->name('campaign_post_like');
 
     //favorite
     Route::post('favorite_campaign',[UserController::class,'favorite_campaign'])->name('favorite_campaign');
@@ -97,10 +93,6 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
     Route::get('statistics_accepted_requests',[UserController::class,'statistics_accepted_requests'])->name('statistics_accepted_requests');
 
     Route::get('statistics_campaigns',[UserController::class,'statistics_campaigns'])->name('statistics_campaigns');
-
-    Route::get('male_and_female',[UserController::class,'male_and_female'])->name('male_and_female');
-
-    Route::get('campaigns_in_category',[UserController::class,'campaigns_in_category'])->name('campaigns_in_category');
 
     Route::post('convert_points_request',[UserController::class,'convert_points_request'])->name('convert_points_request');
 
@@ -141,6 +133,10 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
     Route::get('all_convert_points_request',[AdminController::class,'all_convert_points_request'])->name('all_convert_points_request');
 
     Route::post('response_on_convert_points_request',[AdminController::class,'response_on_convert_points_request'])->name('response_on_convert_points_request');
+
+    Route::get('male_and_female',[AdminController::class,'male_and_female'])->name('male_and_female');
+
+    Route::get('campaigns_in_category',[AdminController::class,'campaigns_in_category'])->name('campaigns_in_category');
 
 
 

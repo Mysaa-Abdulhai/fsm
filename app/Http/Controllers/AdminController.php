@@ -1,20 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Enums;
 use App\Models\point;
 use App\Models\points_convert_request;
-use Illuminate\Validation\Rules\Enum;
 use App\Models\campaignSkill;
 use App\Models\ChatRoom;
 use App\Models\donation_campaign_request;
 use App\Models\notification_token;
 use App\Models\Profile;
 use App\Models\public_post;
+use App\Models\User;
 use App\Models\user_role;
 use App\Models\volunteer;
 use App\Models\volunteer_campaign;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB ;
@@ -134,7 +133,6 @@ class AdminController extends Controller
                 $campaign->longitude = $campaign_request->longitude;
                 $campaign->latitude = $campaign_request->latitude;
                 $campaign->maxDate = $campaign_request->maxDate;
-                $campaign->leader_id = $request->leader_id;
                 $campaign->age = $request->age;
                 $campaign->study = $request->study;
                 $campaign->save();
@@ -333,7 +331,7 @@ class AdminController extends Controller
             'name' => 'required|string|unique:volunteer_campaigns,name',
             'type' => 'required|string',
             'details' => 'required|string|min:5',
-            'maxDate' => 'required|date',
+            'maxDate' => 'required|date|after:today',
             'volunteer_number' => 'required|int',
             'image' => 'required',
             'leader_id' => 'required|int',
@@ -350,7 +348,6 @@ class AdminController extends Controller
 
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
-
         //image
         $image = $request->file('image');
         $image_name = time() . '.' . $image->getClientOriginalExtension();
@@ -371,7 +368,6 @@ class AdminController extends Controller
         $new_campaign->volunteer_number = $request->volunteer_number;
         $new_campaign->location_id = $location->id;
         $new_campaign->image = $image_name;
-        $new_campaign->leader_id = $request->leader_id;
         $new_campaign->volunteer_campaign_request_id = 0;
         $new_campaign->longitude = $request->longitude;
         $new_campaign->latitude = $request->latitude;
@@ -498,8 +494,27 @@ class AdminController extends Controller
         if (!is_null($image)){
             $campaign->image = $image;
         }
-        if (!is_null($leader_id)){
-            $campaign->leader_id = $leader_id;
+        if (!is_null($leader_id))
+        {
+            volunteer::where('volunteer_campaign_id','=',$campaign->id)
+                ->where('is_leader','=',true)->delete();
+            $pro=Profile::select('user_id')->where('id','=',$request->leader_id)->first();
+            $id=$pro->user_id;
+            if(user_role::where('user_id','=',$id)->where('role_id','=',4)->exists()==0)
+            {
+                user_role::create(['user_id' => $id, 'role_id' => 4]);
+            }
+            $notifications=notification_token::where('user_id','=',$id)->get();
+            foreach ($notifications as $notification)
+            {
+                return $this->notification($campaign->name,$notification->token,'you have been assigned as a leader');
+            }
+
+            $volunteer = new volunteer;
+            $volunteer->user_id = $id;
+            $volunteer->volunteer_campaign_id = $campaign->id;
+            $volunteer->is_leader = true;
+            $volunteer->save();
         }
         if (!is_null($study)){
             $campaign->study = $study;
@@ -674,6 +689,65 @@ class AdminController extends Controller
             return response()->json([
                 'message' => 'your entered request not found',
             ], 403);
+    }
+
+    public function male_and_female()
+    {
+
+        $thisYear= Carbon::now()->year;
+        $thisYear_1= $thisYear-1;
+        $thisYear_2=$thisYear_1-1;
+
+        $x=Profile::whereYear('created_at', '=', $thisYear)->count();
+        $y=Profile::whereYear('created_at', '=', $thisYear_1)->count();
+        $z=Profile::whereYear('created_at', '=', $thisYear_2)->count();
+        return response()->json([
+            $thisYear=>$x,
+            $thisYear_1=>$y,
+            $thisYear_2=>$z,
+        ], 200);
+    }
+
+    public function campaigns_in_category()
+    {
+        $users=User::all();
+        $Camp=collect();
+        foreach ($users as $user)
+        {
+            $natural = DB::table('volunteers')
+                ->join('volunteer_campaigns', 'volunteers.volunteer_campaign_id', '=', 'volunteer_campaigns.id')
+                ->where('volunteers.user_id', '=', $user->id)
+                ->where('volunteer_campaigns.type', '=', 'natural')
+                ->count();
+
+            $human = DB::table('volunteers')
+                ->join('volunteer_campaigns', 'volunteers.volunteer_campaign_id', '=', 'volunteer_campaigns.id')
+                ->where('volunteers.user_id', '=', $user->id)
+                ->where('volunteer_campaigns.type', '=', 'human')
+                ->count();
+
+            $pets = DB::table('volunteers')
+                ->join('volunteer_campaigns', 'volunteers.volunteer_campaign_id', '=', 'volunteer_campaigns.id')
+                ->where('volunteers.user_id', '=', $user->id)
+                ->where('volunteer_campaigns.type', '=', 'pets')
+                ->count();
+
+            $others = DB::table('volunteers')
+                ->join('volunteer_campaigns', 'volunteers.volunteer_campaign_id', '=', 'volunteer_campaigns.id')
+                ->where('volunteers.user_id', '=', $user->id)
+                ->where('volunteer_campaigns.type', '=', 'others')
+                ->count();
+
+            $Camp->push(['user_id'=>$user->id,
+                'natural'=>$natural,
+                'human'=>$human,
+                'pets'=>$pets,
+                'others'=>$others,
+                ]);
+        }
+        return response()->json([
+            'campaigns_in_category'=>$Camp
+        ], 200);
     }
 
 }

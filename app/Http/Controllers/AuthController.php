@@ -140,7 +140,9 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name'     => 'required|string|unique:users,name',
             'email'    => 'required|string|email|unique:users,email',
-            'password' => 'required|string',
+            'password' => ['required','string','min:8','regex:/[a-z]/'
+                ,'regex:/[0-9]/','regex:/[@$!%*#?&]/',],
+            'confirmed',
             'notification_token'=>'required|string'
         ]);
 

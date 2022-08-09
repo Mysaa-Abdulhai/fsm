@@ -19,7 +19,6 @@ class volunteer_campaign extends Model
         'age',
         'study',
         'location_id',
-        'leader_id',
         'longitude',
         'latitude',
     ];

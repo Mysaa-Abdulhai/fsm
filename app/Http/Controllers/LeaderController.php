@@ -100,6 +100,9 @@ class LeaderController extends Controller
                             ]);
                     }
                 }
+                return response()->json([
+                    'message'=>'points add to all volunteers',
+                ],200);
             }
             else
                 return response()->json([

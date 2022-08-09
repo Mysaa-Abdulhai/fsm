@@ -116,6 +116,14 @@ class DatabaseSeeder extends Seeder
                     'name'=>'response_on_convert_points_request',
                     'role_id'=>'1'
                 ],
+                [
+                    'name'=>'male_and_female',
+                    'role_id'=>'1'
+                ],
+                [
+                    'name'=>'campaigns_in_category',
+                    'role_id'=>'1'
+                ],
 
 
 
@@ -172,19 +180,11 @@ class DatabaseSeeder extends Seeder
                     'role_id'=>'2'
                 ],
                 [
-                    'name'=>'add_public_like',
+                    'name'=>'public_post_like',
                     'role_id'=>'2'
                 ],
                 [
-                    'name'=>'add_campaign_like',
-                    'role_id'=>'2'
-                ],
-                [
-                    'name'=>'unlike_public',
-                    'role_id'=>'2'
-                ],
-                [
-                    'name'=>'unlike_campaign',
+                    'name'=>'campaign_post_like',
                     'role_id'=>'2'
                 ],
                 [
@@ -220,15 +220,7 @@ class DatabaseSeeder extends Seeder
                     'role_id'=>'2'
                 ],
                 [
-                    'name'=>'get_favorite',
-                    'role_id'=>'2'
-                ],
-                [
-                    'name'=>'male_and_female',
-                    'role_id'=>'2'
-                ],
-                [
-                    'name'=>'campaigns_in_category',
+                      'name'=>'get_favorite',
                     'role_id'=>'2'
                 ],
                 [

@@ -21,7 +21,7 @@ class ChatController extends Controller
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
 
-        return DB::table('chat_messages')->select('user_id as id','name','message')->orderBy('created_at', 'DESC')
+        return DB::table('chat_messages')->select('user_id as id','name','message','created_at')->orderBy('created_at', 'DESC')
             ->get();
 
     }

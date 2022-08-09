@@ -145,12 +145,12 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "18|6esHIfqr15DsJfkPlZSAjX4gIDuIoFg7GqNwcv5i",
+							"value": "11|cIw9gKoaG1UXgessBzFHB9GKFvC7OjASxe7HxBoL",
 							"type": "string"
 						}
 					]
 				},
-				"method": "POST",
+				"method": "DELETE",
 				"header": [
 					{
 						"key": "Accept",
@@ -159,54 +159,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://oneplanetapp.herokuapp.com/api/logout",
-					"protocol": "https",
-					"host": [
-						"oneplanetapp",
-						"herokuapp",
-						"com"
-					],
-					"path": [
-						"api",
-						"logout"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "login",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "default"
-					}
-				],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "name",
-							"value": "Aziz",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "azoz123",
-							"type": "text"
-						},
-						{
-							"key": "toke",
-							"value": "cvDqJ39GTIa05ljE-R7f4k:APA91bE07WSR3Rs6Y-psk3FBwqmXPbafRO5k49enNf97eFzUDPneBJ3xuJNyy0_aqeKAmPOUPVeQb0NR452pxbZW661YfxXCKDNhwN1tKKOKxfruBB1TJrPbyBjLeOiS6LzWW2K857R_",
-							"type": "default"
-						}
-					]
-				},
-				"url": {
-					"raw": "http://127.0.0.1:8000/api/login",
+					"raw": "http://127.0.0.1:8000/api/logout",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -217,7 +170,7 @@
 					"port": "8000",
 					"path": [
 						"api",
-						"login"
+						"logout"
 					]
 				}
 			},
@@ -257,6 +210,55 @@
 					"path": [
 						"api",
 						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "sami",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "sami123",
+							"type": "text"
+						},
+						{
+							"key": "toke",
+							"value": "cvDqJ39GTIa05ljE-R7f4k:APA91bE07WSR3Rs6Y-psk3FBwqmXPbafRO5k49enNf97eFzUDPneBJ3xuJNyy0_aqeKAmPOUPVeQb0NR452pxbZW661YfxXCKDNhwN1tKKOKxfruBB1TJrPbyBjLeOiS6LzWW2K857R_",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"login"
 					]
 				}
 			},
@@ -1765,7 +1767,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "5|OEvAneRfy8eZD0yjKD727wogGw5GE0VMMxdUPM6h",
+							"value": "1|T48XgVIawzZcNEwzqBNzM2q6jfV2m6MYjffYblwe",
 							"type": "string"
 						}
 					]
@@ -1821,19 +1823,19 @@
 			"response": []
 		},
 		{
-			"name": "unlike_public",
+			"name": "public_post_like",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "6|71e7b6a7hkDt07ypybQ6x7dB9NnZ333jtc6rOGnI",
+							"value": "2|Y0MYxFvYXk3ys2hyo0oWlG8XnxHFP4N24ZvwEdu0",
 							"type": "string"
 						}
 					]
 				},
-				"method": "DELETE",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Accept",
@@ -1852,7 +1854,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/unlike_public",
+					"raw": "http://127.0.0.1:8000/api/public_post_like",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -1863,56 +1865,7 @@
 					"port": "8000",
 					"path": [
 						"api",
-						"unlike_public"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "add_public_like",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "6|71e7b6a7hkDt07ypybQ6x7dB9NnZ333jtc6rOGnI",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "default"
-					}
-				],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "id",
-							"value": "2",
-							"type": "default"
-						}
-					]
-				},
-				"url": {
-					"raw": "http://127.0.0.1:8000/api/add_public_like",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"add_public_like"
+						"public_post_like"
 					]
 				}
 			},
@@ -1973,14 +1926,14 @@
 			"response": []
 		},
 		{
-			"name": "add_campaign_like",
+			"name": "campaign_post_like",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "6|71e7b6a7hkDt07ypybQ6x7dB9NnZ333jtc6rOGnI",
+							"value": "2|Y0MYxFvYXk3ys2hyo0oWlG8XnxHFP4N24ZvwEdu0",
 							"type": "string"
 						}
 					]
@@ -2004,7 +1957,7 @@
 					]
 				},
 				"url": {
-					"raw": "127.0.0.1:8000/api/add_campaign_like",
+					"raw": "127.0.0.1:8000/api/campaign_post_like",
 					"host": [
 						"127",
 						"0",
@@ -2014,7 +1967,7 @@
 					"port": "8000",
 					"path": [
 						"api",
-						"add_campaign_like"
+						"campaign_post_like"
 					]
 				}
 			},
@@ -2527,7 +2480,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|EKHMZbTL3UoF899UbBNI4OjPfBtFcZQkYdIyEcrY",
+							"value": "4|vg2JgVasccr7nF3DlUwUtrgKWG8ifB4rSCjPdqyO",
 							"type": "string"
 						}
 					]

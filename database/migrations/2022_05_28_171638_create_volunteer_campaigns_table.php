@@ -18,7 +18,6 @@ return new class extends Migration
 
             $table->id();
             $table->foreignId('volunteer_campaign_request_id');
-            $table->foreignId('leader_id');
             $table->foreignId('location_id');
             $table->string('name')->unique();
             $table->text('image');

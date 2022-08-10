@@ -94,6 +94,8 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
 
     Route::get('statistics_campaigns',[UserController::class,'statistics_campaigns'])->name('statistics_campaigns');
 
+    Route::get('campaign_suggestions',[UserController::class,'campaign_suggestions'])->name('campaign_suggestions');
+
     Route::post('convert_points_request',[UserController::class,'convert_points_request'])->name('convert_points_request');
 
 

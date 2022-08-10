@@ -875,4 +875,26 @@ class UserController extends Controller
             ], 403);
 
     }
+
+    public function campaign_suggestions()
+    {
+        if(volunteer::where('user_id','=',auth()->user()->id)->exists())
+        {
+            $campaign=DB::table('volunteers')
+                ->select('volunteers_campaigns.*')
+                ->join('volunteers_campaigns',
+                    'volunteers.volunteers_campaign_id','=','volunteers_campaigns.id')
+                ->where('volunteers.user_id','=',auth()->user()->id)
+            ->get();
+
+            return response()->json([
+                'campaigns' => $campaign
+            ], 200);
+        }
+        else
+            return response()->json([
+                'message' => 'you arn\'t  member in any campaign',
+            ], 403);
+    }
+
 }

@@ -227,6 +227,10 @@ class DatabaseSeeder extends Seeder
                     'name'=>'convert_points_request',
                     'role_id'=>'2'
                 ],
+                [
+                    'name'=>'campaign_suggestions',
+                    'role_id'=>'2'
+                ],
 
 
 

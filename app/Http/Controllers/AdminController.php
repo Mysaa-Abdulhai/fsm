@@ -317,7 +317,11 @@ class AdminController extends Controller
             $post_id->body = $body;
         }
         if(! is_null($image)){
-            $post_id->image = $image;
+            //image
+            $image = $request->file('image');
+            $image_name = time() . '.' . $image->getClientOriginalExtension();
+            $image->move('images', $image_name);
+            $post_id->image = $image_name;
         }
         $post_id->save();
         return response()->json([

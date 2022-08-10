@@ -726,7 +726,7 @@ class AdminController extends Controller
 
         return response()->json([
             'natural'=>$natural,
-            'human'=>$human,
+            'human'=>$human, 
             'pets'=>$pets,
             'others'=>$others,
         ], 200);

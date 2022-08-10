@@ -13,17 +13,59 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+
+    public function register_code(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'name'     => 'required|string|unique:users,name',
+            'email'    => 'required|string|email|unique:users,email',
+            'password' => ['required','string','min:8','regex:/[a-z]/'
+                ,'regex:/[0-9]/','regex:/[@$!%*#?&]/',],
+                'confirmed',
+            'notification_token'=>'required|string'
+        ]);
+
+        if ($validator->fails())
+            return response()->json(
+                $validator->errors()->toJson(), 400);
+
+        $user = new User();
+        $user->name  = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->save();
+        $token = $user->createToken('myapptoken')->plainTextToken;
+
+        $user->generateCode();
+        $user->notify(new VerificationCode());
+        notification_token::create([
+            'user_id' => $user->id,
+            'token' => $request->notification_token,
+        ]);
+        return response()->json([
+            'message' => 'User successfully registered',
+            'user' => $user,
+            'token' => $token,
+            'notification code'=>notification_token::where('user_id','=',$user->id)
+                ->where('token','=',$request->notification_token)
+                ->pluck('token')
+        ], 201);
+    }//end 
+
+
     public function deleteAccount(Request $request){
 
         if(User::where('id',auth()->user()->id)->delete())
             return response()->json([
                 'message' => 'deleted'
             ]);
-        else
+        else {
             return response()->json([
-            'message' => 'nothing to delete'
+                'message' => 'nothing to delete'
             ],402);
-    }
+        }
+    }//end
+
 
     public function login(Request $request) {
 
@@ -122,8 +164,6 @@ class AuthController extends Controller
         ], 200);
     }
 
-
-
     public function logout(Request $request) {
         auth()->user()->tokens()->delete();
         return response()->json([
@@ -131,47 +171,6 @@ class AuthController extends Controller
         ],200);
     }
 
-    //code
-
-
-
-    public function register_code(Request $request){
-
-        $validator = Validator::make($request->all(), [
-            'name'     => 'required|string|unique:users,name',
-            'email'    => 'required|string|email|unique:users,email',
-            'password' => ['required','string','min:8','regex:/[a-z]/'
-                ,'regex:/[0-9]/','regex:/[@$!%*#?&]/',],
-            'confirmed',
-            'notification_token'=>'required|string'
-        ]);
-
-        if ($validator->fails())
-            return response()->json(
-                $validator->errors()->toJson(), 400);
-
-        $user = new User();
-        $user->name  = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->save();
-        $token = $user->createToken('myapptoken')->plainTextToken;
-
-        $user->generateCode();
-        $user->notify(new VerificationCode());
-        notification_token::create([
-            'user_id' => $user->id,
-            'token' => $request->notification_token,
-        ]);
-        return response()->json([
-            'message' => 'User successfully registered',
-            'user' => $user,
-            'token' => $token,
-            'notification code'=>notification_token::where('user_id','=',$user->id)
-                ->where('token','=',$request->notification_token)
-                ->pluck('token')
-        ], 201);
-    }
 }
 
 

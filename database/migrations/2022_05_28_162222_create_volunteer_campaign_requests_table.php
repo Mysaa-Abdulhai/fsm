@@ -26,7 +26,7 @@ return new class extends Migration
                 $table->longText('details');
                 $table->enum('type',['natural','human','pets','others']);
                 $table->enum('study',['Primary School','Middle School','High School'
-                    ,"Bachelor\'s Degree",'Master Degree','phD Degree','No Study']);
+                    ,"Bachelor\'s Degree",'Master Degree','phD Degree','No Studys']);
                 $table->integer('volunteer_number');
                 $table->decimal('longitude', 10, 8);
                 $table->decimal('latitude', 10, 8);

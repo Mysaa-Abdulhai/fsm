@@ -25,7 +25,7 @@ return new class extends Migration
             $table->enum('type',['natural','human','pets','others']);
             $table->integer('age');
             $table->enum('study',['Primary School','Middle School','High School'
-                ,"Bachelor\'s Degree",'Master Degree','phD Degree','No Study']);
+                ,"Bachelor\'s Degree",'Master Degree','phD Degree','No Studys']);
             $table->integer('volunteer_number');
             $table->integer('current_volunteer_number')->default(0);
             $table->decimal('longitude', 10, 8);

@@ -69,9 +69,7 @@ class AdminController extends Controller
         {
             $dcampaigns = donation_campaign_request::where('seenAndAccept', '=', true)->get();
             $dcampaign = donation_campaign_request::where('seenAndAccept', '=', false)->get();
-            $vcampaign=volunteer_campaign::get();
-
-            /////////hhhh
+            $vcampaign=volunteer_campaign::where('volunteer_campaign_request_id','!=',0)->get();
             $vcampaigns=volunteer_campaign_request::where('seen', '=', false)->get();
             return response()->json([
                 'accepted donation campaign' => $dcampaigns->count(),
@@ -87,12 +85,42 @@ class AdminController extends Controller
     }
     public function all_user_leader_in_future()
     {
-
             if(profile::where('leaderInFuture','=',true)->exists()) {
+                $users=collect();
                 $profiles=profile::where('leaderInFuture','=',true)->get();
+                foreach ($profiles as $profile)
+                {
+                    if(volunteer::where('user_id','=',$profile->user_id)->where('is_leader','=',true)->exists())
+                    {
+                        $volunteers=volunteer::where('user_id','=',$profile->user_id)->where('is_leader','=',true)->get();
+                        $available=true;
+                        foreach ($volunteers as $volunteer)
+                        {
+                            $campaign=volunteer_campaign::where('id','=',$volunteer->volunteer_campaign_id)->first();
+                            if(Carbon::now()->lt($campaign->maxDate))
+                            {
+                                $available=false;
+                            }
+                        }
+                        if($available==true)
+                        {
+                            $users->push($profile);
+                        }
+                    }
+                    else
+                    {
+                        $users->push($profile);
+                    }
+                }
+                if($users->isEmpty())
+                {
+                    return response()->json([
+                        'message' => 'no any user available to assign as leader',
+                    ], 400);
+                }
                 return response()->json([
                     'message' => 'profiles for user who want to be leader in future',
-                    'profiles' => $profiles
+                    'profiles' => $users
                 ], 200);
             }
             else
@@ -161,7 +189,7 @@ class AdminController extends Controller
                 $notifications=notification_token::where('user_id','=',$id)->get();
                 foreach ($notifications as $notification)
                 {
-                    return $this->notification($group->name,$notification->token,'you have been assigned as a leader');
+                    $this->notification($group->name,$notification->token,'you have been assigned as a leader');
                 }
 
                 $volunteer = new volunteer;
@@ -255,7 +283,7 @@ class AdminController extends Controller
             'post'    => $new_post,
             'message' => 'Post added Successfully'
         ],200);
-    }//end
+    }
     public function update_public_Posts(Request $request){
         $validator=Validator::make($request->all(),[
             'id' => 'required'
@@ -273,9 +301,9 @@ class AdminController extends Controller
 
         $title = $request->title ;
         $body  = $request->body ;
-        $photo = $request->photo;
+        $image = $request->image;
 
-        if(is_null($title) And is_null($body) And is_null($photo)){
+        if(is_null($title) And is_null($body) And is_null($image)){
             return response()->json([
                 'message' => 'Enter an information to update !',
                 'post is' => $post_id ,
@@ -288,8 +316,8 @@ class AdminController extends Controller
         if(! is_null($body)){
             $post_id->body = $body;
         }
-        if(! is_null($photo)){
-            $post_id->photo = $photo;
+        if(! is_null($image)){
+            $post_id->image = $image;
         }
         $post_id->save();
         return response()->json([
@@ -297,7 +325,7 @@ class AdminController extends Controller
             'message' => 'post updated successfully'
         ],200);
 
-    }///end
+    }
     public function delete_public_post(Request $request)
     {
         $validator=Validator::make($request->all(),[
@@ -320,7 +348,7 @@ class AdminController extends Controller
         return response()->json([
             'message' => 'Post deleted successfully !'
         ],200);
-    }//end
+    }
     public function add_volunteer_campaign(Request $request)
     {
         $validator = Validator::make($request->all(), [

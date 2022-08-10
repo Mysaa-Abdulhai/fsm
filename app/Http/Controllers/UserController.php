@@ -150,7 +150,7 @@ class UserController extends Controller
                 'country'=>$location->country,
                 'street'=>$location->street,
                 'maxDate'=>$campaign->maxDate,
-                'maxDate days'=>Carbon::parse(Carbon::now())->diff($campaign->maxDate)->days,
+                'maxDate_days'=>Carbon::parse(Carbon::now())->diff($campaign->maxDate)->days,
                 'leader_name' => $name->name,
                 'age'=>$campaign->age,
                 'study'=>$campaign->study,
@@ -733,7 +733,6 @@ class UserController extends Controller
                 'message' => 'there is no campaign with this name',
             ], 403);
     }
-
     public function statistics_likes(){
         if(public_like::where('user_id','=',auth()->user()->id)->exists()) {
             return response()->json([
@@ -842,7 +841,6 @@ class UserController extends Controller
             ], 403);
 
     }
-
     public function campaign_suggestions()
     {
         if(volunteer::where('user_id','=',auth()->user()->id)->exists())
@@ -880,7 +878,9 @@ class UserController extends Controller
             $max->push(['human'=>$human,'natural'=>$natural,
                 'pets'=>$pets,'others'=>$others,
             ]);
-            $max=max($max);
+            return
+            $max=max($max->human);
+
 
 
             return response()->json([
@@ -890,9 +890,9 @@ class UserController extends Controller
         }
         else
             return response()->json([
-                'message' => volunteer_campaign::orderBy('created_at', 'DESC')
+                'campaigns' => volunteer_campaign::orderBy('created_at', 'DESC')
                     ->get(),
-            ], 403);
+            ], 200);
     }
 
 }

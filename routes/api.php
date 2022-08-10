@@ -74,8 +74,6 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
     //favorite
     Route::post('favorite_campaign',[UserController::class,'favorite_campaign'])->name('favorite_campaign');
 
-    Route::delete('delete_favorite_campaign',[UserController::class,'delete_favorite_campaign'])->name('delete_favorite_campaign');
-
     Route::get('get_favorite',[UserController::class,'get_favorite'])->name('get_favorite');
 
     Route::get('join_campaign',[UserController::class,'join_campaign'])->name('join_campaign')->middleware('fullProfile');
@@ -93,6 +91,8 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
     Route::get('statistics_accepted_requests',[UserController::class,'statistics_accepted_requests'])->name('statistics_accepted_requests');
 
     Route::get('statistics_campaigns',[UserController::class,'statistics_campaigns'])->name('statistics_campaigns');
+
+    Route::get('campaign_suggestions',[UserController::class,'campaign_suggestions'])->name('campaign_suggestions');
 
     Route::post('convert_points_request',[UserController::class,'convert_points_request'])->name('convert_points_request');
 

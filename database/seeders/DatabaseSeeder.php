@@ -192,10 +192,6 @@ class DatabaseSeeder extends Seeder
                     'role_id'=>'2'
                 ],
                 [
-                    'name'=>'delete_favorite_campaign',
-                    'role_id'=>'2'
-                ],
-                [
                     'name'=>'add_rate',
                     'role_id'=>'2'
                 ],
@@ -225,6 +221,10 @@ class DatabaseSeeder extends Seeder
                 ],
                 [
                     'name'=>'convert_points_request',
+                    'role_id'=>'2'
+                ],
+                [
+                    'name'=>'campaign_suggestions',
                     'role_id'=>'2'
                 ],
 

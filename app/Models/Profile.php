@@ -13,7 +13,6 @@ class Profile extends Model
         'gender',
         'birth_date',
         'bio',
-        'nationality',
         'study',
         'phoneNumber',
         'leaderInFuture',

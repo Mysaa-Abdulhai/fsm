@@ -120,7 +120,8 @@ class UserController extends Controller
             $campaign = volunteer_campaign::where('id', $request->id)->first();
             $skills=$campaign->getSkill();
 
-            if(volunteer_campaign_rate::where('volunteer_campaign_id','=',$campaign->id)->exists()) {
+            if(volunteer_campaign_rate::where('volunteer_campaign_id','=',$campaign->id)->exists())
+            {
                 $rate = collect();
                 $rates = volunteer_campaign_rate::where('volunteer_campaign_id', '=', $campaign->id)->get();
                 foreach ($rates as $rat) {
@@ -149,7 +150,7 @@ class UserController extends Controller
                 'country'=>$location->country,
                 'street'=>$location->street,
                 'maxDate'=>$campaign->maxDate,
-                'maxDate days'=>Carbon::parse(Carbon::now())->diff($campaign->maxDate)->days,
+                'maxDate_days'=>Carbon::parse(Carbon::now())->diff($campaign->maxDate)->days,
                 'leader_name' => $name->name,
                 'age'=>$campaign->age,
                 'study'=>$campaign->study,
@@ -263,11 +264,6 @@ class UserController extends Controller
                         'image'=>null]);
                 }
             }
-            $comment=DB::table('public_comments')
-                ->join('profiles','public_comments.user_id','=','profiles.user_id')
-                ->where('public_comments.public_post_id','=',$post->id)
-                ->select('public_comments.*','profiles.image')
-                ->get();
 
             $is_liked=public_like::where('public_post_id','=',$post->id)->where('user_id','=',auth()->user()->id)->exists();
             $posts->push(['id'=>$post->id,'title'=>$post->title,
@@ -342,6 +338,8 @@ class UserController extends Controller
                     ]);
                     $user_role->save();
                 }
+                $camp->update(['current_volunteer_number'=>$camp->current_volunteer_number++]);
+                $camp->save();
 
                 return response()->json([
                     'message' => 'you join the campaign'
@@ -380,10 +378,7 @@ class UserController extends Controller
         $user_pro->study  = $request->study;
         $user_pro->image       = $image_name ;
         $user_pro->user_id     = auth()->user()->id;
-        if(!is_null($request->nationality))
-        {
-            $user_pro->nationality = $request->nationality ;
-        }
+
         if(!is_null($request->gender))
         {
             $user_pro->gender = $request->gender ;
@@ -426,7 +421,7 @@ class UserController extends Controller
         {
             $pro=Profile::where('user_id','=',$id)->first();
             if(is_null($request->image) And is_null($request->birth_date) And is_null($request->gender)
-                And is_null($request->nationality)And is_null($request->bio)And is_null($request->name)
+                And is_null($request->bio)And is_null($request->name)
                 And is_null($request->study) And is_null($request->skills)And is_null($request->leaderInFuture)
                 And is_null($request->phoneNumber)
             ){
@@ -463,11 +458,7 @@ class UserController extends Controller
                 $pro->bio = $request->bio ;
                 $pro->save();
             }
-            if(!is_null($request->nationality))
-            {
-                $pro->nationality = $request->nationality ;
-                $pro->save();
-            }
+
             if(!is_null($request->study))
             {
                 $pro->study = $request->study ;
@@ -563,7 +554,7 @@ class UserController extends Controller
         {
             if(public_like::where('public_post_id','=',$request->id)->where('user_id','=',auth()->user()->id)->exists())
             {
-                $like=public_like::where('public_post_id','=',$request->id)
+                public_like::where('public_post_id','=',$request->id)
                     ->where('user_id','=',auth()->user()->id)->delete();
                 return response()->json([
                     'message' => 'you unliked the post',
@@ -632,9 +623,10 @@ class UserController extends Controller
         {
             if(favorite::where('volunteer_campaign_id','=',$request->volunteer_campaign_id)->where('user_id','=',auth()->user()->id)->exists())
             {
-                return response()->json([
-                    'message' => 'you already add the campaign to your favorite',
-                ], 403);
+                    favorite::where('volunteer_campaign_id', '=', $request->volunteer_campaign_id)->where('user_id', '=', auth()->user()->id)->delete();
+                    return response()->json([
+                        'message' => 'you delete the campaign from favorite',
+                    ], 200);
             }
             else
             {
@@ -646,31 +638,6 @@ class UserController extends Controller
                     'message' => 'you added the campaign to your favorite',
                 ], 200);
             }
-        }
-        else
-            return response()->json([
-                'message' => 'your campaign not found',
-            ], 403);
-    }
-    public function delete_favorite_campaign(Request $request){
-        $validator = Validator::make($request->all(),[
-            'volunteer_campaign_id'       => 'required|int',
-        ]);
-        if ($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
-        }
-        if(volunteer_campaign::where('id','=',$request->volunteer_campaign_id)->exists())
-        {
-            if(favorite::where('volunteer_campaign_id','=',$request->volunteer_campaign_id)->where('user_id','=',auth()->user()->id)->exists()) {
-                favorite::where('volunteer_campaign_id', '=', $request->volunteer_campaign_id)->where('user_id', '=', auth()->user()->id)->delete();
-                return response()->json([
-                    'message' => 'you delete the campaign from favorite',
-                ], 200);
-            }
-            else
-                return response()->json([
-                    'message' => 'your haven\'t rate to delete it',
-                ], 403);
         }
         else
             return response()->json([
@@ -766,7 +733,6 @@ class UserController extends Controller
                 'message' => 'there is no campaign with this name',
             ], 403);
     }
-
     public function statistics_likes(){
         if(public_like::where('user_id','=',auth()->user()->id)->exists()) {
             return response()->json([
@@ -874,5 +840,166 @@ class UserController extends Controller
                 'points'=>$point->value
             ], 403);
 
+    }
+    public function campaign_suggestions()
+    {
+        if(volunteer::where('user_id','=',auth()->user()->id)->exists())
+        {
+            $campaigns=DB::table('volunteers')
+                ->join('volunteer_campaigns',
+                    'volunteers.volunteer_campaign_id','=','volunteer_campaigns.id')
+                ->where('volunteers.user_id','=',auth()->user()->id)
+                ->get();
+            $human=0;
+            $natural=0;
+            $pets=0;
+            $others=0;
+            foreach ($campaigns as $campaign)
+            {
+                if($campaign->type=='human')
+                {
+                    $human++;
+                }
+                if($campaign->type=='natural')
+                {
+                    $natural++;
+                }
+                if($campaign->type=='pets')
+                {
+                    $pets++;
+                }
+                if($campaign->type=='others')
+                {
+                    $others++;
+                }
+            }
+
+            $max=max($human,$natural,$pets,$others);
+
+            if($max==$human)
+            {
+                $campaign=collect();
+                $camps=volunteer_campaign::where('type','=','human')->get();
+                foreach ($camps as $camp)
+                {
+                    if(volunteer::where('user_id','=',auth()->user()->id)
+                            ->where('volunteer_campaign_id','=',$camp->id)->doesntExist())
+                    {
+                        $campaign->push($camp);
+                    }
+                }
+                if($campaign->isEmpty())
+                {
+                    $camps=volunteer_campaign::orderBy('created_at', 'DESC')
+                        ->get();
+                    foreach ($camps as $camp)
+                    {
+                        if(volunteer::where('user_id','=',auth()->user()->id)
+                            ->where('volunteer_campaign_id','=',$camp->id)->doesntExist())
+                        {
+                            $campaign->push($camp);
+                        }
+                    }
+                }
+                return response()->json([
+                    'campaigns' => $campaign
+                ], 200);
+            }
+            if($max==$natural)
+            {
+                $campaign=collect();
+                $camps=volunteer_campaign::where('type','=','natural')->get();
+                foreach ($camps as $camp)
+                {
+                    if(volunteer::where('user_id','=',auth()->user()->id)
+                            ->where('volunteer_campaign_id','=',$camp->id)->doesntExist())
+                    {
+                        $campaign->push($camp);
+                    }
+
+                }
+                if($campaign->isEmpty())
+                {
+                    $camps=volunteer_campaign::orderBy('created_at', 'DESC')
+                        ->get();
+                    foreach ($camps as $camp)
+                    {
+                        if(volunteer::where('user_id','=',auth()->user()->id)
+                            ->where('volunteer_campaign_id','=',$camp->id)->doesntExist())
+                        {
+                            $campaign->push($camp);
+                        }
+                    }
+                }
+                return response()->json([
+                    'campaigns' => $campaign
+                ], 200);
+            }
+            if($max==$pets)
+            {
+                $campaign=collect();
+                $camps=volunteer_campaign::where('type','=','pets')->get();
+                foreach ($camps as $camp)
+                {
+                    if(volunteer::where('user_id','=',auth()->user()->id)
+                            ->where('volunteer_campaign_id','=',$camp->id)->doesntExist()==false)
+                    {
+                        $campaign->push($camp);
+                    }
+
+                }
+                if($campaign->isEmpty())
+                {
+                    $camps=volunteer_campaign::orderBy('created_at', 'DESC')
+                        ->get();
+                    foreach ($camps as $camp)
+                    {
+                        if(volunteer::where('user_id','=',auth()->user()->id)
+                            ->where('volunteer_campaign_id','=',$camp->id)->doesntExist())
+                        {
+                            $campaign->push($camp);
+                        }
+                    }
+                }
+                return response()->json([
+                    'campaigns' => $campaign
+                ], 200);
+            }
+            if($max==$others)
+            {
+                $campaign=collect();
+                $camps=volunteer_campaign::where('type','=','others')->get();
+                foreach ($camps as $camp)
+                {
+                    if(volunteer::where('user_id','=',auth()->user()->id)
+                            ->where('volunteer_campaign_id','=',$camp->id)->doesntExist()==false)
+                    {
+                        $campaign->push($camp);
+                    }
+
+                }
+                if($campaign->isEmpty())
+                {
+                    $camps=volunteer_campaign::orderBy('created_at', 'DESC')
+                        ->get();
+                    foreach ($camps as $camp)
+                    {
+                        if(volunteer::where('user_id','=',auth()->user()->id)
+                            ->where('volunteer_campaign_id','=',$camp->id)->doesntExist())
+                        {
+                            $campaign->push($camp);
+                        }
+                    }
+                }
+                return response()->json([
+                    'campaigns' => $campaign
+                ], 200);
+            }
+        }
+        else
+            return response()->json([
+                'campaigns' => volunteer_campaign::orderBy('created_at', 'DESC')
+                    ->get(),
+            ], 200);
     }
 }

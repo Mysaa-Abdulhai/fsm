@@ -49,7 +49,7 @@ class AdminController extends Controller
         {
             $campaign=DB::table('donation_campaign_requests')
                 ->select('profiles.name as user name','profiles.image as user image','donation_campaign_requests.*')
-                ->join('profiles','donation_campaign_requests.user_id','=','profiles.user_id')
+                ->joinjoin('profiles','donation_campaign_requests.user_id','=','profiles.user_id')
                 ->where('donation_campaign_requests.seenAndAccept', '=', false)
                 ->get();
         return response()->json([
@@ -69,8 +69,8 @@ class AdminController extends Controller
         {
             $dcampaigns = donation_campaign_request::where('seenAndAccept', '=', true)->get();
             $dcampaign = donation_campaign_request::where('seenAndAccept', '=', false)->get();
-            $vcampaign=volunteer_campaign::get();
-            $vcampaigns=volunteer_campaign_request::get();
+            $vcampaign=volunteer_campaign::where('volunteer_campaign_request_id','!=',0)->get();
+            $vcampaigns=volunteer_campaign_request::where('seen', '=', false)->get();
             return response()->json([
                 'accepted donation campaign' => $dcampaigns->count(),
                 'unanswered donation campaign' => $dcampaign->count(),
@@ -85,12 +85,42 @@ class AdminController extends Controller
     }
     public function all_user_leader_in_future()
     {
-
             if(profile::where('leaderInFuture','=',true)->exists()) {
+                $users=collect();
                 $profiles=profile::where('leaderInFuture','=',true)->get();
+                foreach ($profiles as $profile)
+                {
+                    if(volunteer::where('user_id','=',$profile->user_id)->where('is_leader','=',true)->exists())
+                    {
+                        $volunteers=volunteer::where('user_id','=',$profile->user_id)->where('is_leader','=',true)->get();
+                        $available=true;
+                        foreach ($volunteers as $volunteer)
+                        {
+                            $campaign=volunteer_campaign::where('id','=',$volunteer->volunteer_campaign_id)->first();
+                            if(Carbon::now()->lt($campaign->maxDate))
+                            {
+                                $available=false;
+                            }
+                        }
+                        if($available==true)
+                        {
+                            $users->push($profile);
+                        }
+                    }
+                    else
+                    {
+                        $users->push($profile);
+                    }
+                }
+                if($users->isEmpty())
+                {
+                    return response()->json([
+                        'message' => 'no any user available to assign as leader',
+                    ], 400);
+                }
                 return response()->json([
                     'message' => 'profiles for user who want to be leader in future',
-                    'profiles' => $profiles
+                    'profiles' => $users
                 ], 200);
             }
             else
@@ -148,6 +178,10 @@ class AdminController extends Controller
 
                 $pro=Profile::select('user_id')->where('id','=',$request->leader_id)->first();
                 $id=$pro->user_id;
+                if(user_role::where('user_id','=',$id)->where('role_id','=',3)->exists()==0)
+                {
+                    user_role::create(['user_id' => $id, 'role_id' => 3]);
+                }
                 if(user_role::where('user_id','=',$id)->where('role_id','=',4)->exists()==0)
                 {
                     user_role::create(['user_id' => $id, 'role_id' => 4]);
@@ -155,7 +189,7 @@ class AdminController extends Controller
                 $notifications=notification_token::where('user_id','=',$id)->get();
                 foreach ($notifications as $notification)
                 {
-                    return $this->notification($group->name,$notification->token,'you have been assigned as a leader');
+                    $this->notification($group->name,$notification->token,'you have been assigned as a leader');
                 }
 
                 $volunteer = new volunteer;
@@ -163,7 +197,6 @@ class AdminController extends Controller
                 $volunteer->volunteer_campaign_id = $campaign->id;
                 $volunteer->is_leader = true;
                 $volunteer->save();
-
 
 
                 $campaign_request->update(['seen'=>true]);
@@ -207,7 +240,8 @@ class AdminController extends Controller
         if(donation_campaign_request::where('id', '=', $request->id)->exists())
         {
         $campaign_request = donation_campaign_request::where('id', '=', $request->id)->first();
-            if ($request->accept==true) {
+            if ($request->accept==true)
+            {
                 $campaign_request->seenAndAccept = true;
                 $campaign_request->save();
                 return response()->json([
@@ -249,7 +283,7 @@ class AdminController extends Controller
             'post'    => $new_post,
             'message' => 'Post added Successfully'
         ],200);
-    }//end
+    }
     public function update_public_Posts(Request $request){
         $validator=Validator::make($request->all(),[
             'id' => 'required'
@@ -267,9 +301,9 @@ class AdminController extends Controller
 
         $title = $request->title ;
         $body  = $request->body ;
-        $photo = $request->photo;
+        $image = $request->image;
 
-        if(is_null($title) And is_null($body) And is_null($photo)){
+        if(is_null($title) And is_null($body) And is_null($image)){
             return response()->json([
                 'message' => 'Enter an information to update !',
                 'post is' => $post_id ,
@@ -282,8 +316,12 @@ class AdminController extends Controller
         if(! is_null($body)){
             $post_id->body = $body;
         }
-        if(! is_null($photo)){
-            $post_id->photo = $photo;
+        if(! is_null($image)){
+            //image
+            $image = $request->file('image');
+            $image_name = time() . '.' . $image->getClientOriginalExtension();
+            $image->move('images', $image_name);
+            $post_id->image = $image_name;
         }
         $post_id->save();
         return response()->json([
@@ -291,8 +329,9 @@ class AdminController extends Controller
             'message' => 'post updated successfully'
         ],200);
 
-    }///end
-    public function delete_public_post(Request $request){
+    }
+    public function delete_public_post(Request $request)
+    {
         $validator=Validator::make($request->all(),[
             'id' => 'required|int'
         ]);
@@ -313,7 +352,7 @@ class AdminController extends Controller
         return response()->json([
             'message' => 'Post deleted successfully !'
         ],200);
-    }//end
+    }
     public function add_volunteer_campaign(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -646,15 +685,17 @@ class AdminController extends Controller
         if(points_convert_request::where('id','=',$request->id)->exists())
         {
             $demand=points_convert_request::where('id','=',$request->id)->first();
-            if($demand->seenAndAccept=true)
-            {
-                if ($request->seenAndAccept == true) {
+
+                if ($request->seenAndAccept == true)
+                {
                     $demand->seenAndAccept = true;
                     $demand->save();
                     return response()->json([
                         'message' => $request->message,
                     ], 200);
-                } else {
+                }
+                else
+                {
                     $point = point::where('user_id', '=', $demand->user_id)->first();
                     $point->update(['value' => $point->value + $demand->value]);
                     $demand->delete();
@@ -662,11 +703,6 @@ class AdminController extends Controller
                         'message' => 'request has been rejected',
                     ], 200);
                 }
-            }
-            else
-                return response()->json([
-                    'message' => 'request has already been answered',
-                ], 403);
         }
         else
             return response()->json([
@@ -680,13 +716,26 @@ class AdminController extends Controller
         $thisYear_1= $thisYear-1;
         $thisYear_2=$thisYear_1-1;
 
-        $x=Profile::whereYear('created_at', '=', $thisYear)->count();
-        $y=Profile::whereYear('created_at', '=', $thisYear_1)->count();
-        $z=Profile::whereYear('created_at', '=', $thisYear_2)->count();
+        $x=Profile::whereYear('created_at', '=', $thisYear)
+            ->where('gender','=','Male')->count();
+        $y=Profile::whereYear('created_at', '=', $thisYear_1)
+            ->where('gender','=','Male')->count();
+        $z=Profile::whereYear('created_at', '=', $thisYear_2)
+            ->where('gender','=','Male')->count();
+        $x1=Profile::whereYear('created_at', '=', $thisYear)
+            ->where('gender','=','Female')->count();
+        $y1=Profile::whereYear('created_at', '=', $thisYear_1)
+            ->where('gender','=','Female')->count();
+        $z1=Profile::whereYear('created_at', '=', $thisYear_2)
+            ->where('gender','=','Female')->count();
+
         return response()->json([
-            $thisYear=>$x,
-            $thisYear_1=>$y,
-            $thisYear_2=>$z,
+            $thisYear.'Male'=>$x,
+            $thisYear.'Female'=>$x1,
+            $thisYear_1.'Male'=>$y,
+            $thisYear_1.'Female'=>$y1,
+            $thisYear_2.'Male'=>$z,
+            $thisYear_2.'Female'=>$z1,
         ], 200);
     }
     public function campaigns_in_category()

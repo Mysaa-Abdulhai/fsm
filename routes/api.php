@@ -35,8 +35,8 @@ Route::delete('/logout', [AuthController::class, 'logout'])->middleware('auth:sa
 
 Route::get('/verify_email/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify')->middleware('auth:sanctum');
 
-Route::post('chat/room', [ChatController::class,'messages'])->name('chat/room')->middleware('auth:sanctum');
-Route::post('chat/room/message', [ChatController::class,'newMessage'])->name('chat/room/message')->middleware('auth:sanctum');
+Route::post('chat/room', [ChatController::class,'messages'])->name('chat/room')->middleware('auth:sanctum')->middleware('volunteerInCampaign');
+Route::post('chat/room/message', [ChatController::class,'newMessage'])->name('chat/room/message')->middleware('auth:sanctum')->middleware('volunteerInCampaign');
 
 
 
@@ -73,8 +73,6 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
 
     //favorite
     Route::post('favorite_campaign',[UserController::class,'favorite_campaign'])->name('favorite_campaign');
-
-    Route::delete('delete_favorite_campaign',[UserController::class,'delete_favorite_campaign'])->name('delete_favorite_campaign');
 
     Route::get('get_favorite',[UserController::class,'get_favorite'])->name('get_favorite');
 

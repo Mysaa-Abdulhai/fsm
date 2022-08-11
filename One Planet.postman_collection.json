@@ -1133,7 +1133,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|ASP2HkKdJkzR3lvaVpHIVt8pDCrDLDZ2Ia26QU46",
+							"value": "24|yt0y4LrzJwQI0pgOFo2mI6OBtTepog0DFnxNhxbr",
 							"type": "string"
 						}
 					]
@@ -1152,7 +1152,7 @@
 						{
 							"key": "image",
 							"type": "file",
-							"src": "/C:/Users/joseph/Desktop/photo_2022-06-28_16-48-36.jpg"
+							"src": "/C:/Users/joseph/Desktop/OnePlanet.jpg"
 						},
 						{
 							"key": "skills",
@@ -1161,7 +1161,7 @@
 						},
 						{
 							"key": "name",
-							"value": "yhjfdfd",
+							"value": "Al Kher",
 							"type": "default"
 						},
 						{
@@ -1212,7 +1212,7 @@
 						},
 						{
 							"key": "maxDate",
-							"value": "2022-08-02",
+							"value": "2022-08-12",
 							"type": "default"
 						},
 						{
@@ -1692,11 +1692,18 @@
 		},
 		{
 			"name": "token_firebase",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
-				"method": "GET",
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "11|o1kgvhYlHSUrvWUao1fejzeqiMVweBPZx5VMe65X",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
 				"header": [
 					{
 						"key": "Accept",
@@ -1974,54 +1981,6 @@
 			"response": []
 		},
 		{
-			"name": "unlike_campaign",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "6|71e7b6a7hkDt07ypybQ6x7dB9NnZ333jtc6rOGnI",
-							"type": "string"
-						}
-					]
-				},
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "default"
-					}
-				],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "id",
-							"value": "2",
-							"type": "default"
-						}
-					]
-				},
-				"url": {
-					"raw": "127.0.0.1:8000/api/unlike_campaign",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"unlike_campaign"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "add_rate",
 			"request": {
 				"auth": {
@@ -2275,7 +2234,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|9gmmmfD0pDrLDuItn3bqFzyhdx2dUzAQu6kfYmZx",
+							"value": "19|I2iVjeFxaq3eVhiZBbTXPAZAwqOK5h4M4Os77TBR",
 							"type": "string"
 						}
 					]
@@ -2293,7 +2252,7 @@
 					"urlencoded": []
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/search_name?name=uyfu",
+					"raw": "http://127.0.0.1:8000/api/search_name?name=df",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -2309,7 +2268,7 @@
 					"query": [
 						{
 							"key": "name",
-							"value": "uyfu"
+							"value": "df"
 						}
 					]
 				}
@@ -2363,7 +2322,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|9gmmmfD0pDrLDuItn3bqFzyhdx2dUzAQu6kfYmZx",
+							"value": "7|OuE3it3W8TrEw7CYJR5krydZQROLjGVZHUfLGUVA",
 							"type": "string"
 						}
 					]
@@ -2716,6 +2675,68 @@
 					"path": [
 						"api",
 						"response_on_convert_points_request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "campaign_suggestions",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "2|xj0zOy8IecOIJnH05rlbX43gvmviCtSztJw6302x",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/campaign_suggestions",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"campaign_suggestions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "campaign_suggestions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/campaign_suggestions",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"campaign_suggestions"
 					]
 				}
 			},

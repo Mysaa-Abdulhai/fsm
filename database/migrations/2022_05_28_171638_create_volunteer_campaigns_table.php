@@ -19,7 +19,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('volunteer_campaign_request_id');
             $table->foreignId('location_id');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->text('image');
             $table->longText('details');
             $table->enum('type',['natural','human','pets','others']);

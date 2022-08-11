@@ -150,6 +150,8 @@ class UserController extends Controller
                 'country'=>$location->country,
                 'street'=>$location->street,
                 'maxDate'=>$campaign->maxDate,
+                'latitude'=>$campaign->latitude,
+                'longitude'=>$campaign->maxDate,
                 'maxDate_days'=>Carbon::parse(Carbon::now())->diff($campaign->maxDate)->days,
                 'leader_name' => $name->name,
                 'age'=>$campaign->age,
@@ -851,13 +853,11 @@ class UserController extends Controller
                 ->join('volunteer_campaigns',
                     'volunteers.volunteer_campaign_id','=','volunteer_campaigns.id')
                 ->where('volunteers.user_id','=',auth()->user()->id)
-                ->select('volunteer_campaigns.type')
-            ->get();
+                ->get();
             $human=0;
             $natural=0;
             $pets=0;
             $others=0;
-            $max=collect();
             foreach ($campaigns as $campaign)
             {
                 if($campaign->type=='human')
@@ -877,18 +877,128 @@ class UserController extends Controller
                     $others++;
                 }
             }
-            $max->push(['human'=>$human,'natural'=>$natural,
-                'pets'=>$pets,'others'=>$others,
-            ]);
-            return
-            $max=max($max->human);
 
+            $max=max($human,$natural,$pets,$others);
 
+            if($max==$human)
+            {
+                $campaign=collect();
+                $camps=volunteer_campaign::where('type','=','human')->get();
+                foreach ($camps as $camp)
+                {
+                    if(volunteer::where('user_id','=',auth()->user()->id)
+                            ->where('volunteer_campaign_id','=',$camp->id)->doesntExist())
+                    {
+                        $campaign->push($camp);
+                    }
+                }
+                if($campaign->isEmpty())
+                {
+                    $camps=volunteer_campaign::orderBy('created_at', 'DESC')
+                        ->get();
+                    foreach ($camps as $camp)
+                    {
+                        if(volunteer::where('user_id','=',auth()->user()->id)
+                            ->where('volunteer_campaign_id','=',$camp->id)->doesntExist())
+                        {
+                            $campaign->push($camp);
+                        }
+                    }
+                }
+                return response()->json([
+                    'campaigns' => $campaign
+                ], 200);
+            }
+            if($max==$natural)
+            {
+                $campaign=collect();
+                $camps=volunteer_campaign::where('type','=','natural')->get();
+                foreach ($camps as $camp)
+                {
+                    if(volunteer::where('user_id','=',auth()->user()->id)
+                            ->where('volunteer_campaign_id','=',$camp->id)->doesntExist())
+                    {
+                        $campaign->push($camp);
+                    }
 
-            return response()->json([
-                $max,
-                'campaigns' => $campaigns
-            ], 200);
+                }
+                if($campaign->isEmpty())
+                {
+                    $camps=volunteer_campaign::orderBy('created_at', 'DESC')
+                        ->get();
+                    foreach ($camps as $camp)
+                    {
+                        if(volunteer::where('user_id','=',auth()->user()->id)
+                            ->where('volunteer_campaign_id','=',$camp->id)->doesntExist())
+                        {
+                            $campaign->push($camp);
+                        }
+                    }
+                }
+                return response()->json([
+                    'campaigns' => $campaign
+                ], 200);
+            }
+            if($max==$pets)
+            {
+                $campaign=collect();
+                $camps=volunteer_campaign::where('type','=','pets')->get();
+                foreach ($camps as $camp)
+                {
+                    if(volunteer::where('user_id','=',auth()->user()->id)
+                            ->where('volunteer_campaign_id','=',$camp->id)->doesntExist()==false)
+                    {
+                        $campaign->push($camp);
+                    }
+
+                }
+                if($campaign->isEmpty())
+                {
+                    $camps=volunteer_campaign::orderBy('created_at', 'DESC')
+                        ->get();
+                    foreach ($camps as $camp)
+                    {
+                        if(volunteer::where('user_id','=',auth()->user()->id)
+                            ->where('volunteer_campaign_id','=',$camp->id)->doesntExist())
+                        {
+                            $campaign->push($camp);
+                        }
+                    }
+                }
+                return response()->json([
+                    'campaigns' => $campaign
+                ], 200);
+            }
+            if($max==$others)
+            {
+                $campaign=collect();
+                $camps=volunteer_campaign::where('type','=','others')->get();
+                foreach ($camps as $camp)
+                {
+                    if(volunteer::where('user_id','=',auth()->user()->id)
+                            ->where('volunteer_campaign_id','=',$camp->id)->doesntExist()==false)
+                    {
+                        $campaign->push($camp);
+                    }
+
+                }
+                if($campaign->isEmpty())
+                {
+                    $camps=volunteer_campaign::orderBy('created_at', 'DESC')
+                        ->get();
+                    foreach ($camps as $camp)
+                    {
+                        if(volunteer::where('user_id','=',auth()->user()->id)
+                            ->where('volunteer_campaign_id','=',$camp->id)->doesntExist())
+                        {
+                            $campaign->push($camp);
+                        }
+                    }
+                }
+                return response()->json([
+                    'campaigns' => $campaign
+                ], 200);
+            }
         }
         else
             return response()->json([
@@ -896,5 +1006,21 @@ class UserController extends Controller
                     ->get(),
             ], 200);
     }
-
+    public function get_points()
+    {
+        if(point::where('user_id','=',auth()->user()->id)->exists())
+        {
+        $points=point::select('user_id','value')->where('user_id','=',auth()->user()->id)->first();
+            return response()->json([
+                'user_id' => $points->user_id,
+                'value' => $points->value
+            ], 200);
+        }
+        else
+        {
+            return response()->json([
+                'message' => 'you haven\'t any points'
+            ], 403);
+        }
+    }
 }

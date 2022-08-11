@@ -21,7 +21,7 @@ return new class extends Migration
                 $table->foreignId('user_id');
                 $table->foreignId('location_id');
                 $table->boolean('seen')->default(false);
-                $table->string('name')->unique();
+                $table->string('name');
                 $table->text('image');
                 $table->longText('details');
                 $table->enum('type',['natural','human','pets','others']);

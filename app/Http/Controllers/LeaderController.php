@@ -47,7 +47,6 @@ class LeaderController extends Controller
     public function add_points(Request $request){
         $validator = Validator::make($request->all(), [
             'volunteer_campaign_id'     => 'required|int',
-            'point_for_all'     => 'required|int',
             'point_for_distinguished'   => 'required|int',
             'ids'=>'required'
         ]);
@@ -56,9 +55,8 @@ class LeaderController extends Controller
 
 
 
-            $date=volunteer_campaign::where('id','=',$request->volunteer_campaign_id)->first();
-            $date=Carbon::parse($date->maxDate)->diff(Carbon::now())->days;
-            if($date>=0)
+            $volunteer_campaign=volunteer_campaign::where('id','=',$request->volunteer_campaign_id)->first();
+            if(Carbon::now()->gte($volunteer_campaign->maxDate))
             {
                 $array = $request->ids;
                 $array = explode(",", $array);
@@ -81,27 +79,8 @@ class LeaderController extends Controller
                         }
                     }
                 }
-                $users=volunteer::where('volunteer_campaign_id','=',$request->volunteer_campaign_id)->pluck('user_id');
-                foreach ($users as $user)
-                {
-                    if(point::where('user_id','=',$user)->exists())
-                    {
-
-                        $current = point::where('user_id', '=', $user)->first();
-                        $current = $current->value;
-                        $new=$current+$request->point_for_all;
-                        point::where('user_id','=',$user)->update(['value'=>$new]);
-                    }
-                    else
-                    {
-                        point::create([
-                            'user_id'=>$user,
-                            'value'=>$request->point_for_all
-                            ]);
-                    }
-                }
                 return response()->json([
-                    'message'=>'points add to all volunteers',
+                    'message'=>'points add successfully',
                 ],200);
             }
             else

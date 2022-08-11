@@ -356,7 +356,7 @@ class AdminController extends Controller
     public function add_volunteer_campaign(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|unique:volunteer_campaigns,name',
+            'name' => 'required|string',
             'type' => 'required|string',
             'details' => 'required|string|min:5',
             'maxDate' => 'required|date|after:today',
@@ -519,7 +519,11 @@ class AdminController extends Controller
             $campaign->volunteer_number = $volunteer_number;
         }
         if (!is_null($image)){
-            $campaign->image = $image;
+            //image
+            $image = $request->file('image');
+            $image_name = time() . '.' . $image->getClientOriginalExtension();
+            $image->move('images', $image_name);
+            $campaign->image = $image_name;
         }
         if (!is_null($leader_id))
         {
@@ -575,7 +579,7 @@ class AdminController extends Controller
                 campaignSkill::create(['name'=>$skill,'volunteer_campaign_id'=>$campaign->id]);
             }
         }
-
+        $skills=$campaign->getSkill();
         return response()->json([
             'message' => 'Campaign updated Successfully !',
             'update campaign ' => $campaign,

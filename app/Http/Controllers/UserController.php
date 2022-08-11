@@ -150,6 +150,8 @@ class UserController extends Controller
                 'country'=>$location->country,
                 'street'=>$location->street,
                 'maxDate'=>$campaign->maxDate,
+                'latitude'=>$campaign->latitude,
+                'longitude'=>$campaign->maxDate,
                 'maxDate_days'=>Carbon::parse(Carbon::now())->diff($campaign->maxDate)->days,
                 'leader_name' => $name->name,
                 'age'=>$campaign->age,
@@ -1001,5 +1003,22 @@ class UserController extends Controller
                 'campaigns' => volunteer_campaign::orderBy('created_at', 'DESC')
                     ->get(),
             ], 200);
+    }
+    public function get_points()
+    {
+        if(point::where('user_id','=',auth()->user()->id)->exists())
+        {
+        $points=point::select('user_id','value')->where('user_id','=',auth()->user()->id)->first();
+            return response()->json([
+                'user_id' => $points->user_id,
+                'value' => $points->value
+            ], 200);
+        }
+        else
+        {
+            return response()->json([
+                'message' => 'you haven\'t any points'
+            ], 403);
+        }
     }
 }

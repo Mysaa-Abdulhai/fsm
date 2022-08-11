@@ -62,7 +62,7 @@ class AdminController extends Controller
             'message' => 'no any request',
         ], 400);
     }
-    public function acceptAndUnanswered(Request $request)
+    public function acceptAndUnanswered(Request $request)  //all acampaign 'volunteer & donation' accept and unanswered
     {
         if(donation_campaign_request::where('seenAndAccept', '=', false)->exists()||volunteer_campaign_request::exists()
         ||volunteer_campaign::exists())

@@ -128,12 +128,6 @@ class DatabaseSeeder extends Seeder
 
 
 
-
-
-
-
-
-
                 //user
                 [
                     'name'=>'show_volunteer_campaign',
@@ -235,8 +229,6 @@ class DatabaseSeeder extends Seeder
 
 
 
-
-
                 //leader
               [
                   'name'=>'add_campaign_post',
@@ -246,6 +238,7 @@ class DatabaseSeeder extends Seeder
                   'name'=>'add_points',
                   'role_id'=>'3'
               ],
+
 
 
 
@@ -259,6 +252,7 @@ class DatabaseSeeder extends Seeder
                   'role_id'=>'4'
               ],
             ];
+            
         permission::insert($permission);
         $this->call([
             users::class,

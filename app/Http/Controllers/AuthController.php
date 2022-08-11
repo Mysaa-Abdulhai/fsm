@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-
+    
     public function register_code(Request $request){
 
         $validator = Validator::make($request->all(), [
@@ -34,6 +34,7 @@ class AuthController extends Controller
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->save();
+        
         $token = $user->createToken('myapptoken')->plainTextToken;
 
         $user->generateCode();
@@ -46,11 +47,11 @@ class AuthController extends Controller
             'message' => 'User successfully registered',
             'user' => $user,
             'token' => $token,
-            'notification code'=>notification_token::where('user_id','=',$user->id)
+            ' code'=>notification_token::where('user_id','=',$user->id)
                 ->where('token','=',$request->notification_token)
                 ->pluck('token')
         ], 201);
-    }//end 
+    }//end
 
 
     public function deleteAccount(Request $request){

@@ -23,10 +23,6 @@ Route::get('/resend', [verificationController::class, 'resend'])->middleware(['a
 
 
 
-
-
-
-
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::delete('/delete_account', [AuthController::class, 'deleteAccount'])->middleware('auth:sanctum');
@@ -65,7 +61,6 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
     Route::post('public_post_like',[UserController::class,'public_post_like'])->name('public_post_like');
 
 
-
     //campaign post
     Route::get('show_posts_of_campaign',[UserController::class,'show_posts_of_campaign'])->name('show_posts_of_campaign');
 
@@ -100,11 +95,6 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
 
 
 
-
-
-
-
-
     //admin
     Route::post('add_volunteer_campaign',[AdminController::class,'add_volunteer_campaign'])->name('add_volunteer_campaign');
 
@@ -123,7 +113,6 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
 
     Route::post('response_on_volunteer_campaign_request',[AdminController::class,'response_on_volunteer_campaign_request'])->name('response_on_volunteer_campaign_request');
 
-
     Route::post('response_on_donation_campaign_request',[AdminController::class,'response_on_donation_campaign_request'])->name('response_on_donation_campaign_request');
 
     Route::post('add_public_post',[AdminController::class,'add_public_post'])->name('add_public_post');
@@ -141,11 +130,13 @@ Route::group(['middleware'=>['auth:sanctum','verified','acceptPermission' ]],fun
     Route::get('campaigns_in_category',[AdminController::class,'campaigns_in_category'])->name('campaigns_in_category');
 
 
-
     //leader
     Route::post('add_campaign_post',[LeaderController::class,'add_campaign_post'])->name('add_campaign_post')->middleware('leaderInCampaign');
 
     Route::post('add_points',[LeaderController::class,'add_points'])->name('add_points')->middleware('leaderInCampaign');
+
+    //payment 
+    Route::post('checkout', [StripePaymentController::class ,'checkout']);
 });
 
 
@@ -170,7 +161,6 @@ Route::post('/token_firebase',function(Request $request){
             "sound"=> "default"
 
         ],
-
     ];
 
     $dataString = json_encode($data);

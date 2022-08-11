@@ -32,8 +32,8 @@ class users extends Seeder
             ['name'=>'joseph','password'=>bcrypt('joseph123')
                 ,'email'=>'joseph@gmail.com','is_verified'=>1]);
         User::create(
-            ['name'=>'shaker','password'=>bcrypt('shaker123')
-                ,'email'=>'shaker@gmail.com','is_verified'=>1]);
+            ['name'=>'mysaa','password'=>bcrypt('mysaa123')
+                ,'email'=>'mysaa@gmail.com','is_verified'=>1]);
 
 
         user_role::create(

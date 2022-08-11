@@ -254,7 +254,8 @@ class UserController extends Controller
         ], 200);
     }//end
 
-    public function show_public_posts(Request $request){
+    public function show_public_posts(Request $request)
+    {
         $po=public_post::all();
         $posts=collect();
         foreach ($po as$post)
@@ -290,7 +291,8 @@ class UserController extends Controller
             'post'  => $posts,
         ],200);
     }
-    public function show_posts_of_campaign(Request $request){
+    public function show_posts_of_campaign(Request $request)
+    {
         $validator=Validator::make($request->all(),[
             'id' => 'required|int',
         ]);
@@ -841,7 +843,7 @@ class UserController extends Controller
                 'message' => 'you arn\'t  member in any campaign',
             ], 403);
     }
-    
+
     public function convert_points_request(Request $request)
     {
         $validator = Validator::make($request->all(), [

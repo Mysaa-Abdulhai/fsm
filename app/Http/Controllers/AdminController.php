@@ -42,7 +42,7 @@ class AdminController extends Controller
             return response()->json([
                 'message' => 'no any request',
             ], 400);
-    }
+    }//end 
     public function all_donation_campaign_request(Request $request)
     {
         if(donation_campaign_request::where('seenAndAccept', '=', false)->exists())
@@ -61,7 +61,7 @@ class AdminController extends Controller
         return response()->json([
             'message' => 'no any request',
         ], 400);
-    }
+    }//end
     public function acceptAndUnanswered(Request $request)  //all acampaign 'volunteer & donation' accept and unanswered
     {
         if(donation_campaign_request::where('seenAndAccept', '=', false)->exists()||volunteer_campaign_request::exists()
@@ -82,7 +82,7 @@ class AdminController extends Controller
             return response()->json([
                 'message' => 'no any request',
             ], 400);
-    }
+    }//end
     public function all_user_leader_in_future()
     {
             if(profile::where('leaderInFuture','=',true)->exists()) {
@@ -127,7 +127,7 @@ class AdminController extends Controller
                 return response()->json([
                     'message' => 'no any user want to be leader',
                 ], 400);
-    }
+    }//end
     public function response_on_volunteer_campaign_request(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -140,7 +140,6 @@ class AdminController extends Controller
         ]);
         if ($validator->fails())
             return response()->json($validator->errors()->toJson(), 400);
-
 
         if(volunteer_campaign_request::where('id', '=', $request->id)->where('seen','=',false)->exists()) {
             $campaign_request = volunteer_campaign_request::where('id', '=', $request->id)->first();
@@ -168,8 +167,7 @@ class AdminController extends Controller
                     campaignSkill::create(['name' => $skill, 'volunteer_campaign_id' => $campaign->id]);
                 }
 
-                $skills=campaignSkill::select('name')->where('volunteer_campaign_id','=',$campaign->id)->get();
-
+                $skills=campaignSkill::select('name')->where('volunteer_campaign_id','=', $campaign->id)->get();
 
                 $group = new ChatRoom();
                 $group->name = $campaign->name;
